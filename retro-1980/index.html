@@ -373,34 +373,51 @@
                 </div>
 
                 <script>
-                    // 80s Guestbook Logi                    nst comments80s = [
-                          : '영희', text: '오빠랑 땅따먹기 하다가 싸웠던 기억이 나네요 ㅋㅋ', date: '2025.01.03' },
-                              네대장', text: '딱지치기는 내가 동네 짱이었지!', date: '2025.01.02' }
-                    ments80s() {
-                        getElementById('comment-list-80s');
-                        lm < div class="bg-white p-3 rounded shadow-sm border border-gray-100" >
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-[#15803d] text-sm">${c.name}</span>
-                                        <span class="text-xs text-gray-400">${c.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${c.text}</p>
-                                </div >
-                            `).join('');
+                    // 80s Guestbook Logic
+                    const comments80s = [
+                        { name: '영희', text: '오빠랑 땅따먹기 하다가 싸웠던 기억이 나네요 ㅋㅋ', date: '2025.01.03' },
+                        { name: '동네대장', text: '딱지치기는 내가 동네 짱이었지!', date: '2025.01.02' }
+                    ];
+
+                    function renderComments80s() {
+                        const list = document.getElementById('comment-list-80s');
+                        list.innerHTML = comments80s.map(c => `
+                            <div class="bg-white p-3 rounded shadow-sm border border-gray-100">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-[#15803d] text-sm">${c.name}</span>
+                                    <span class="text-xs text-gray-400">${c.date}</span>
+                                </div>
+                                <p class="text-gray-700 text-sm">${c.text}</p>
+                            </div>
+                        `).join('');
                     }
 
-                    function addCom                                            = document.getElementById(                                       const msgInput = document.getElementById('gues                                  const name = nameInput.value.trim();
-            I                                        if (!name || !text) {                         alert('이름과 내용을 모두 입력해주세요!');
-      ;                                                                                              const dat                            {String(                        rt(                        ate()).padStart(2, '0')}`; mments80s.unshift({ name, text, date: dateStr });
+                    function addComment80s() {
+                        const nameInput = document.getElementById('guest-name-80s');
+                        const msgInput = document.getElementById('guest-msg-80s');
+                        
+                        const name = nameInput.value.trim();
+                        const text = msgInput.value.trim();
+
+                        if (!name || !text) {
+                            alert('이름과 내용을 모두 입력해주세요!');
+                            return;
+                        }
+
+                        const now = new Date();
+                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+                        
+                        comments80s.unshift({ name, text, date: dateStr });
                         renderComments80s();
 
                         // Reset inputs
-                        Input.value = '';
-                        msgInput.v
+                        nameInput.value = '';
+                        msgInput.value = '';
                     }
 
-               s                        uns immediately
-                    ut(() => {
-                        0s();
+                    // Initial render
+                    setTimeout(() => {
+                        renderComments80s();
                     }, 100);
                 </script>
             </section>
