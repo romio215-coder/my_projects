@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects: Health & Retro</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&family=Black+Han+Sans&family=Gugi&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            width: 100vw;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .split {
+            height: 100%;
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: all 800ms ease-in-out;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-decoration: none;
+            /* For the anchor tag behavior */
+            color: white;
+        }
+
+        /* --- Left Side: Health (Modern) --- */
+        .split.left {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(59, 130, 246, 0.7) 100%),
+                url('./health-landing/assets/hero.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .split.left::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30, 58, 138, 0.4);
+            transition: all 800ms ease-in-out;
+        }
+
+        .split.left h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            z-index: 10;
+            white-space: nowrap;
+            letter-spacing: -2px;
+            transform: translateY(0);
+            transition: transform 0.4s ease;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .split.left p {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            z-index: 10;
+            font-weight: 300;
+            opacity: 0.9;
+            transition: opacity 0.4s ease;
+        }
+
+        /* --- Right Side: Retro (Vintage) --- */
+        .split.right {
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.8) 0%, rgba(180, 83, 9, 0.8) 100%),
+                url('./retro-1980/images/retro_alley_marbles.png');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Black Han Sans', sans-serif;
+        }
+
+        .split.right::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(67, 20, 7, 0.3);
+            transition: all 800ms ease-in-out;
+        }
+
+        .split.right h1 {
+            font-size: 4rem;
+            z-index: 10;
+            white-space: nowrap;
+            letter-spacing: 2px;
+            color: #fef3c7;
+            text-shadow: 4px 4px 0px #92400e;
+            transform: translateY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .split.right p {
+            font-family: 'Gugi', cursive;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            z-index: 10;
+            color: #ffedd5;
+            opacity: 0.8;
+            transition: opacity 0.4s ease;
+        }
+
+        /* --- Hover Effects --- */
+
+        /* Expand the hovered side */
+        .split:hover {
+            width: 75%;
+        }
+
+        /* Shrink the other side */
+        .container:hover .split:not(:hover) {
+            width: 25%;
+        }
+
+        /* Darken the non-hovered side */
+        .container:hover .split:not(:hover)::before {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Text Effects on Hover */
+        .split:hover h1 {
+            transform: scale(1.1);
+        }
+
+        .split:hover p {
+            opacity: 1;
+        }
+
+        /* Button Styling (Optional Call to Action) */
+        .btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .split.left .btn {
+            border: 2px solid #60a5fa;
+            background: rgba(30, 58, 138, 0.6);
+        }
+
+        .split.left .btn:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .split.right .btn {
+            border: 2px solid #fcd34d;
+            background: rgba(120, 53, 15, 0.6);
+            color: #fef3c7;
+        }
+
+        .split.right .btn:hover {
+            background: #d97706;
+            border-color: #d97706;
+            color: white;
+        }
+
+        .split:hover .btn {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .split {
+                width: 100%;
+                height: 50%;
+            }
+
+            .split:hover {
+                width: 100%;
+                height: 75%;
+            }
+
+            .container:hover .split:not(:hover) {
+                width: 100%;
+                height: 25%;
+            }
+
+            .split h1 {
+                font-size: 2.5rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="./health-landing/index.html" class="split left">
+            <h1>Health Lab</h1>
+            <p>Modern Solutions for Your Vitality</p>
+            <span class="btn">Enter Lab</span>
+        </a>
+        <a href="./retro-1980/index.html" class="split right">
+            <h1>응답하라 1980</h1>
+            <p>그 시절, 우리의 따뜻한 이야기</p>
+            <span class="btn">시간여행 떠나기</span>
+        </a>
+    </div>
+</body>
+
+</html>
