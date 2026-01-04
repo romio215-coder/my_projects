@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro 1980 - 관리자 페이지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Sunflower:wght@300;500;700&display=swap');
+
+        body {
+            font-family: 'Gowun Dodum', sans-serif;
+            background-color: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .retro-card {
+            background-color: #4a5568;
+            border: 2px solid #a0aec0;
+            box-shadow: 4px 4px 0px #1a202c;
+        }
+
+        .btn-retro {
+            transition: all 0.1s;
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+
+        /* Login Overlay */
+        #login-overlay {
+            position: fixed;
+            inset: 0;
+            background: #1a202c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-8">
+
+    <!-- Auth Overlay -->
+    <div id="login-overlay">
+        <div class="retro-card p-8 rounded max-w-sm w-full text-center bg-gray-700">
+            <h1 class="text-2xl font-bold mb-4 font-Sunflower text-yellow-400">🕵️ 관리자 인증</h1>
+            <p class="mb-4 text-sm text-gray-300">암호를 대라!</p>
+            <input type="password" id="admin-pass" placeholder="비밀번호 입력"
+                class="w-full p-2 mb-4 bg-gray-800 border border-gray-600 rounded text-white text-center">
+            <button onclick="checkAuth()"
+                class="btn-retro w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded border-2 border-blue-800">
+                접속하기
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Admin Content -->
+    <div id="admin-content" class="max-w-4xl mx-auto hidden">
+        <header class="flex justify-between items-center mb-8 pb-4 border-b border-gray-600">
+            <h1 class="text-3xl font-bold font-Sunflower text-white">🎛️ 레트로 사이트 관리소</h1>
+            <a href="index.html" class="text-gray-400 hover:text-white underline">사이트로 돌아가기</a>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Menu Manager -->
+            <div class="retro-card p-6 rounded relative">
+                <h2 class="text-xl font-bold mb-4 text-green-400 flex items-center">
+                    <span class="mr-2">📋</span> 메뉴 관리
+                </h2>
+                <div id="menu-list" class="space-y-2 mb-4 h-64 overflow-y-auto pr-2">
+                    <!-- Menu Items Loaded Here -->
+                    <p class="text-center text-gray-500 py-4">데이터 로딩 중...</p>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-gray-500">
+                    <h3 class="font-bold mb-2 text-sm text-gray-300">새 메뉴 추가</h3>
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <input type="text" id="new-menu-label" placeholder="메뉴 이름 (예: 🎈 새 놀이)"
+                            class="p-2 bg-gray-800 border border-gray-600 rounded text-sm text-white">
+                        <input type="text" id="new-menu-action" placeholder="Action ID (예: new_game)"
+                            class="p-2 bg-gray-800 border border-gray-600 rounded text-sm text-white">
+                    </div>
+                    <button onclick="addMenuItem()"
+                        class="btn-retro w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded text-sm border-2 border-green-800">
+                        + 메뉴 추가
+                    </button>
+                </div>
+            </div>
+
+            <!-- Asset Manager -->
+            <div class="retro-card p-6 rounded">
+                <h2 class="text-xl font-bold mb-4 text-purple-400 flex items-center">
+                    <span class="mr-2">🖼️</span> 에셋 & 텍스트 관리
+                </h2>
+
+                <div class="space-y-8">
+                    <!-- Text Assets -->
+                    <div class="space-y-4 border-b border-gray-500 pb-6">
+                        <h3 class="font-bold text-lg text-gray-300">텍스트 수정</h3>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">메인 타이틀 (H1)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="site-title-input"
+                                    class="flex-1 p-2 bg-gray-800 border border-gray-600 rounded text-white">
+                                <button
+                                    onclick="updateTextAsset('main_title', document.getElementById('site-title-input').value)"
+                                    class="btn-retro px-4 py-2 bg-purple-600 text-white rounded font-bold text-xs">저장</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-1">서브 타이틀</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="site-subtitle-input"
+                                    class="flex-1 p-2 bg-gray-800 border border-gray-600 rounded text-white">
+                                <button
+                                    onclick="updateTextAsset('main_subtitle', document.getElementById('site-subtitle-input').value)"
+                                    class="btn-retro px-4 py-2 bg-purple-600 text-white rounded font-bold text-xs">저장</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Assets List -->
+                    <div>
+                        <h3 class="font-bold text-lg text-gray-300 mb-4">이미지 교체</h3>
+                        <div id="image-asset-list" class="space-y-4 h-96 overflow-y-auto pr-2 custom-scrollbar">
+                            <!-- Loaded dynamically -->
+                            <p class="text-gray-500 text-center">이미지 목록 로딩 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden File Input for simplified logic -->
+    <input type="file" id="global-file-input" style="display: none;" onchange="handleFileSelect(this)">
+
+    <script>
+        // --- Configuration ---
+        const SUPABASE_URL = 'https://rcciivtbucjtrhzgeyds.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_F40YWB1fkqCWZcLlWzHyNA_rbaPfLaG'; // Provided Public Key
+
+        // Initialize Supabase
+        const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- Auth Logic (Simple) ---
+        function checkAuth() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === 'retro1980') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').classList.remove('hidden');
+                loadData();
+            } else {
+                alert('비밀번호가 틀렸습니다! (힌트: retro1980)');
+            }
+        }
+
+        // --- Load Data ---
+        async function loadData() {
+            loadMenuItems();
+            loadSiteAssets();
+        }
+
+        async function loadMenuItems() {
+            const listEl = document.getElementById('menu-list');
+            listEl.innerHTML = '<p class="text-center text-gray-500">로딩 중...</p>';
+
+            const { data, error } = await sbClient
+                .from('menu_items')
+                .select('*')
+                .order('order_index', { ascending: true });
+
+            if (error) {
+                console.error(error);
+                listEl.innerHTML = '<p class="text-red-400 text-center">데이터 로드 실패</p>';
+                return;
+            }
+
+            listEl.innerHTML = '';
+            if (data.length === 0) listEl.innerHTML = '<p class="text-gray-500 text-center text-sm">메뉴 없음</p>';
+
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center bg-gray-800 p-2 rounded border border-gray-600';
+                div.innerHTML = `
+                    <div>
+                        <span class="font-bold text-sm text-gray-200">${item.label}</span>
+                        <span class="text-xs text-gray-400 block">${item.action_id}</span>
+                    </div>
+                    <button onclick="deleteMenuItem(${item.id})" class="text-red-400 hover:text-red-300 text-xs font-bold px-2">삭제</button>
+                `;
+                listEl.appendChild(div);
+            });
+        }
+
+        async function loadSiteAssets() {
+            const { data, error } = await sbClient.from('site_assets').select('*').order('key');
+            if (data) {
+                // Texts
+                const titleRow = data.find(r => r.key === 'main_title');
+                const subRow = data.find(r => r.key === 'main_subtitle');
+                if (titleRow) document.getElementById('site-title-input').value = titleRow.value;
+                if (subRow) document.getElementById('site-subtitle-input').value = subRow.value;
+
+                // Images
+                const imgList = document.getElementById('image-asset-list');
+                const images = data.filter(r => r.key.startsWith('img_'));
+
+                imgList.innerHTML = '';
+                if (images.length === 0) {
+                    imgList.innerHTML = '<p class="text-sm text-gray-500 text-center">관리 가능한 이미지가 없습니다 (setup.sql 실행 확인)</p>';
+                }
+
+                images.forEach(img => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-gray-800 p-3 rounded border border-gray-600 flex gap-4 items-start';
+                    div.innerHTML = `
+                        <div class="w-20 h-20 bg-gray-900 rounded overflow-hidden flex-shrink-0 border border-gray-700">
+                             <img src="${img.value}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-bold text-sm text-blue-300 truncate">${img.description || img.key}</h4>
+                            <p class="text-xs text-gray-500 mb-2 truncate">${img.key}</p>
+                            <div class="flex gap-2">
+                                <button onclick="triggerUpload('${img.key}')" 
+                                    class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1 rounded">
+                                    이미지 변경
+                                </button>
+                                <a href="${img.value}" target="_blank" class="text-gray-500 text-xs flex items-center hover:text-white">보기 ↗</a>
+                            </div>
+                        </div>
+                    `;
+                    imgList.appendChild(div);
+                });
+            }
+        }
+
+
+        // --- Actions ---
+
+        // --- Actions ---
+
+        async function updateTextAsset(key, value) {
+            if (!value) return;
+            const { error } = await sbClient.from('site_assets').upsert([{ key, value }]);
+            if (error) alert('저장 실패: ' + error.message);
+            else alert('저장되었습니다!');
+        }
+
+        async function addMenuItem() {
+            const label = document.getElementById('new-menu-label').value;
+            const action = document.getElementById('new-menu-action').value;
+
+            if (!label || !action) return alert('모두 입력해주세요.');
+
+            const { error } = await sbClient.from('menu_items').insert([{
+                label: label,
+                action_id: action,
+                order_index: 99
+            }]);
+
+            if (error) alert('추가 실패: ' + error.message);
+            else {
+                document.getElementById('new-menu-label').value = '';
+                document.getElementById('new-menu-action').value = '';
+                loadMenuItems();
+            }
+        }
+
+        async function deleteMenuItem(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+            const { error } = await sbClient.from('menu_items').delete().eq('id', id);
+            if (error) alert('삭제 실패');
+            else loadMenuItems();
+        }
+
+        // Image Upload Logic
+        let currentUploadKey = null;
+
+        function triggerUpload(key) {
+            currentUploadKey = key;
+            document.getElementById('global-file-input').click();
+        }
+
+        async function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file || !currentUploadKey) return;
+
+            // Reset input so same file can be selected again if needed
+            input.value = '';
+
+            const fileName = `img_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+            // Note: Not preserving extension for simplicity, browser handles it or we could parse. 
+            // Supabase storage handles types well. Let's use simple alphanumeric name.
+
+            // Upload
+            const { data, error } = await sbClient.storage
+                .from('retro_assets')
+                .upload(fileName, file);
+
+            if (error) {
+                alert('업로드 실패: ' + error.message);
+                return;
+            }
+
+            // Get Public URL
+            const { data: publicUrlData } = sbClient.storage
+                .from('retro_assets')
+                .getPublicUrl(fileName);
+
+            const newUrl = publicUrlData.publicUrl;
+
+            // Update Asset Table
+            const { error: dbError } = await sbClient
+                .from('site_assets')
+                .update({ value: newUrl })
+                .eq('key', currentUploadKey);
+
+            if (dbError) {
+                alert('DB 업데이트 실패 (이미지는 업로드됨): ' + dbError.message);
+            } else {
+                alert('이미지가 변경되었습니다!');
+                loadSiteAssets(); // Refresh UI
+            }
+        }
+
+    </script>
+</body>
+
+</html>
