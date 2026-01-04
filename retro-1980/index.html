@@ -66,8 +66,10 @@
         }
 
         .section-content,
-        .section-content-90s {
+        .section-content-90s,
+        .section-content-00s {
             animation: fadeIn 0.5s ease-in-out;
+            width: 100%;
         }
 
         @keyframes fadeIn {
@@ -88,7 +90,7 @@
         }
 
         .era-active {
-            display: block;
+            display: block !important;
         }
 
         .era-btn-active {
@@ -190,6 +192,62 @@
 
         .animate-fade-in {
             animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* 2000s Era Styles */
+        .theme-00s .nav-btn.tab-active {
+            border-bottom-color: #ff6b00;
+            color: #ff6b00;
+        }
+
+        .theme-00s header {
+            background-color: #ffffff !important;
+            border-bottom-color: #e5e7eb !important;
+            color: #333 !important;
+        }
+
+        .theme-00s header h1,
+        .theme-00s header p {
+            /* Handled by JS mostly, but ensure visibility */
+            color: #1a1a1a;
+        }
+
+        .theme-00s body {
+            background-color: #f0f2f5;
+        }
+
+        /* Cyworld & 2000s specific components */
+        /* Chart Container Styles */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* Cyworld-esque Dotori Animation */
+        .dotori-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(255, 107, 0, 0.3);
+        }
+
+        .retro-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .retro-card:hover {
+            border-color: #ff6b00;
         }
     </style>
 
@@ -211,6 +269,8 @@
                         class="px-4 py-2 border-2 border-[#5d5147] rounded-md font-bold transition-all era-btn-active">1980s</button>
                     <button onclick="switchEra('90s')" id="era-btn-90s"
                         class="px-4 py-2 border-2 border-[#5d5147] rounded-md font-bold transition-all bg-[#e6dec3] text-[#4a4036]">1990s</button>
+                    <button onclick="switchEra('00s')" id="era-btn-00s"
+                        class="px-4 py-2 border-2 border-[#5d5147] rounded-md font-bold transition-all bg-[#e6dec3] text-[#4a4036]">2000s</button>
                 </div>
                 <!-- Tags (Static for now) -->
                 <div class="flex space-x-4 text-sm font-bold" id="tag-container">
@@ -297,7 +357,7 @@
     </script>
 
     <!-- Content Container -->
-    <main class="flex-grow container mx-auto p-4 md:p-8 space-y-8">
+    <main class="flex-grow container mx-auto max-w-7xl p-4 md:p-8 space-y-8">
 
         <!-- 1980s ERA CONTAINER -->
         <div id="era-80s" class="era-container era-active">
@@ -764,6 +824,9 @@
             </section>
         </div>
 
+
+
+
         <!-- ==========================================
              1990s ERA CONTAINER (Initially Hidden)
         =========================================== -->
@@ -1036,6 +1099,148 @@
                 </div>
             </section>
         </div>
+
+        <!-- ==========================================
+            2000s ERA CONTAINER (Static Content)
+    =========================================== -->
+        <div id="era-00s" class="era-container">
+            <!-- 2000s Navigation -->
+            <nav id="nav-00s"
+                class="bg-white p-4 mb-6 rounded-lg flex justify-center gap-6 flex-wrap border-b border-gray-200 shadow-sm">
+                <button
+                    class="nav-btn-00s px-4 py-2 font-bold text-[#ff6b00] border-b-2 border-[#ff6b00] transition-colors"
+                    onclick="switchTab00s('home')" id="tab00s-home">홈 (Home)</button>
+                <button
+                    class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
+                    onclick="switchTab00s('music')" id="tab00s-music">대중음악 (Music)</button>
+                <button
+                    class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
+                    onclick="switchTab00s('tech')" id="tab00s-tech">기술 & 인터넷 (Tech)</button>
+                <button
+                    class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
+                    onclick="switchTab00s('society')" id="tab00s-society">사회 & 이슈 (Society)</button>
+            </nav>
+
+            <!-- 2000s Home -->
+            <section id="home-00s" class="section-content-00s w-full animate-fade-in">
+                <section class="mb-12 text-center mt-8">
+                    <h2 class="text-3xl md:text-4xl font-black text-gray-900 mb-6 tracking-tight">
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-600">REPLY
+                            2000s</span>
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        아날로그와 디지털이 공존했던 격변의 시기. 싸이월드로 소통하고, 2002년의 붉은 함성을 기억하는 당신을 위한 공간입니다.
+                    </p>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="retro-card p-6 flex flex-col items-center text-center dotori-hover cursor-default bg-white border border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">⚽</div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">2002 월드컵</h3>
+                        <p class="text-sm text-gray-500">전국민을 붉은 악마로 만든 역사적 순간</p>
+                    </div>
+                    <div
+                        class="retro-card p-6 flex flex-col items-center text-center dotori-hover cursor-default bg-white border border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">🐿️</div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">싸이월드 감성</h3>
+                        <p class="text-sm text-gray-500">도토리, 일촌, 그리고 감성 글귀</p>
+                    </div>
+                    <div
+                        class="retro-card p-6 flex flex-col items-center text-center dotori-hover cursor-default bg-white border border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">🎧</div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">MP3의 시대</h3>
+                        <p class="text-sm text-gray-500">소리바다, 아이리버, 벅스뮤직</p>
+                    </div>
+                    <div
+                        class="retro-card p-6 flex flex-col items-center text-center dotori-hover cursor-default bg-white border border-gray-200 rounded-lg">
+                        <div class="text-4xl mb-4">👖</div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">패션의 암흑기?</h3>
+                        <p class="text-sm text-gray-500">샤기컷, 카고바지, 그리고 울프컷</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2000s Music -->
+            <section id="music-00s" class="section-content-00s hidden w-full animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4">🎵 음악 산업의 대격변</h2>
+                            <div class="chart-container relative h-[300px] w-full">
+                                <canvas id="musicChart00s"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <div class="bg-blue-500 rounded-3xl p-6 text-white shadow-xl sticky top-24">
+                            <div class="text-center mb-4 font-bold">MP3 PLAYER</div>
+                            <div class="bg-blue-200 h-32 rounded flex items-center justify-center text-blue-900 mb-4">
+                                Playing: Y (Please Tell Me Why)
+                            </div>
+                            <div class="space-y-2">
+                                <div class="bg-blue-600 p-2 rounded text-sm">1. 소녀시대 - Gee</div>
+                                <div class="bg-blue-600 p-2 rounded text-sm">2. 빅뱅 - 거짓말</div>
+                                <div class="bg-blue-600 p-2 rounded text-sm">3. 원더걸스 - Tell Me</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2000s Tech -->
+            <section id="tech-00s" class="section-content-00s hidden w-full animate-fade-in">
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-orange-600 mb-4">싸이월드 가입자 추이 (백만)</h3>
+                        <div class="chart-container relative h-[300px] w-full">
+                            <canvas id="techChart00s"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center bg-gray-100 rounded-xl p-4">
+                        <img src="images/cyworld_minihompy_mockup.png" class="max-w-full shadow-lg rounded"
+                            alt="Cyworld Mockup"
+                            onerror="this.src='https://via.placeholder.com/400x300?text=Cyworld+Mockup'">
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Tech Gallery</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="images/retro_mp3_player_2000s.png" class="rounded shadow-md w-full h-48 object-cover"
+                            onerror="this.src='https://via.placeholder.com/300x200?text=MP3+Player'">
+                        <div class="bg-white p-4 rounded shadow-md flex items-center justify-center">
+                            <p class="text-center text-gray-600">가로본능, 스카이, 그리고 아이리버...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2000s Society -->
+            <section id="society-00s" class="section-content-00s hidden w-full animate-fade-in">
+                <div class="mt-8 text-center">
+                    <h2 class="text-3xl font-bold text-red-700 mb-6">🇰🇷 2002 월드컵의 함성</h2>
+                    <div
+                        class="bg-red-50 rounded-2xl p-8 border border-red-100 mb-12 flex flex-col md:flex-row gap-8 items-center">
+                        <div class="w-full md:w-1/2 chart-container relative h-[300px]">
+                            <canvas id="societyChart00s"></canvas>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <img src="images/worldcup_2002_red_devils.png"
+                                class="rounded-lg shadow-xl w-full h-auto mb-4"
+                                onerror="this.src='https://via.placeholder.com/400x300?text=World+Cup+2002'">
+                            <p class="text-sm text-gray-600">시청 앞 광장을 가득 메운 붉은 악마들</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">그 시절 패션 (Shaggy Cut)</h3>
+                        <img src="images/korean_fashion_2000s_shaggy_cut.png"
+                            class="mx-auto rounded-lg shadow-lg w-full md:w-2/3"
+                            onerror="this.src='https://via.placeholder.com/400x300?text=2000s+Fashion'">
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -1048,7 +1253,12 @@
         // --- Navigation Logic ---
         function navTo(sectionId) {
             // Check current era
-            const currentEra = document.getElementById('era-80s').classList.contains('era-active') ? '80s' : '90s';
+            let currentEra = '80s';
+            if (document.getElementById('era-90s').classList.contains('era-active')) currentEra = '90s';
+            if (document.getElementById('era-00s') && document.getElementById('era-00s').classList.contains('era-active')) currentEra = '00s';
+
+            if (currentEra === '00s') return; // The 00s era uses its own navigation system
+
             const suffix = currentEra === '90s' ? '-90s' : '';
             const targetId = sectionId + suffix;
 
@@ -1073,24 +1283,38 @@
         }
 
         // --- Era Switching Logic ---
+        // --- Era Switching Logic ---
         function switchEra(era) {
             const era80s = document.getElementById('era-80s');
             const era90s = document.getElementById('era-90s');
+            const era00s = document.getElementById('era-00s');
+
             const btn80s = document.getElementById('era-btn-80s');
             const btn90s = document.getElementById('era-btn-90s');
+            const btn00s = document.getElementById('era-btn-00s');
+
             const title = document.getElementById('main-title');
             const subtitle = document.getElementById('main-subtitle');
             const tags = document.getElementById('tag-container');
             const body = document.body;
 
+            // Reset all first
+            [era80s, era90s, era00s].forEach(el => el && el.classList.remove('era-active'));
+            [btn80s, btn90s, btn00s].forEach(btn => {
+                if (btn) {
+                    btn.classList.remove('era-btn-active');
+                    btn.classList.add('bg-[#e6dec3]', 'text-[#4a4036]'); // Default retro style
+                }
+            });
+            body.classList.remove('theme-90s', 'theme-00s');
+
             if (era === '80s') {
                 era80s.classList.add('era-active');
-                era90s.classList.remove('era-active');
-                btn80s.classList.add('era-btn-active');
-                btn80s.classList.remove('bg-[#e6dec3]', 'text-[#4a4036]');
-                btn90s.classList.remove('era-btn-active');
-                btn90s.classList.add('bg-[#e6dec3]', 'text-[#4a4036]');
-                body.classList.remove('theme-90s');
+                if (btn80s) {
+                    btn80s.classList.add('era-btn-active');
+                    btn80s.classList.remove('bg-[#e6dec3]', 'text-[#4a4036]');
+                }
+
                 title.innerText = "응답하라 1980";
                 subtitle.innerText = "국민학교와 중학교 시절의 따뜻한 추억 기록장";
                 tags.innerHTML = `
@@ -1098,15 +1322,17 @@
                     <span class="px-3 py-1 bg-[#1d4ed8] rounded-full">#88올림픽</span>
                     <span class="px-3 py-1 bg-[#15803d] rounded-full">#도시락</span>
                 `;
+                loadDynamicContent();
                 navTo('playground');
-            } else {
-                era80s.classList.remove('era-active');
+
+            } else if (era === '90s') {
                 era90s.classList.add('era-active');
-                btn90s.classList.add('era-btn-active');
-                btn90s.classList.remove('bg-[#e6dec3]', 'text-[#4a4036]');
-                btn80s.classList.remove('era-btn-active');
-                btn80s.classList.add('bg-[#e6dec3]', 'text-[#4a4036]');
+                if (btn90s) {
+                    btn90s.classList.add('era-btn-active');
+                    btn90s.classList.remove('bg-[#e6dec3]', 'text-[#4a4036]');
+                }
                 body.classList.add('theme-90s');
+
                 title.innerText = "응답하라 1990";
                 subtitle.innerText = "X세대와 디지털 문명의 서막, 그 화려했던 기억";
                 tags.innerHTML = `
@@ -1115,8 +1341,115 @@
                     <span class="px-3 py-1 bg-[#6b21a8] rounded-full">#삐삐</span>
                 `;
                 navTo('playground');
+
+            } else if (era === '00s') {
+                era00s.classList.add('era-active');
+                if (btn00s) {
+                    btn00s.classList.add('era-btn-active');
+                    btn00s.classList.remove('bg-[#e6dec3]', 'text-[#4a4036]');
+                }
+                body.classList.add('theme-00s');
+
+                // Hide Legacy Sub-Nav if it exists (assuming it id 'nav-container' or similar, we need to find it)
+                // Based on previous code, the nav items were inside 'dynamic-nav'
+                // Let's hide the container of dynamic-nav to avoid confusion
+                // Hide Legacy Sub-Nav
+                const globalNav = document.getElementById('dynamic-nav')?.closest('nav');
+                if (globalNav) {
+                    globalNav.style.display = 'none';
+                }
+
+                title.innerText = "CYBER 2000";
+                subtitle.innerText = "Archive Project: 그 시절 우리가 좋아했던 대한민국";
+                tags.innerHTML = `
+                    <span class="px-3 py-1 bg-[#ff6b00] rounded-full text-white">#싸이월드</span>
+                    <span class="px-3 py-1 bg-[#be123c] rounded-full text-white">#2002월드컵</span>
+                    <span class="px-3 py-1 bg-[#0ea5e9] rounded-full text-white">#MP3</span>
+                `;
+
+                // Initialize 00s content
+                initCharts00s();
             }
         }
+
+        // --- 00s Era Helper Functions ---
+        function switchTab00s(tabId) {
+            // Hide all 00s sections
+            document.querySelectorAll('.section-content-00s').forEach(el => el.classList.add('hidden'));
+
+            // Show target section
+            const targetId = tabId + '-00s';
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Update Active Tab UI
+            document.querySelectorAll('.nav-btn-00s').forEach(btn => {
+                btn.classList.remove('text-[#ff6b00]', 'border-[#ff6b00]');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            const activeBtn = document.getElementById('tab00s-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-500', 'border-transparent');
+                activeBtn.classList.add('text-[#ff6b00]', 'border-[#ff6b00]');
+            }
+        }
+
+        let chartsInitialized00s = false;
+        function initCharts00s() {
+            if (chartsInitialized00s) return;
+            chartsInitialized00s = true;
+
+            // Wait a moment for visibility to settle
+            setTimeout(() => {
+                // Music Chart
+                try {
+                    const ctxMusic = document.getElementById('musicChart00s').getContext('2d');
+                    new Chart(ctxMusic, {
+                        type: 'line',
+                        data: {
+                            labels: ['2000', '2002', '2004', '2006', '2008', '2010'],
+                            datasets: [
+                                { label: '음반 (Physical)', data: [4100, 2500, 1300, 800, 600, 500], borderColor: '#ef4444', tension: 0.4 },
+                                { label: '디지털 (Digital)', data: [100, 400, 1500, 3000, 5500, 7000], borderColor: '#3b82f6', tension: 0.4 }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } catch (e) { console.error("Music Chart Init Failed", e); }
+
+                // Tech Chart
+                try {
+                    const ctxTech = document.getElementById('techChart00s').getContext('2d');
+                    new Chart(ctxTech, {
+                        type: 'bar',
+                        data: {
+                            labels: ['2001', '2003', '2005', '2007', '2009'],
+                            datasets: [{ label: 'Users (Million)', data: [3, 8, 15, 20, 24], backgroundColor: '#ff6b00' }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } catch (e) { console.error("Tech Chart Init Failed", e); }
+
+                // Society Chart
+                try {
+                    const ctxSociety = document.getElementById('societyChart00s').getContext('2d');
+                    new Chart(ctxSociety, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['폴란드전', '미국전', '포르투갈전', '이탈리아전', '스페인전', '독일전'],
+                            datasets: [{
+                                data: [74.1, 68.3, 71.0, 72.4, 66.2, 69.1],
+                                backgroundColor: ['#fee2e2', '#fecaca', '#fca5a5', '#f87171', '#ef4444', '#b91c1c']
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } catch (e) { console.error("Society Chart Init Failed", e); }
+            }, 100);
+        }
+
 
         // --- Archive Data for 90s ---
         const archiveData = {
@@ -1299,10 +1632,11 @@
                 slider.addEventListener('input', (e) => {
                     updateArchive(e.target.value);
                 });
-                Archive(slider.value);
+                updateArchive(slider.value);
             }
         };
     </script>
 </body>
 
 </html>
+```
