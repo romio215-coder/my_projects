@@ -1283,7 +1283,6 @@
         }
 
         // --- Era Switching Logic ---
-        // --- Era Switching Logic ---
         function switchEra(era) {
             const era80s = document.getElementById('era-80s');
             const era90s = document.getElementById('era-90s');
@@ -1350,9 +1349,6 @@
                 }
                 body.classList.add('theme-00s');
 
-                // Hide Legacy Sub-Nav if it exists (assuming it id 'nav-container' or similar, we need to find it)
-                // Based on previous code, the nav items were inside 'dynamic-nav'
-                // Let's hide the container of dynamic-nav to avoid confusion
                 // Hide Legacy Sub-Nav
                 const globalNav = document.getElementById('dynamic-nav')?.closest('nav');
                 if (globalNav) {
@@ -1449,7 +1445,6 @@
                 } catch (e) { console.error("Society Chart Init Failed", e); }
             }, 100);
         }
-
 
         // --- Archive Data for 90s ---
         const archiveData = {
