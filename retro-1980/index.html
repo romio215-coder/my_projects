@@ -251,6 +251,7 @@
         }
     </style>
 
+
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -285,8 +286,7 @@
     <!-- Main Navigation -->
     <nav class="bg-[#e6dec3] sticky top-0 z-50 shadow-sm border-b border-[#d6ceb2]">
         <div class="container mx-auto">
-            <ul id="dynamic-nav"
-                class="flex overflow-x-auto justify-start md:justify-center text-nowrap scrollbar-hide">
+            <ul id="dynamic-nav" class="flex flex-wrap justify-center gap-2 py-2">
                 <!-- Items will be loaded by JS -->
             </ul>
         </div>
@@ -340,10 +340,60 @@
                     li.className = 'flex-shrink-0';
                     li.innerHTML = `
                         <button onclick="navTo('${item.action_id}')" id="btn-${item.action_id}"
-                            class="nav-btn px-6 py-4 hover:bg-[#d6ceb2] transition-colors focus:outline-none">
+                            class="nav-btn px-3 py-2 md:px-4 md:py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors focus:outline-none rounded">
                             ${item.label}
                         </button>
                     `;
+                    navUl.appendChild(li);
+                });
+
+                // [NEW] Append 80s extra menu items
+                // Only if looking at 80s menu? 
+                // Since this logic runs on load, we add them. 
+                // They might be visible for 90s if not handled, but 90s has no target for these, so clicking does nothing/hides all.
+                // We accept this for now as per "Add 80s content" priority.
+                const extraMenu80s = [
+                    { id: 'media', label: '📺 미디어' },
+                    { id: 'reunion', label: '😢 이산가족' },
+                    { id: 'culture-noir', label: '🕶️ 홍콩느와르' },
+                    { id: 'culture-sound', label: '📻 음악/롤러' },
+                    { id: 'culture-visual', label: '📚 만화/극장' },
+                    { id: 'fashion', label: '👖 패션' },
+                    { id: 'arcade', label: '🕹️ 오락실' },
+                    { id: 'street', label: '🚐 거리풍경' }
+                ];
+
+                extraMenu80s.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex-shrink-0 menu-80s-only';
+                    li.innerHTML = `
+                        <button onclick="navTo('${item.id}')" id="btn-${item.id}"
+                            class="nav-btn px-6 py-4 hover:bg-[#d6ceb2] transition-colors focus:outline-none">
+                            ${item.label}
+                        </button>
+                     `;
+                    navUl.appendChild(li);
+                });
+
+                // [NEW] Append 90s extra menu items
+                const extraMenu90s = [
+                    { id: 'basketball', label: '🏀 농구대잔치' },
+                    { id: 'sitcom', label: '📺 시트콤' },
+                    { id: 'society', label: '📰 사회/이슈' },
+                    { id: 'hobbies', label: '👾 다마고치/매직아이' },
+                    { id: 'indie', label: '🎸 인디밴드' }
+                ];
+
+                extraMenu90s.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex-shrink-0 menu-90s-only';
+                    li.style.display = 'none'; // Initially hidden
+                    li.innerHTML = `
+                        <button onclick="navTo('${item.id}')" id="btn-${item.id}"
+                            class="nav-btn px-6 py-4 hover:bg-[#d6ceb2] transition-colors focus:outline-none">
+                            ${item.label}
+                        </button>
+                     `;
                     navUl.appendChild(li);
                 });
 
@@ -822,11 +872,248 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Section 6: Media (Color TV) -->
+            <section id="media" class="section-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-[#d6ceb2]">
+                    <h3 class="text-2xl font-bold text-[#b91c1c] mb-4">📺 1980년, 색(色)의 혁명</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <img src="images/retro_80s_color_tv_launch.png"
+                                class="rounded shadow-lg mb-4 w-full h-64 object-cover" alt="Color TV Launch">
+                            <p class="text-xs text-gray-500 text-center">1980년 12월 1일, 흑백의 세상이 천연색으로 바뀌던 순간</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded border-l-4 border-[#b91c1c]">
+                                <h4 class="font-bold text-lg mb-2">총천연색의 충격</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">
+                                    "화면조정 시간이 끝나고 컬러 화면이 켜지던 순간의 전율을 기억하시나요?"<br>
+                                    제17회 '수출의 날' 기념식을 시작으로 대한민국은 화려한 컬러 TV 시대로 진입했습니다. 쇼 프로그램의 의상은 원색으로 물들었고, 광고 시장은
+                                    폭발적으로 성장했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: Reunion (Family Search) -->
+            <section id="reunion" class="section-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-[#d6ceb2]">
+                    <h3 class="text-2xl font-bold text-[#15803d] mb-4">😢 이산가족 찾기: 138일의 눈물</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-4 order-2 md:order-1">
+                            <p class="text-gray-700 text-sm leading-relaxed">
+                                <span class="font-bold text-xl block mb-2">"누가 이 사람을 아시나요"</span>
+                                1983년 6월 30일 시작된 KBS 특별 생방송. 여의도 광장은 가족을 찾는 벽보로 뒤덮였고, 전 국민은 TV 앞에서 함께 울었습니다.
+                                5만 건의 사연, 1만 가족의 상봉. 그것은 단순한 방송이 아니라 시대의 아픔을 치유하는 거대한 굿판이었습니다.
+                            </p>
+                            <div class="bg-yellow-50 p-3 rounded text-xs text-gray-600">
+                                * 2015년 유네스코 세계기록유산 등재
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2">
+                            <img src="images/retro_80s_family_reunion.png"
+                                class="rounded shadow-lg mb-4 w-full h-64 object-cover" alt="Family Reunion">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Hong Kong Noir -->
+            <section id="culture-noir" class="section-content hidden">
+                <div class="bg-black text-gray-300 rounded-lg shadow-lg p-6 md:p-8 border border-gray-700">
+                    <h3 class="text-2xl font-bold text-yellow-500 mb-6">🕶️ 영웅본색과 바바리코트</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <img src="images/retro_80s_hong_kong_noir.png"
+                                class="rounded shadow-lg w-full h-80 object-cover opacity-90 hover:opacity-100 transition"
+                                alt="Hong Kong Noir">
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">"강호의 의리는 땅에 떨어졌나"</h4>
+                                <p class="text-sm leading-relaxed">
+                                    성냥개비, 선글라스, 그리고 휘날리는 바바리코트. 홍콩 누아르는 억압된 시대 남성들의 로망이자 탈출구였습니다. 주윤발의 성냥개를 따라 씹으며
+                                    '당년정'을 흥얼거리지 않은 청춘이 있었을까요?
+                                </p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div class="bg-gray-800 p-2 rounded">
+                                    <div class="text-yellow-500 font-bold">영웅본색</div>
+                                    <div class="text-xs">1986</div>
+                                </div>
+                                <div class="bg-gray-800 p-2 rounded">
+                                    <div class="text-yellow-500 font-bold">천녀유혼</div>
+                                    <div class="text-xs">1987</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 9: Sound (Radio & Roller) -->
+            <section id="culture-sound" class="section-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Radio -->
+                    <div class="bg-[#fdfbf7] rounded-lg shadow p-6 border border-[#d6ceb2]">
+                        <h3 class="text-xl font-bold text-[#8c7b6c] mb-4">📻 별이 빛나는 밤에</h3>
+                        <img src="images/retro_80s_radio_dj.png" class="rounded w-full h-48 object-cover mb-4"
+                            alt="Radio DJ">
+                        <p class="text-sm text-gray-700 mb-2">
+                            "밤의 교육부 장관" 이문세와 함께했던 심야의 위로. 엽서에 꾹꾹 눌러 쓴 사연들이 전파를 타고 전국으로 퍼져나갔습니다.
+                        </p>
+                        <div class="text-xs text-gray-500 bg-white p-2 rounded border">
+                            ♫ 시그널 음악이 흐르면 독서실 책상을 정리하던 기억
+                        </div>
+                    </div>
+                    <!-- Roller Rink -->
+                    <div
+                        class="bg-gradient-to-br from-purple-900 to-blue-900 text-white rounded-lg shadow p-6 border border-purple-500">
+                        <h3 class="text-xl font-bold text-pink-400 mb-4">⛸️ 롤라장의 디스코</h3>
+                        <img src="images/retro_80s_roller_rink.png" class="rounded w-full h-48 object-cover mb-4"
+                            alt="Roller Rink">
+                        <p class="text-sm text-purple-100 mb-2">
+                            London Boys의 'Harlem Desire'가 흘러나오면 모두가 트랙을 돌며 떼창을 했습니다. DJ의 느끼한 멘트와 화려한 조명 아래서 우리는 모두
+                            댄싱킹이었습니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 10: Visual (Manhwa & Cinema) -->
+            <section id="culture-visual" class="section-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-[#d6ceb2]">
+                    <h3 class="text-2xl font-bold text-[#b91c1c] mb-6">🎨 골목의 갤러리: 만화방과 극장 간판</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Cinema -->
+                        <div>
+                            <img src="images/retro_80s_cinema_sign.png"
+                                class="rounded shadow mb-4 w-full h-56 object-cover" alt="Cinema Sign">
+                            <h4 class="font-bold text-lg mb-2">손으로 그린 극장 간판</h4>
+                            <p class="text-sm text-gray-600">
+                                디지털 포스터가 없던 시절, 극장 전속 화가들이 페인트로 그려낸 거대한 그림들. 가끔 주인공 얼굴이 미묘하게 다르기도 했지만, 그것마저 정겨웠던 거리의
+                                예술이었습니다.
+                            </p>
+                        </div>
+                        <!-- Manhwa -->
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                            <h4 class="font-bold text-lg mb-2">공포의 외인구단</h4>
+                            <div class="flex gap-4">
+                                <div class="text-4xl">⚾</div>
+                                <div class="text-sm text-gray-700">
+                                    <p class="mb-2 italic font-bold">"난 네가 좋아하는 일이라면 뭐든지 할 수 있어"</p>
+                                    <p>까치와 엄지, 그리고 마동탁. 이현세 화백의 만화는 단순한 오락을 넘어 시대의 아이콘이 되었습니다. 수업 시간에 몰래 보던 만화책의 전율!</p>
+                                </div>
+                            </div>
+                            <hr class="my-4 border-gray-300">
+                            <h4 class="font-bold text-lg mb-2">어린이의 영웅, 우뢰매</h4>
+                            <p class="text-sm text-gray-600">심형래 주연의 에스퍼맨. 데일리와 함께 지구를 지키던 그 모습에 열광하며 책받침을 모았습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 11: Fashion -->
+            <section id="fashion" class="section-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-blue-300">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-full md:w-1/2">
+                            <img src="images/retro_80s_fashion_denim.png" class="rounded shadow-lg w-full h-auto"
+                                alt="80s Fashion">
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <h3 class="text-2xl font-bold text-blue-800 mb-4">👖 청청패션과 죠다쉬</h3>
+                            <p class="text-lg mb-4 font-bold text-gray-800">"멋쟁이는 브랜드를 입는다"</p>
+                            <ul class="space-y-3 text-sm text-gray-700">
+                                <li class="flex items-center">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                    <strong>Jordache (죠다쉬):</strong> 말 머리 로고가 박힌 엉덩이는 부의 상징이었습니다.
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                    <strong>청청패션:</strong> 위아래 데님 매치. 당시엔 최첨단 유행, 지금은 레트로 힙.
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                    <strong>디스코 바지:</strong> 발목으로 갈수록 좁아지는 핏, 나팔바지의 퇴장.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 12: Arcade -->
+            <section id="arcade" class="section-content hidden">
+                <div
+                    class="bg-[#1a1a1a] text-green-400 rounded-lg shadow-lg p-6 md:p-8 border-4 border-green-700 font-mono">
+                    <h3 class="text-2xl font-bold mb-6 text-center animate-pulse">INSERT COIN [50 WON]</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <img src="images/retro_80s_arcade_cabinet.png"
+                                class="rounded border-2 border-green-600 shadow-lg w-full h-64 object-cover"
+                                alt="Arcade">
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-gray-900 p-4 rounded border border-green-800">
+                                <h4 class="font-bold text-lg mb-2 text-white">지능계발의 산실?</h4>
+                                <p class="text-sm text-gray-400">
+                                    어두컴컴한 조명, 자욱한 담배 연기, 그리고 갤러그와 제비우스의 전자음. 엄마한테 들키면 등짝 스매싱을 맞았지만, 그곳은 우리들의 파라다이스였습니다.
+                                </p>
+                            </div>
+                            <ul class="grid grid-cols-2 gap-2 text-xs text-center">
+                                <li class="bg-green-900 text-green-100 p-2 rounded">갤러그 (Galaga)</li>
+                                <li class="bg-green-900 text-green-100 p-2 rounded">보글보글 (Bubble Bobble)</li>
+                                <li class="bg-green-900 text-green-100 p-2 rounded">팩맨 (Pac-Man)</li>
+                                <li class="bg-green-900 text-green-100 p-2 rounded">제비우스 (Xevious)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 13: Street -->
+            <section id="street" class="section-content hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-[#d6ceb2]">
+                    <h3 class="text-2xl font-bold text-[#b91c1c] mb-6">🚐 그 시절 골목의 기억</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md">
+                            <img src="images/retro_80s_disinfection_truck.png"
+                                class="w-full h-full object-cover transition transform group-hover:scale-105"
+                                alt="Disinfection Truck">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70">
+                            </div>
+                            <div class="absolute bottom-4 left-4 text-white">
+                                <h4 class="font-bold text-xl">방구차 (소독차)</h4>
+                                <p class="text-sm opacity-90">하얀 연기 속을 달리는 아이들의 함성</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center space-y-6">
+                            <div class="bg-gray-100 p-4 rounded border-l-4 border-gray-500">
+                                <h4 class="font-bold text-gray-800 mb-2">반공 소년 이승복 동상</h4>
+                                <p class="text-sm text-gray-600">
+                                    "나는 공산당이 싫어요" 학교마다 서 있던 동상. 밤 12시가 되면 움직인다는 괴담에 떨던 밤들을 기억하시나요?
+                                </p>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded border-l-4 border-blue-500">
+                                <h4 class="font-bold text-gray-800 mb-2">국기 하강식</h4>
+                                <p class="text-sm text-gray-600">
+                                    오후 6시(겨울 5시), 애국가가 울려 퍼지면 가던 길을 멈추고 국기를 향해 경례를 해야 했던 시절.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
 
-
-
+        <!-- ==========================================
+             1990s ERA CONTAINER (Initially Hidden)
+        =========================================== -->
         <!-- ==========================================
              1990s ERA CONTAINER (Initially Hidden)
         =========================================== -->
@@ -1098,6 +1385,169 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Section 6: Basketball Fever (New) -->
+            <section id="basketball-90s" class="section-content-90s hidden">
+                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border-l-8 border-red-600 animate-fade-in">
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-basketball-ball text-3xl text-red-600 mr-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800">코트 위의 아이돌, 농구대잔치</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="rounded-xl overflow-hidden shadow-2xl transform -rotate-1 border-4 border-gray-100">
+                            <img src="images/retro_90s_basketball_match_1767694245685.png"
+                                alt="University Basketball Match" class="w-full h-auto">
+                            <div class="p-2 bg-gray-900 text-white text-center font-bold text-sm">연세대 vs 고려대: 숙명의 라이벌
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded border border-gray-200">
+                                <h4 class="font-bold text-lg text-blue-900 mb-2">🦅 신촌 독수리 (연세대)</h4>
+                                <p class="text-sm text-gray-600 mb-2">세련된 플레이와 아이돌급 외모로 소녀팬들을 사로잡은 '오빠부대'의 원조.</p>
+                                <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <li><strong>이상민:</strong> 컴퓨터 가드, 영원한 오빠</li>
+                                    <li><strong>우지원:</strong> 코트의 황태자</li>
+                                    <li><strong>문경은:</strong> 람보 슈터</li>
+                                    <li><strong>서장훈:</strong> 국보급 센터</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded border border-red-200">
+                                <h4 class="font-bold text-lg text-red-900 mb-2">🐯 안암골 호랑이 (고려대)</h4>
+                                <p class="text-sm text-gray-600 mb-2">끈끈한 조직력과 파워풀한 플레이. 연세대의 독주를 막아선 강력한 라이벌.</p>
+                                <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <li><strong>전희철:</strong> 에어본! 고공 덩크</li>
+                                    <li><strong>현주엽:</strong> 매직 히포, 포인트 포워드</li>
+                                    <li><strong>김병철:</strong> 피터팬, 폭발적 득점력</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: Sitcom Era (New) -->
+            <section id="sitcom-90s" class="section-content-90s hidden">
+                <div class="bg-yellow-50 rounded-lg shadow-lg p-6 md:p-8 border-t-8 border-yellow-400 animate-fade-in">
+                    <div class="md:flex gap-8 items-center">
+                        <div class="md:w-1/2 mb-6 md:mb-0">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">📺 시트콤 전성시대: 청춘과 가족</h3>
+                            <p class="text-gray-700 leading-relaxed mb-4">
+                                일상의 소소한 웃음을 담아낸 시트콤이 90년대 안방극장을 점령했습니다.
+                                대학생들의 로망을 자극한 <span class="text-blue-600 font-bold">남자 셋 여자 셋</span>,
+                                IMF 시대를 위로한 <span class="text-orange-600 font-bold">순풍 산부인과</span>까지.
+                            </p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-yellow-200">
+                                <h4 class="font-bold text-gray-800 mb-2">📌 최고의 유행어들</h4>
+                                <ul class="space-y-1 text-sm text-gray-600">
+                                    <li>"용녀 용녀~" (순풍 산부인과 오지명)</li>
+                                    <li>"장인어른, 왜 이러세요~" (순풍 산부인과 박영규)</li>
+                                    <li>"그건 뭥미?" (남자 셋 여자 셋 신동엽)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <img src="images/retro_90s_sitcom_scene_1767694261199.png" alt="90s Sitcom Scene"
+                                class="w-full rounded-lg shadow-md border-2 border-white transform rotate-2">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Society & Fashion Issues (New) -->
+            <section id="society-90s" class="section-content-90s hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+                    <!-- Shin Chang-won -->
+                    <div class="bg-gray-800 text-gray-200 p-6 rounded-lg shadow-xl border-2 border-gray-600">
+                        <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">🚨 블레임 룩(Blame Look)
+                            현상</h3>
+                        <div class="flex gap-4 mb-4">
+                            <img src="images/retro_90s_blame_look_knit_1767694280512.png" alt="Colorful Knit"
+                                class="w-1/3 object-cover rounded shadow-lg border border-gray-500">
+                            <div class="text-sm leading-relaxed">
+                                <span class="text-yellow-400 font-bold">신창원 신드롬</span><br>
+                                희대의 탈옥수 신창원이 검거될 당시 입었던 화려한 <span class="text-purple-400">미쏘니 스타일 니트</span>는 사회적 비난에도
+                                불구하고, 오히려 젊은 층 사이에서 폭발적인 유행을 끌었습니다. 이는 도덕과 취향이 분리되기 시작한 90년대의 독특한 사회 현상이었습니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indie Bands -->
+                    <div class="bg-black text-green-500 p-6 rounded-lg shadow-xl border-2 border-green-800 font-mono">
+                        <h3 class="text-xl font-bold text-green-400 mb-4 border-b border-green-900 pb-2">🎸 인디 밴드의 태동:
+                            홍대 앞 지하</h3>
+                        <div class="mb-4">
+                            <img src="images/retro_90s_indie_club_drug_1767694298161.png" alt="Club Drug"
+                                class="w-full h-40 object-cover rounded mb-2 opacity-80 hover:opacity-100 transition">
+                            <p class="text-xs text-green-700">Live Club Drug (1996)</p>
+                        </div>
+                        <p class="text-sm mb-4">
+                            "닥치고 내 말 들어! 말 달리자!"<br>
+                            주류 미디어의 아이돌 음악에 반기를 든 청춘들의 해방구. <span class="font-bold text-white">크라잉넛</span>, <span
+                                class="font-bold text-white">노브레인</span> 등이 등장하며 한국적 펑크 록(Punk Rock)이 폭발했습니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8b: Indie Band Detailed (New - for specific menu) -->
+            <section id="indie-90s" class="section-content-90s hidden">
+                <div
+                    class="bg-black text-green-500 p-8 rounded-lg shadow-xl border-4 border-purple-900 font-mono relative overflow-hidden animate-fade-in">
+                    <div
+                        class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] opacity-30">
+                    </div>
+                    <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                        <div class="md:w-1/2">
+                            <h3 class="text-3xl font-black text-white mb-2 uppercase italic transform -skew-x-12">Punk
+                                Rock Spirit!</h3>
+                            <h4 class="text-xl font-bold text-purple-400 mb-6">홍대 앞 지하의 외침, 조선 펑크</h4>
+
+                            <div class="space-y-4 text-gray-300 text-sm">
+                                <p><span class="text-green-400 font-bold">클럽 드럭(Drug):</span> 기성 가요계에 질린 청춘들이 모여들던 성지.
+                                    슬램(Slam)과 다이빙이 허용된 유일한 해방구.</p>
+                                <p><span class="text-green-400 font-bold">크라잉넛 '말달리자':</span> 1998년, 지친 청춘들에게 "닥치고 달리라"고
+                                    소리친 이 노래는 그 시절의 국가(Anthem)였습니다.</p>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <img src="images/retro_90s_indie_club_drug_1767694298161.png" alt="Indie Band Performance"
+                                class="w-full rounded-lg shadow-lg border-2 border-gray-700">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 9: Hobbies (Tamagotchi, Magic Eye) -->
+            <section id="hobbies-90s" class="section-content-90s hidden">
+                <div
+                    class="bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg shadow-lg p-6 md:p-8 border border-teal-200 animate-fade-in">
+                    <h3 class="text-2xl font-bold text-teal-800 mb-6 text-center">🤖 아날로그와 디지털 사이: 추억의 취미</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <img src="images/retro_90s_tamagotchi_magiceye_1767694316286.png" alt="90s Hobbies"
+                                class="w-full rounded-lg shadow-md mb-4">
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-white p-4 rounded shadow-sm border-l-4 border-yellow-400">
+                                <h4 class="font-bold text-gray-800 mb-1">🐣 밥 줘! 똥 치워줘! 다마고치</h4>
+                                <p class="text-sm text-gray-600">
+                                    내 주머니 속의 작은 생명. 수업 시간에도 몰래 밥을 주다 뺏기기 일쑤였죠.
+                                    생명 경시 풍조라며 뉴스에 나올 만큼 전국적인 열풍이었습니다.
+                                </p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded shadow-sm border-l-4 border-purple-400">
+                                <h4 class="font-bold text-gray-800 mb-1">👀 매직아이 (Stereogram)</h4>
+                                <p class="text-sm text-gray-600">
+                                    "눈을 가운데로 모아서 흐릿하게 봐봐!"<br>
+                                    어지러운 패턴 속에 숨겨진 3D 입체 그림을 찾기 위해 모두가 눈싸움을 했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- ==========================================
@@ -1307,6 +1757,10 @@
             });
             body.classList.remove('theme-90s', 'theme-00s');
 
+            // Restore Main Nav (hidden in 00s)
+            const globalNav = document.getElementById('dynamic-nav')?.closest('nav');
+            if (globalNav) globalNav.style.display = '';
+
             if (era === '80s') {
                 era80s.classList.add('era-active');
                 if (btn80s) {
@@ -1322,6 +1776,9 @@
                     <span class="px-3 py-1 bg-[#15803d] rounded-full">#도시락</span>
                 `;
                 loadDynamicContent();
+                // Show 80s menu, Hide 90s menu
+                document.querySelectorAll('.menu-80s-only').forEach(el => el.style.display = '');
+                document.querySelectorAll('.menu-90s-only').forEach(el => el.style.display = 'none');
                 navTo('playground');
 
             } else if (era === '90s') {
@@ -1339,6 +1796,10 @@
                     <span class="px-3 py-1 bg-[#3b82f6] rounded-full">#X세대</span>
                     <span class="px-3 py-1 bg-[#6b21a8] rounded-full">#삐삐</span>
                 `;
+                // Hide 80s menu, Show 90s menu
+                document.querySelectorAll('.menu-80s-only').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.menu-90s-only').forEach(el => el.style.display = '');
+
                 navTo('playground');
 
             } else if (era === '00s') {
