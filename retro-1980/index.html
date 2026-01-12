@@ -354,6 +354,7 @@
                 // We accept this for now as per "Add 80s content" priority.
                 const extraMenu80s = [
                     { id: 'media', label: '📺 미디어' },
+                    { id: 'eating', label: '🍴 졸업식 외식' },
                     { id: 'reunion', label: '😢 이산가족' },
                     { id: 'culture-noir', label: '🕶️ 홍콩느와르' },
                     { id: 'culture-sound', label: '📻 음악/롤러' },
@@ -378,6 +379,7 @@
                 // [NEW] Append 90s extra menu items
                 const extraMenu90s = [
                     { id: 'basketball', label: '🏀 농구대잔치' },
+                    { id: 'trends', label: '🔥 유행과 수집' },
                     { id: 'sitcom', label: '📺 시트콤' },
                     { id: 'society', label: '📰 사회/이슈' },
                     { id: 'hobbies', label: '👾 다마고치/매직아이' },
@@ -1108,6 +1110,42 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Section 14: Eating Out (Tonkatsu) -->
+            <section id="eating" class="section-content hidden">
+                <div class="bg-[#fff7ed] rounded-lg shadow-lg p-6 md:p-8 border border-orange-200">
+                    <h3 class="text-2xl font-bold text-orange-800 mb-6">🍴 특별한 날의 외식, 경양식 돈까스</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <img src="images/retro_80s_pork_cutlet.png"
+                                class="rounded-lg shadow-xl w-full h-auto border-4 border-white transform rotate-1"
+                                alt="Kyungyangsik Tonkatsu">
+                            <p class="text-center text-sm text-gray-500 mt-2 font-serif">"수프 먼저 드릴까요?"</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded border-l-4 border-orange-400 shadow-sm">
+                                <h4 class="font-bold text-lg mb-2">졸업식 날의 국룰</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    달짝지근한 브라운 소스가 듬뿍 뿌려진 얇고 넓은 고기.
+                                    접시에 얇게 펴 나온 밥과 마카로니 샐러드.
+                                    나이프와 포크를 서툴게 잡으며 느꼈던 그 날의 설렘을 기억하시나요?
+                                </p>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li class="flex items-center">
+                                    <span class="text-orange-500 mr-2">✓</span> 크림 수프에 후추 톡톡
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-orange-500 mr-2">✓</span> "빵으로 하시겠습니까, 밥으로 하시겠습니까?"
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-orange-500 mr-2">✓</span> 후식은 설탕 탄 커피나 콜라
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
 
@@ -1548,6 +1586,59 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Section 10: Trends (Sticker Photo & Bread) -->
+            <section id="trends-90s" class="section-content-90s hidden">
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-purple-50 rounded-lg shadow-lg p-6 md:p-8 border border-pink-200 animate-fade-in">
+                    <h3 class="text-2xl font-bold text-pink-600 mb-8 text-center decoration-wavy underline">✨ 세기말 우리의
+                        수집과 기록</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <!-- Sticker Photo -->
+                        <div class="bg-white p-4 rounded-xl shadow-md border-b-4 border-pink-400">
+                            <div class="relative mb-4 group cursor-pointer">
+                                <img src="images/retro_90s_sticker_photo_machine.png" alt="Sticker Photo Booth"
+                                    class="w-full h-48 object-cover rounded-lg">
+                                <div
+                                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                    <span class="text-white font-bold">"뽀샤시 기능 필수!"</span>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-800 mb-2">스티커 사진 (Purikura)</h4>
+                            <p class="text-sm text-gray-600 mb-3">
+                                좁은 부스 안에 친구들과 옹기종기 모여 찍던 '우정샷'. 다이어리나 필통에 붙이고 교환하는 것이 국룰이었죠.
+                            </p>
+                            <div class="flex gap-2 text-xs font-bold text-pink-500">
+                                <span>#배경고르기</span>
+                                <span>#낙서하기</span>
+                                <span>#코팅까지</span>
+                            </div>
+                        </div>
+
+                        <!-- Pokemon Bread -->
+                        <div class="bg-white p-4 rounded-xl shadow-md border-b-4 border-yellow-400">
+                            <div class="relative mb-4 group cursor-pointer">
+                                <img src="images/retro_90s_pokemon_bread.png" alt="Pokemon Bread"
+                                    class="w-full h-48 object-cover rounded-lg">
+                                <div
+                                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                    <span class="text-white font-bold">"빵은 거들 뿐..."</span>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-800 mb-2">캐릭터 빵 & 띠부띠부씰</h4>
+                            <p class="text-sm text-gray-600 mb-3">
+                                스티커를 모으기 위해 매일 매점을 달려갔던 기억. 책받침이나 냉장고에 컬렉션을 완성해가던 뿌듯함!
+                            </p>
+                            <div class="flex gap-2 text-xs font-bold text-yellow-600">
+                                <span>#벗겨봐야안다</span>
+                                <span>#뮤츠나옴?</span>
+                                <span>#빵은누구줌</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- ==========================================
@@ -1565,11 +1656,50 @@
                     onclick="switchTab00s('music')" id="tab00s-music">대중음악 (Music)</button>
                 <button
                     class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
+                    onclick="switchTab00s('games')" id="tab00s-games">게임 (Games)</button>
+                <button
+                    class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
                     onclick="switchTab00s('tech')" id="tab00s-tech">기술 & 인터넷 (Tech)</button>
                 <button
                     class="nav-btn-00s px-4 py-2 font-bold text-gray-500 hover:text-[#ff6b00] border-b-2 border-transparent transition-colors"
                     onclick="switchTab00s('society')" id="tab00s-society">사회 & 이슈 (Society)</button>
             </nav>
+
+            <!-- 2000s Games (New) -->
+            <section id="games-00s" class="section-content-00s hidden w-full animate-fade-in">
+                <div
+                    class="bg-[#111827] rounded-xl p-8 text-white border border-gray-700 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-20">
+                        <i class="fas fa-gamepad text-9xl"></i>
+                    </div>
+                    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold text-green-400 mb-2">🎮 e-Sports의 황금기</h2>
+                            <h3 class="text-xl text-gray-300 mb-6">"임요환 때문에 테란 시작했습니다"</h3>
+
+                            <p class="text-gray-400 mb-6 leading-relaxed">
+                                스타크래프트 리그가 공중파보다 인기 있었던 시절.
+                                학교가 끝나면 친구들과 PC방으로 달려가 <span class="text-yellow-400 font-bold">'민속놀이'</span>를 즐겼습니다.
+                                카트라이더, 서든어택 등 국산 온라인 게임의 전성기이기도 했죠.
+                            </p>
+
+                            <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-green-500">
+                                <h4 class="font-bold mb-2 text-green-300">국민 게임 계보</h4>
+                                <ul class="space-y-1 text-sm text-gray-400">
+                                    <li>🏎️ <strong>카트라이더(2004):</strong> "무지개 장갑 달았다!"</li>
+                                    <li>🔫 <strong>서든어택(2005):</strong> "웨어하우스 ㄱㄱ"</li>
+                                    <li>🍄 <strong>메이플스토리(2003):</strong> "냄비뚜껑 팝니다"</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="images/retro_00s_kart_game.png" alt="Kart Racing Game"
+                                class="w-full rounded-lg shadow-lg border-2 border-gray-600 hover:border-green-400 transition cursor-pointer">
+                            <p class="text-center text-xs text-gray-500 mt-2">PC방 컵라면 내기 한판?</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- 2000s Home -->
             <section id="home-00s" class="section-content-00s w-full animate-fade-in">
@@ -1658,8 +1788,10 @@
                     <div class="grid grid-cols-2 gap-4">
                         <img src="images/retro_mp3_player_2000s.png" class="rounded shadow-md w-full h-48 object-cover"
                             onerror="this.src='https://via.placeholder.com/300x200?text=MP3+Player'">
-                        <div class="bg-white p-4 rounded shadow-md flex items-center justify-center">
-                            <p class="text-center text-gray-600">가로본능, 스카이, 그리고 아이리버...</p>
+                        <div class="bg-white p-4 rounded shadow-md flex items-center justify-center flex-col">
+                            <img src="images/retro_00s_slider_phone.png" alt="Slider Phone"
+                                class="w-24 h-40 object-contain mb-2">
+                            <p class="text-center text-gray-600 text-sm">슬라이드폰의 '딸깍' 소리<br>(스카이 & 애니콜)</p>
                         </div>
                     </div>
                 </div>
@@ -1682,13 +1814,28 @@
                         </div>
                     </div>
 
-                    <div class="mt-12">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">그 시절 패션 (Shaggy Cut)</h3>
-                        <img src="images/korean_fashion_2000s_shaggy_cut.png"
-                            class="mx-auto rounded-lg shadow-lg w-full md:w-2/3"
-                            onerror="this.src='https://via.placeholder.com/400x300?text=2000s+Fashion'">
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-6">📺 리얼 버라이어티의 시작</h3>
+                            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 h-full">
+                                <h4 class="font-bold text-lg text-yellow-800 mb-3">무한도전 & X맨</h4>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    "대한민국 평균 이하들을 자처한 남자들!"<br>
+                                    주말 저녁이면 온 가족이 TV 앞에 모여 앉았습니다.
+                                    당연하지 게임, 쪼쪼댄스, 그리고 무모한 도전.
+                                    예능이 단순한 웃음을 넘어 감동과 도전의 아이콘이 되었던 시절.
+                                </p>
+                                <span
+                                    class="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded">#국내최초_리얼버라이어티</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-6">그 시절 패션 (Shaggy Cut)</h3>
+                            <img src="images/korean_fashion_2000s_shaggy_cut.png"
+                                class="mx-auto rounded-lg shadow-lg w-full md:w-2/3"
+                                onerror="this.src='https://via.placeholder.com/400x300?text=2000s+Fashion'">
+                        </div>
                     </div>
-                </div>
             </section>
         </div>
     </main>
