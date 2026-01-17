@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects: Health & Retro</title>
+    <title>My Projects: Anime Portal</title>
     <!-- Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&family=Black+Han+Sans&family=Gugi&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Noto+Sans+JP:wght@400;700&family=Black+Han+Sans&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --health-color: #00e5ff;
+            --health-shadow: #0091ea;
+            --retro-color: #ff2a6d;
+            --retro-shadow: #c51162;
+            --text-color: #ffffff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,11 +25,12 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             height: 100vh;
             overflow: hidden;
             display: flex;
             width: 100vw;
+            background-color: #121212;
         }
 
         .container {
@@ -36,165 +45,229 @@
             width: 50%;
             position: relative;
             overflow: hidden;
-            transition: all 800ms ease-in-out;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             text-decoration: none;
-            /* For the anchor tag behavior */
-            color: white;
+            color: var(--text-color);
+            z-index: 1;
         }
 
-        /* --- Left Side: Health (Modern) --- */
-        .split.left {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(59, 130, 246, 0.7) 100%),
-                url('./health-landing/assets/hero.png');
+        /* --- Background Images & Overlays --- */
+        .split::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
+            transition: transform 0.6s ease;
+            filter: brightness(0.6) blur(2px);
+            z-index: -2;
         }
 
         .split.left::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(30, 58, 138, 0.4);
-            transition: all 800ms ease-in-out;
-        }
-
-        .split.left h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            z-index: 10;
-            white-space: nowrap;
-            letter-spacing: -2px;
-            transform: translateY(0);
-            transition: transform 0.4s ease;
-            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .split.left p {
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            z-index: 10;
-            font-weight: 300;
-            opacity: 0.9;
-            transition: opacity 0.4s ease;
-        }
-
-        /* --- Right Side: Retro (Vintage) --- */
-        .split.right {
-            background: linear-gradient(135deg, rgba(120, 53, 15, 0.8) 0%, rgba(180, 83, 9, 0.8) 100%),
-                url('./retro-1980/images/retro_alley_marbles.png');
-            background-size: cover;
-            background-position: center;
-            font-family: 'Black Han Sans', sans-serif;
+            background-image: url('./assets/anime_health_lab.png');
         }
 
         .split.right::before {
-            content: "";
+            background-image: url('./assets/anime_retro_street.png');
+        }
+
+        .split:hover::before {
+            transform: scale(1.05);
+            filter: brightness(1) blur(0);
+        }
+
+        /* --- Comic/Speed Lines Overlay --- */
+        .speed-lines {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(67, 20, 7, 0.3);
-            transition: all 800ms ease-in-out;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0%,
+                    transparent 90%,
+                    rgba(255, 255, 255, 0.1) 90%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .split:hover .speed-lines {
+            opacity: 1;
+            animation: speed-lines-anim 0.5s infinite linear;
+        }
+
+        @keyframes speed-lines-anim {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 100px 0;
+            }
+        }
+
+        /* --- Content Styling --- */
+        .content {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 2rem 3rem;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glitch effect on hover (optional fun) */
+        .split:hover .content {
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 2;
+        }
+
+        .split.left h1 {
+            color: var(--health-color);
+            text-shadow: 3px 3px 0px var(--health-shadow);
         }
 
         .split.right h1 {
-            font-size: 4rem;
-            z-index: 10;
-            white-space: nowrap;
-            letter-spacing: 2px;
-            color: #fef3c7;
-            text-shadow: 4px 4px 0px #92400e;
-            transform: translateY(0);
-            transition: transform 0.4s ease;
+            color: var(--retro-color);
+            text-shadow: 3px 3px 0px var(--retro-shadow);
         }
 
-        .split.right p {
-            font-family: 'Gugi', cursive;
-            font-size: 1.5rem;
-            margin-top: 1rem;
-            z-index: 10;
-            color: #ffedd5;
-            opacity: 0.8;
-            transition: opacity 0.4s ease;
+        p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px black;
         }
 
-        /* --- Hover Effects --- */
-
-        /* Expand the hovered side */
-        .split:hover {
-            width: 75%;
-        }
-
-        /* Shrink the other side */
-        .container:hover .split:not(:hover) {
-            width: 25%;
-        }
-
-        /* Darken the non-hovered side */
-        .container:hover .split:not(:hover)::before {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-
-        /* Text Effects on Hover */
-        .split:hover h1 {
-            transform: scale(1.1);
-        }
-
-        .split:hover p {
-            opacity: 1;
-        }
-
-        /* Button Styling (Optional Call to Action) */
+        /* --- Anime Buttons --- */
         .btn {
             display: inline-block;
-            margin-top: 2rem;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-family: 'Mochiy Pop P One', sans-serif;
+            font-size: 1.1rem;
             color: white;
-            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 10;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s ease;
+            border: none;
+            background: #333;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
         }
 
         .split.left .btn {
-            border: 2px solid #60a5fa;
-            background: rgba(30, 58, 138, 0.6);
+            background: linear-gradient(45deg, var(--health-shadow), var(--health-color));
         }
 
         .split.left .btn:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
+            box-shadow: 0 0 15px var(--health-color);
+            transform: translate(-2px, -2px);
         }
 
         .split.right .btn {
-            border: 2px solid #fcd34d;
-            background: rgba(120, 53, 15, 0.6);
-            color: #fef3c7;
+            background: linear-gradient(45deg, var(--retro-shadow), var(--retro-color));
         }
 
         .split.right .btn:hover {
-            background: #d97706;
-            border-color: #d97706;
+            box-shadow: 0 0 15px var(--retro-color);
+            transform: translate(-2px, -2px);
+        }
+
+        /* --- Split Behavior --- */
+        .split:hover {
+            width: 70%;
+        }
+
+        .container:hover .split:not(:hover) {
+            width: 30%;
+            filter: grayscale(0.8);
+        }
+
+        /* --- Floating Elements (Particles/Decor) --- */
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 3s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* --- Language Switcher --- */
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: bold;
+            transition: all 0.3s;
         }
 
-        .split:hover .btn {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.2s;
+        .lang-btn:hover,
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            text-shadow: 0 0 5px white;
         }
 
-        /* Mobile Responsive */
+        /* Mobile */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -207,34 +280,149 @@
 
             .split:hover {
                 width: 100%;
-                height: 75%;
+                height: 60%;
             }
 
             .container:hover .split:not(:hover) {
                 width: 100%;
-                height: 25%;
+                height: 40%;
             }
 
-            .split h1 {
-                font-size: 2.5rem !important;
+            h1 {
+                font-size: 2rem;
+            }
+
+            .lang-switcher {
+                top: 10px;
+                right: 10px;
+                padding: 5px;
+            }
+
+            .lang-btn {
+                padding: 4px 10px;
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 
 <body>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="changeLanguage('ko')">KO</button>
+        <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="changeLanguage('jp')">JP</button>
+    </div>
+
     <div class="container">
+        <!-- Health Section -->
         <a href="./health-landing/index.html" class="split left">
-            <h1>Health Lab</h1>
-            <p>Modern Solutions for Your Vitality</p>
-            <span class="btn">Enter Lab</span>
+            <div class="speed-lines"></div>
+            <div class="content">
+                <h1 data-i18n="health_title">건강 연구소</h1>
+                <p data-i18n="health_desc">당신의 활력을 위한 미래 솔루션</p>
+                <div class="btn" data-i18n="health_btn">입장하기</div>
+            </div>
         </a>
+
+        <!-- Retro Section -->
         <a href="./retro-1980/index.html" class="split right">
-            <h1>응답하라 1980</h1>
-            <p>그 시절, 우리의 따뜻한 이야기</p>
-            <span class="btn">시간여행 떠나기</span>
+            <div class="speed-lines"></div>
+            <div class="content">
+                <h1 data-i18n="retro_title">응답하라 1980</h1>
+                <p data-i18n="retro_desc">그 시절, 우리의 따뜻한 추억</p>
+                <div class="btn" data-i18n="retro_btn">시간여행 떠나기</div>
+            </div>
         </a>
     </div>
+
+    <script>
+        // Translations
+        const translations = {
+            'ko': {
+                'health_title': '건강 연구소',
+                'health_desc': '당신의 활력을 위한 미래 솔루션',
+                'health_btn': '입장하기',
+                'retro_title': '응답하라 1980',
+                'retro_desc': '그 시절, 우리의 따뜻한 추억',
+                'retro_btn': '시간여행 떠나기'
+            },
+            'en': {
+                'health_title': 'HEALTH LAB',
+                'health_desc': 'Modern Solutions for Your Vitality',
+                'health_btn': 'START MISSION',
+                'retro_title': 'RETRO 1980',
+                'retro_desc': 'Memory Lane',
+                'retro_btn': 'TIME TRAVEL'
+            },
+            'jp': {
+                'health_title': '未来研究所',
+                'health_desc': '未来の健康',
+                'health_btn': 'ミッション開始',
+                'retro_title': 'レトロ 1980',
+                'retro_desc': '懐かしい思い出',
+                'retro_btn': 'タイムトラベル'
+            }
+        };
+
+        // Language Switcher Logic
+        function changeLanguage(lang) {
+            // Update UI text
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Update Active Button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Save preference (optional)
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Initialize Language
+        window.onload = () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'ko';
+            changeLanguage(savedLang);
+        };
+
+        // Simple particle effect generator
+        document.querySelectorAll('.split').forEach(split => {
+            split.addEventListener('mouseenter', () => {
+                createParticles(split);
+            });
+        });
+
+        function createParticles(container) {
+            // Limit particles
+            if (container.querySelectorAll('.particle').length > 5) return;
+
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
+
+                container.appendChild(particle);
+
+                // Remove after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, 3000);
+            }
+        }
+    </script>
 </body>
 
 </html>
