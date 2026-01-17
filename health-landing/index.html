@@ -1,148 +1,812 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vitality - 당신의 삶에 새로운 에너지를 불어넣으세요. 전체적인 건강과 웰빙을 위한 최고의 솔루션.">
-    <title>Vitality | 당신의 건강한 삶을 위하여</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="background-globes">
-        <div class="globe globe-1"></div>
-        <div class="globe globe-2"></div>
-        <div class="globe globe-3"></div>
-    </div>
+    <title>전인적 건강 마법학교: 내 몸을 지키는 주문</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
-    <nav class="navbar glass">
-        <div class="container nav-container">
-            <a href="#" class="logo">Vitality<span class="dot">.</span></a>
-            <ul class="nav-links">
-                <li><a href="#features">기능</a></li>
-                <li><a href="#about">소개</a></li>
-                <li><a href="#testimonials">후기</a></li>
-            </ul>
-            <a href="#contact" class="btn btn-primary">시작하기</a>
+        body {
+            font-family: 'Jua', sans-serif;
+            background-color: #fff1f2;
+            /* Rose 50 */
+            color: #475569;
+            /* Slate 600 */
+            background-image: radial-gradient(#fecdd3 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Bouncy Animation Class */
+        .bouncy {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bouncy:hover {
+            transform: scale(1.05) rotate(1deg);
+        }
+
+        .bouncy:active {
+            transform: scale(0.95);
+        }
+
+        /* Chart Container Styling Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+            background: white;
+            border-radius: 2rem;
+            padding: 1rem;
+            border: 4px solid #f9a8d4;
+            /* Pink 300 */
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .interactive-node {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .interactive-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(255, 182, 193, 0.5);
+        }
+
+        .node-active {
+            border-color: #f472b6 !important;
+            /* Pink 400 */
+            background-color: #fdf2f8 !important;
+            /* Pink 50 */
+            transform: scale(1.05);
+            color: #db2777;
+        }
+
+        .node-danger {
+            border-color: #fb7185 !important;
+            /* Rose 400 */
+            background-color: #fff1f2 !important;
+            /* Rose 50 */
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+
+        .tab-btn {
+            border-radius: 9999px;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            background-color: #f472b6;
+            /* Pink 400 */
+            color: white;
+            border-color: #fbcfe8;
+            box-shadow: 0 4px 0 #db2777;
+            /* 3D effect */
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:not(.active):hover {
+            background-color: #fce7f3;
+            color: #db2777;
+        }
+
+        /* Utility for hiding scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Card Style */
+        .anime-card {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 1.5rem;
+            box-shadow: 6px 6px 0 #cbd5e1;
+            transition: all 0.2s;
+        }
+
+        .anime-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 #94a3b8;
+            border-color: #f472b6;
+        }
+    </style>
+
+</head>
+
+<body class="antialiased selection:bg-pink-200 selection:text-pink-900">
+
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b-4 border-pink-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center gap-2">
+                    <span class="text-3xl">✨</span>
+                    <span class="text-3xl font-bold text-pink-500 tracking-wider">Holistic<span
+                            class="text-sky-400">Magic</span></span>
+                </div>
+                <div class="hidden md:flex space-x-4 items-center">
+                    <button onclick="scrollToSection('hero')"
+                        class="px-4 py-2 rounded-full hover:bg-pink-50 text-slate-500 hover:text-pink-500 font-bold transition-colors">홈</button>
+                    <button onclick="scrollToSection('mechanism')"
+                        class="px-4 py-2 rounded-full hover:bg-pink-50 text-slate-500 hover:text-pink-500 font-bold transition-colors">원인
+                        찾기</button>
+                    <button onclick="scrollToSection('nutrition')"
+                        class="px-4 py-2 rounded-full hover:bg-pink-50 text-slate-500 hover:text-pink-500 font-bold transition-colors">음식
+                        도감</button>
+                    <button onclick="scrollToSection('assessment')"
+                        class="px-4 py-2 rounded-full hover:bg-pink-50 text-slate-500 hover:text-pink-500 font-bold transition-colors">나의
+                        레벨</button>
+                </div>
+                <!-- Mobile menu button simplified -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="alert('화면을 아래로 스크롤하여 탐험해보세요! ✨')" class="text-pink-400 text-2xl">☰</button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="container hero-container">
-            <div class="hero-content fade-in-up">
-                <h1>당신의 삶에 <br><span class="gradient-text">건강한 에너지</span>를 더하세요</h1>
-                <p>Vitality는 단순한 건강 관리가 아닙니다. 몸과 마음의 균형을 찾아주는 당신만의 웰니스 파트너입니다.</p>
-                <div class="hero-btns">
-                    <a href="#start" class="btn btn-primary btn-lg">지금 시작하기</a>
-                    <a href="#learn-more" class="btn btn-outline btn-lg">더 알아보기</a>
+    <!-- 1. Hero Section -->
+    <header id="hero" class="relative overflow-hidden pt-10 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center">
+            <!-- Text Content -->
+            <div class="lg:w-1/2 text-center lg:text-left z-10">
+                <div
+                    class="inline-block bg-sky-100 text-sky-600 px-4 py-1 rounded-full text-sm font-bold mb-4 bouncy transform -rotate-2">
+                    🌟 치유의 마법 시작하기
                 </div>
-                <div class="stats-row glass">
-                    <div class="stat-item">
-                        <span class="stat-number">10k+</span>
-                        <span class="stat-label">사용자</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">98%</span>
-                        <span class="stat-label">만족도</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">지원</span>
-                    </div>
+                <h1 class="text-3xl sm:text-6xl font-extrabold text-slate-800 leading-tight mb-6">
+                    <span class="block text-pink-500">모든 아픔은</span>
+                    <span class="block">하나로 연결돼 있어!</span>
+                </h1>
+                <p class="text-lg text-slate-500 mb-8 max-w-lg mx-auto lg:mx-0">
+                    뇌 건강, 뱃살, 소화 불량... 다 따로따로인 줄 알았지?
+                    사실은 <strong>'대사 건강'</strong>이라는 하나의 마법 회로가 꼬인 거야!
+                    함께 풀어나가 볼까? 테라피 스타트! 💖
+                </p>
+                <div>
+                    <button onclick="scrollToSection('mechanism')"
+                        class="bouncy bg-pink-400 text-white px-8 py-4 rounded-full text-xl font-bold shadow-[0_4px_0_#be185d] border-b-4 border-pink-700 hover:bg-pink-500 active:shadow-none active:translate-y-1">
+                        🚀 원인 찾아 떠나기
+                    </button>
                 </div>
             </div>
-            <div class="hero-image fade-in-up delay-200">
-                <div class="image-wrapper glass-border">
-                    <img src="assets/hero.png" alt="Meditating person in nature" loading="lazy">
-                    <div class="floating-card card-1 glass">
-                        <span class="icon">❤️</span>
-                        <div class="text">
-                            <strong>심박수</strong>
-                            <span>72 BPM</span>
-                        </div>
+
+            <!-- Hero Visual -->
+            <div class="lg:w-1/2 mt-10 lg:mt-0 flex justify-center relative">
+                <div class="absolute inset-0 bg-yellow-100 rounded-full filter blur-3xl opacity-50 animate-pulse"></div>
+                <div class="grid grid-cols-2 gap-4 max-w-sm relative z-10 transform rotate-3">
+                    <div class="anime-card p-6 bg-white rotate-3 border-rose-200">
+                        <div class="text-4xl mb-2 animate-bounce">🍬</div>
+                        <div class="font-bold text-rose-500">설탕 몬스터</div>
+                        <div class="text-sm text-slate-400">모든 문제의 시작</div>
                     </div>
-                    <div class="floating-card card-2 glass">
-                        <span class="icon">🌿</span>
-                        <div class="text">
-                            <strong>스트레스</strong>
-                            <span>낮음</span>
-                        </div>
+                    <div class="anime-card p-6 bg-white -rotate-2 border-amber-200 mt-8">
+                        <div class="text-4xl mb-2 animate-pulse">⚡</div>
+                        <div class="font-bold text-amber-500">인슐린 저항</div>
+                        <div class="text-sm text-slate-400">대왕 보스 등장</div>
+                    </div>
+                    <div class="anime-card p-6 bg-white -rotate-3 border-blue-200">
+                        <div class="text-4xl mb-2">🧠</div>
+                        <div class="font-bold text-blue-500">뇌 안개</div>
+                        <div class="text-sm text-slate-400">깜빡깜빡 비상!</div>
+                    </div>
+                    <div class="anime-card p-6 bg-white rotate-2 border-purple-200 mt-8">
+                        <div class="text-4xl mb-2">🦠</div>
+                        <div class="font-bold text-purple-500">장 누수</div>
+                        <div class="text-sm text-slate-400">방어막 뚫림!</div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header fade-in-up">
-                <h2>Why <span class="gradient-text">Vitality?</span></h2>
-                <p>우리는 당신의 건강한 라이프스타일을 위해 최첨단 기술과 자연의 지혜를 결합했습니다.</p>
+    <!-- 2. Mechanism Engine (Interactive Diagram) -->
+    <section id="mechanism"
+        class="py-20 bg-white rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.05)] relative z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-800 mb-4">🌀 아픔의 연결 고리</h2>
+                <p class="text-xl text-slate-500">
+                    증상만 잡으면 뭐해? 뿌리를 찾아야지! <br>
+                    아래 <strong>버튼을 눌러서</strong> 어떻게 연결되는지 확인해봐!
+                </p>
             </div>
-            <div class="feature-grid">
-                <div class="feature-card glass fade-in-up delay-100">
-                    <div class="feature-icon icon-bg-1">🧘‍♀️</div>
-                    <h3>생체 리듬 균형</h3>
-                    <p>AI 기반 분석을 통해 당신만의 최적화된 생체 리듬과 수면 패턴을 찾아드립니다.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- Trigger List -->
+                <div class="bg-pink-50 rounded-3xl p-6 border-4 border-pink-100">
+                    <h3 class="font-bold text-xl text-pink-500 mb-6 text-center">👇 누가 범인일까? (클릭!)</h3>
+                    <div class="space-y-4">
+                        <div class="interactive-node anime-card p-4" onclick="highlightPath('sugar')">
+                            <div class="font-bold text-lg">🍭 달콤한 설탕 폭탄</div>
+                            <p class="text-sm text-slate-500 mt-1">혈당 슉! 인슐린 펑!</p>
+                        </div>
+                        <div class="interactive-node anime-card p-4" onclick="highlightPath('oils')">
+                            <div class="font-bold text-lg">🌻 가짜 식용유 (씨앗기름)</div>
+                            <p class="text-sm text-slate-500 mt-1">몸속에 불을 질러! 🔥</p>
+                        </div>
+                        <div class="interactive-node anime-card p-4" onclick="highlightPath('stress')">
+                            <div class="font-bold text-lg">😫 으악! 스트레스</div>
+                            <p class="text-sm text-slate-500 mt-1">호르몬 균형 와르르</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card glass fade-in-up delay-200">
-                    <div class="feature-icon icon-bg-2">🥗</div>
-                    <h3>맞춤형 영양 관리</h3>
-                    <p>단순한 식단 기록을 넘어, 당신의 몸이 필요로 하는 영양소를 실시간으로 제안합니다.</p>
+
+                <!-- Mechanism (Center) -->
+                <div class="space-y-6 flex flex-col justify-center h-full">
+                    <div class="flex justify-center">
+                        <div class="text-4xl text-pink-300 animate-bounce">⬇️</div>
+                    </div>
+                    <div id="mech-insulin"
+                        class="anime-card p-6 text-center border-amber-200 transition-colors duration-300">
+                        <div class="text-4xl mb-2">📉</div>
+                        <div class="font-bold text-xl text-slate-700">인슐린 저항성</div>
+                        <div class="text-sm text-slate-400">"그만 좀 보내! 문 닫을 거야!"</div>
+                    </div>
+                    <div id="mech-inflammation"
+                        class="anime-card p-6 text-center border-rose-200 transition-colors duration-300">
+                        <div class="text-4xl mb-2">🔥</div>
+                        <div class="font-bold text-xl text-slate-700">만성 염증</div>
+                        <div class="text-sm text-slate-400">몸속 경찰들의 과잉 진압</div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="text-4xl text-pink-300 animate-bounce">⬇️</div>
+                    </div>
                 </div>
-                <div class="feature-card glass fade-in-up delay-300">
-                    <div class="feature-icon icon-bg-3">⚡</div>
-                    <h3>활력 에너지 부스트</h3>
-                    <p>하루 중 에너지가 떨어지는 시점을 예측하고, 활력을 되찾을 수 있는 활동을 추천합니다.</p>
+
+                <!-- Result (Disease) -->
+                <div class="bg-slate-50 rounded-3xl p-6 border-4 border-slate-100">
+                    <h3 class="font-bold text-xl text-slate-600 mb-6 text-center">😭 이렇게 아파져요</h3>
+                    <div class="space-y-4">
+                        <div id="res-liver" class="anime-card p-4 opacity-50 transition-all duration-300">
+                            <div class="font-bold text-lg">지방간 (Fatty Liver)</div>
+                            <p class="text-sm text-slate-500">간이 푸아그라가 됐어...</p>
+                        </div>
+                        <div id="res-brain" class="anime-card p-4 opacity-50 transition-all duration-300">
+                            <div class="font-bold text-lg">치매 & 멍한 머리</div>
+                            <p class="text-sm text-slate-500">뇌가 굶고 있어 ㅠㅠ</p>
+                        </div>
+                        <div id="res-gut" class="anime-card p-4 opacity-50 transition-all duration-300">
+                            <div class="font-bold text-lg">장 누수 & 알러지</div>
+                            <p class="text-sm text-slate-500">나쁜 녀석들 침투!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mechanism-detail"
+                class="mt-10 p-6 bg-yellow-50 border-4 border-yellow-200 rounded-3xl text-center hidden transform transition-all duration-500">
+                <span class="text-3xl mr-2">💡</span>
+                <span class="font-bold text-xl text-yellow-800" id="mechanism-text"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Nutrition Truth Dashboard -->
+    <section id="nutrition" class="py-20 bg-sky-50 rounded-t-[3rem] -mt-10 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-800">🥞 음식의 진실 게임</h2>
+                <p class="mt-4 text-xl text-slate-500">
+                    천사 😇 인 줄 알았는데 악마 😈 였어?! <br>
+                    데이터로 확인하는 음식 랭킹!
+                </p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex justify-center gap-4 mb-10 overflow-x-auto pb-4">
+                <button class="tab-btn active px-6 py-3 text-lg font-bold whitespace-nowrap"
+                    onclick="switchTab('sweeteners')">🍭 단맛의 비밀</button>
+                <button class="tab-btn px-6 py-3 text-lg font-bold whitespace-nowrap" onclick="switchTab('oils')">🍳 기름
+                    전쟁</button>
+                <button class="tab-btn px-6 py-3 text-lg font-bold whitespace-nowrap"
+                    onclick="switchTab('fake-health')">🎭 가면 쓴 음식들</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="tab-content" class="min-h-[400px]">
+
+                <!-- Sweeteners Section -->
+                <div id="panel-sweeteners" class="block animate-fade-in w-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="bg-white p-6 rounded-[2rem] shadow-xl border-4 border-pink-100">
+                            <h3 class="text-2xl font-bold mb-6 text-center text-pink-500">🏆 설탕 대체제 랭킹</h3>
+                            <div class="chart-container">
+                                <canvas id="sweetenerChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2rem] shadow-xl border-4 border-emerald-100">
+                            <h3 class="font-bold text-2xl mb-6 text-emerald-600">📝 요약 노트</h3>
+                            <ul class="space-y-4 text-lg">
+                                <li class="flex items-start">
+                                    <span class="text-2xl mr-3">😇</span>
+                                    <span><strong>천사급:</strong> 스테비아, 나한과.<br><span class="text-sm text-slate-400">살도 안
+                                            찌고 혈당도 safe!</span></span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-2xl mr-3">🙂</span>
+                                    <span><strong>친구급:</strong> 에리스리톨, 자일리톨.<br><span class="text-sm text-slate-400">많이
+                                            먹으면 방귀 대장 뿡뿡이 됨.</span></span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-2xl mr-3">👿</span>
+                                    <span><strong>악마급:</strong> 설탕, 아가베, 액상과당.<br><span
+                                            class="text-sm text-slate-400">지방간 직행 열차 탑승! 🚂</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oils Section -->
+                <div id="panel-oils" class="hidden animate-fade-in w-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="bg-white p-6 rounded-[2rem] shadow-xl border-4 border-yellow-100">
+                            <h3 class="text-2xl font-bold mb-6 text-center text-yellow-600">🥇 최고의 오일 찾기</h3>
+                            <div class="chart-container">
+                                <canvas id="oilChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2rem] shadow-xl border-4 border-rose-100">
+                            <h3 class="font-bold text-2xl mb-6 text-rose-500">⛔ 경고장</h3>
+                            <div class="space-y-6">
+                                <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-200">
+                                    <h4 class="font-bold text-emerald-700 text-lg">💖 사랑해주세요</h4>
+                                    <p class="text-slate-600">코코넛 오일, 버터, 기버터(Ghee), 올리브 오일</p>
+                                </div>
+                                <div class="bg-rose-50 p-4 rounded-2xl border-2 border-rose-200">
+                                    <h4 class="font-bold text-rose-700 text-lg">💔 멀리하세요 (독성!)</h4>
+                                    <p class="text-slate-600">카놀라유, 콩기름, 옥수수유, 마가린</p>
+                                    <p class="text-xs text-rose-400 mt-2">공장에서 화학 약품으로 범벅된 기름이야!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fake Health Foods -->
+                <div id="panel-fake-health" class="hidden animate-fade-in w-full">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Cards -->
+                        <div class="anime-card p-6 border-rose-200 bg-rose-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-rose-700">🍞 통밀빵</h4>
+                                <span class="text-2xl">😱</span>
+                            </div>
+                            <p class="text-slate-600">설탕보다 혈당을 더 빨리 올린대! 글루텐 때문에 장도 아파해.</p>
+                        </div>
+                        <div class="anime-card p-6 border-rose-200 bg-rose-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-rose-700">🍹 과일 주스</h4>
+                                <span class="text-2xl">😱</span>
+                            </div>
+                            <p class="text-slate-600">비타민? 아니, 그냥 설탕물이야! 간이 울고 있어 ㅠㅠ</p>
+                        </div>
+                        <div class="anime-card p-6 border-rose-200 bg-rose-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-rose-700">🥣 시리얼 & 그래놀라</h4>
+                                <span class="text-2xl">😱</span>
+                            </div>
+                            <p class="text-slate-600">건강한 아침? 설탕 코팅된 과자일 뿐이야. 아침부터 당 폭발!</p>
+                        </div>
+                        <div class="anime-card p-6 border-rose-200 bg-rose-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-rose-700">🥛 가공 두유</h4>
+                                <span class="text-2xl">😱</span>
+                            </div>
+                            <p class="text-slate-600">GMO 콩에 설탕을 듬뿍... 호르몬 교란 조심해!</p>
+                        </div>
+                        <div class="anime-card p-6 border-amber-200 bg-amber-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-amber-700">🐟 양식 연어</h4>
+                                <span class="text-2xl">🤔</span>
+                            </div>
+                            <p class="text-slate-600">오메가3는 적고 항생제는 많을 수 있어. 자연산을 찾아봐!</p>
+                        </div>
+                        <div class="anime-card p-6 border-rose-200 bg-rose-50">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-bold text-xl text-rose-700">🍫 에너지바</h4>
+                                <span class="text-2xl">😱</span>
+                            </div>
+                            <p class="text-slate-600">단백질 조금 들어간 초코바야. 속지 말자고!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-box glass fade-in-up">
-                <h2>지금 바로 더 나은 삶을 시작하세요</h2>
-                <p>30일 무료 체험으로 Vitality의 모든 프리미엄 기능을 경험해보세요.</p>
-                <form class="email-form">
-                    <input type="email" placeholder="이메일 주소를 입력하세요" required>
-                    <button type="submit" class="btn btn-primary">무료 체험 시작</button>
-                </form>
+    <!-- 4. Symptom Checker & Risk Assessment -->
+    <section id="assessment" class="py-20 bg-emerald-50 rounded-t-[3rem] -mt-10 relative z-30">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border-8 border-emerald-100">
+                <div class="p-8 sm:p-12">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-emerald-800 mb-2 text-center">🏥 자가 진단 클리닉</h2>
+                    <p class="text-emerald-600 text-center mb-10 text-lg">혹시 나도...? 체크해보고 처방받자!</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <!-- Checklist -->
+                        <div class="space-y-4">
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="metabolic">
+                                <span class="font-bold text-emerald-800">🤰 뱃살이 자꾸 나와 (튜브 꼈니?)</span>
+                            </label>
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="brain">
+                                <span class="font-bold text-emerald-800">☁️ 머리가 멍~하고 깜빡해</span>
+                            </label>
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="gut">
+                                <span class="font-bold text-emerald-800">💨 밥만 먹으면 가스가 차</span>
+                            </label>
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="anxiety">
+                                <span class="font-bold text-emerald-800">😢 이유 없이 우울하고 불안해</span>
+                            </label>
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="metabolic">
+                                <span class="font-bold text-emerald-800">🩸 혈압이나 혈당이 높대</span>
+                            </label>
+                            <label
+                                class="bouncy flex items-center space-x-4 p-4 border-2 border-emerald-100 rounded-2xl bg-emerald-50 hover:bg-emerald-100 cursor-pointer transition-colors">
+                                <input type="checkbox"
+                                    class="symptom-check h-6 w-6 text-emerald-500 rounded focus:ring-emerald-400"
+                                    value="liver">
+                                <span class="font-bold text-emerald-800">🔋 충전해도 계속 피곤해</span>
+                            </label>
+                        </div>
+
+                        <!-- Result Visual -->
+                        <div class="flex flex-col items-center justify-center bg-emerald-50/50 rounded-3xl p-4">
+                            <div class="chart-container bg-transparent border-none shadow-none h-64">
+                                <canvas id="riskRadarChart"></canvas>
+                            </div>
+                            <div id="risk-text"
+                                class="text-center mt-6 p-4 bg-white rounded-xl shadow-sm w-full border-2 border-emerald-100">
+                                <span class="font-bold text-slate-400">위에 항목들을 체크해봐! 👇</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-emerald-500 p-8 text-white">
+                    <h3 class="font-bold text-2xl mb-6 text-center">✨ 치유를 위한 4가지 주문 ✨</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div
+                            class="bg-emerald-400/50 p-4 rounded-3xl backdrop-blur-sm border-2 border-emerald-300 bouncy">
+                            <div class="text-4xl mb-2">🍽️</div>
+                            <div class="text-lg font-bold">탄수화물 줄이기</div>
+                        </div>
+                        <div
+                            class="bg-emerald-400/50 p-4 rounded-3xl backdrop-blur-sm border-2 border-emerald-300 bouncy">
+                            <div class="text-4xl mb-2">⏰</div>
+                            <div class="text-lg font-bold">공복 유지하기</div>
+                        </div>
+                        <div
+                            class="bg-emerald-400/50 p-4 rounded-3xl backdrop-blur-sm border-2 border-emerald-300 bouncy">
+                            <div class="text-4xl mb-2">🚶‍♀️</div>
+                            <div class="text-lg font-bold">햇빛 보고 걷기</div>
+                        </div>
+                        <div
+                            class="bg-emerald-400/50 p-4 rounded-3xl backdrop-blur-sm border-2 border-emerald-300 bouncy">
+                            <div class="text-4xl mb-2">🥑</div>
+                            <div class="text-lg font-bold">자연식품 먹기</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container footer-container">
-            <div class="footer-brand">
-                <a href="#" class="logo">Vitality<span class="dot">.</span></a>
-                <p>Copyright © 2025 Vitality Inc.<br>All rights reserved.</p>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>제품</h4>
-                    <a href="#">기능</a>
-                    <a href="#">가격</a>
-                    <a href="#">다운로드</a>
-                </div>
-                <div class="link-group">
-                    <h4>회사</h4>
-                    <a href="#">소개</a>
-                    <a href="#">채용</a>
-                    <a href="#">블로그</a>
-                </div>
-                <div class="link-group">
-                    <h4>지원</h4>
-                    <a href="#">고객센터</a>
-                    <a href="#">이용약관</a>
-                    <a href="#">개인정보처리방침</a>
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="text-4xl mb-4">💖</div>
+            <p class="text-sm font-medium opacity-70">
+                Disclaimer: 이 정보는 교육 목적으로 제공되며 전문적인 의학적 조언을 대체하지 않습니다. <br>
+                아플 땐 꼭 의사 선생님을 찾아가세요! ✨
+            </p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Global Navigation & Tabs ---
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchTab(tabId) {
+            // Hide all panels
+            ['panel-sweeteners', 'panel-oils', 'panel-fake-health'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                document.getElementById(id).classList.remove('block');
+            });
+
+            // Show selected panel
+            document.getElementById('panel-' + tabId).classList.remove('hidden');
+            document.getElementById('panel-' + tabId).classList.add('block');
+
+            // Update button styles
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // --- 2. Interactive Mechanism Diagram Logic ---
+        function highlightPath(trigger) {
+            // Reset all
+            document.querySelectorAll('.interactive-node').forEach(el => el.classList.remove('node-active'));
+            ['mech-insulin', 'mech-inflammation', 'res-liver', 'res-brain', 'res-gut'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('node-danger', 'opacity-100');
+                el.classList.add('opacity-50');
+                // Remove animation class reset
+                el.style.animation = 'none';
+                el.offsetHeight; /* trigger reflow */
+                el.style.animation = null;
+            });
+
+            const detailBox = document.getElementById('mechanism-detail');
+            const detailText = document.getElementById('mechanism-text');
+            detailBox.classList.remove('hidden');
+
+            // Highlight Logic based on selection
+            if (trigger === 'sugar') {
+                document.getElementById('mech-insulin').classList.add('node-danger', 'opacity-100');
+                document.getElementById('res-liver').classList.add('node-danger', 'opacity-100');
+                document.getElementById('res-brain').classList.add('node-danger', 'opacity-100');
+                detailText.innerText = "설탕과 아이스크림을 너무 많이 먹으면.. 간도 살찌고 뇌도 멍해져! 😱";
+            } else if (trigger === 'oils') {
+                document.getElementById('mech-inflammation').classList.add('node-danger', 'opacity-100');
+                document.getElementById('res-gut').classList.add('node-danger', 'opacity-100');
+                detailText.innerText = "나쁜 기름(콩기름 등)은 우리 몸에 불을 질러! 장 보호막이 뚫린다고! 🔥";
+            } else if (trigger === 'stress') {
+                document.getElementById('mech-insulin').classList.add('node-danger', 'opacity-100');
+                document.getElementById('mech-inflammation').classList.add('node-danger', 'opacity-100');
+                document.getElementById('res-brain').classList.add('node-danger', 'opacity-100');
+                detailText.innerText = "스트레스 받으면 코르티솔 괴물이 나와서 온몸을 망가뜨려! 릴렉~스! 🧘‍♀️";
+            }
+
+            // Highlight clicked trigger
+            event.currentTarget.classList.add('node-active');
+        }
+
+        // --- 3. Charts Implementation ---
+
+        // Common Chart Options
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(244, 114, 182, 0.9)', // Pink tooltips
+                    padding: 12,
+                    cornerRadius: 12,
+                    titleFont: { family: 'Jua', size: 14 },
+                    bodyFont: { family: 'Jua', size: 12 },
+                    displayColors: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: 'Jua' }, color: '#64748b' }
+                },
+                y: {
+                    grid: { borderDash: [4, 4], color: '#f0f9ff' },
+                    ticks: { font: { family: 'Jua' }, color: '#64748b' }
+                }
+            }
+        };
+
+        // Sweetener Chart
+        const ctxSweetener = document.getElementById('sweetenerChart').getContext('2d');
+        new Chart(ctxSweetener, {
+            type: 'bar',
+            data: {
+                labels: ['스테비아', '에리스리톨', '꿀', '설탕', '아가베', '아스파탐'],
+                datasets: [{
+                    label: '착한 점수',
+                    data: [95, 80, 50, 20, 10, 5],
+                    backgroundColor: [
+                        '#34d399', '#6ee7b7', '#fcd34d', '#fb923c', '#f87171', '#ef4444' // Mint to Red
+                    ],
+                    borderRadius: 20,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        // Oil Chart
+        const ctxOil = document.getElementById('oilChart').getContext('2d');
+        new Chart(ctxOil, {
+            type: 'bar',
+            data: {
+                labels: ['코코넛 오일', '버터/기', '올리브유', '카놀라유', '콩기름'],
+                datasets: [{
+                    label: '추천도',
+                    data: [95, 90, 85, 20, 10],
+                    backgroundColor: [
+                        '#34d399', '#34d399', '#6ee7b7', '#f87171', '#ef4444'
+                    ],
+                    borderRadius: 50
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        // --- 4. Interactive Risk Assessment Logic ---
+        const ctxRadar = document.getElementById('riskRadarChart').getContext('2d');
+        let riskChart = new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['대사 건강', '뇌 건강', '장 건강', '간 건강'],
+                datasets: [{
+                    label: '나의 위험 레벨',
+                    data: [0, 0, 0, 0],
+                    backgroundColor: 'rgba(244, 114, 182, 0.4)', // Pink transparent
+                    borderColor: 'rgba(236, 72, 153, 1)', // Pink solid
+                    pointBackgroundColor: '#be185d',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#f1f5f9' },
+                        suggestedMin: 0,
+                        suggestedMax: 5,
+                        ticks: { display: false },
+                        pointLabels: {
+                            font: { family: 'Jua', size: 14 },
+                            color: '#475569'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const inputs = document.querySelectorAll('.symptom-check');
+        inputs.forEach(input => {
+            input.addEventListener('change', updateRisk);
+        });
+
+        function updateRisk() {
+            let scores = { metabolic: 0, brain: 0, gut: 0, liver: 0 };
+            let totalChecked = 0;
+
+            inputs.forEach(input => {
+                if (input.checked) {
+                    totalChecked++;
+                    if (input.value === 'metabolic') scores.metabolic += 2;
+                    if (input.value === 'brain') scores.brain += 2;
+                    if (input.value === 'gut') scores.gut += 2;
+                    if (input.value === 'liver') scores.liver += 2;
+                    if (input.value === 'anxiety') { scores.brain += 1; scores.gut += 1; }
+                }
+            });
+
+            // Update Chart Data
+            riskChart.data.datasets[0].data = [
+                scores.metabolic,
+                scores.brain,
+                scores.gut,
+                scores.liver
+            ];
+            riskChart.update();
+
+            // Update Text
+            const resultText = document.getElementById('risk-text');
+            if (totalChecked === 0) {
+                resultText.innerHTML = "<span class='text-slate-500'>목록을 체크해서 내 상태를 알아보자! 👀</span>";
+            } else if (totalChecked <= 2) {
+                resultText.innerHTML = "<span class='text-amber-500 font-bold'>⚠️ 조심해!</span> 나쁜 습관이 생기고 있어. 야식 금지!";
+            } else {
+                resultText.innerHTML = "<span class='text-rose-500 font-bold'>🚨 비상 사태!</span> 당장 식단을 바꿔야 해! 채소 많이 먹기 약속! 🤙";
+            }
+        }
+
+    </script>
+
 </body>
+
 </html>
