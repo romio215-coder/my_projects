@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Auto Accept Commander",
+    "version": "1.0",
+    "description": "Automatically clicks accept/approve buttons for command execution.",
+    "permissions": [
+        "storage"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}

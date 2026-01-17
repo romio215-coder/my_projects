@@ -1,0 +1,22 @@
+지금 너가 커맨드실행할때마다 accept뜨는것에 지쳐서 자동으로  accept 하는 확장프로그램 만들려고 auto_accept 폴더하나 만들었어.너가 알아서 다 만들어. 
+
+자동 수락 확장프로그램을 d:\my_projects\auto_accept 폴더에 모두 작성했습니다.
+
+설치 방법:
+
+크롬 주소창에 chrome://extensions 입력 후 엔터.
+우측 상단 개발자 모드 (Developer mode) 켜기.
+좌측 상단 압축 해제된 확장 프로그램을 로드합니다 (Load unpacked) 클릭.
+d:\my_projects\auto_accept 폴더 선택.
+이제 페이지에 "Accept", "Approve", "Run", "Confirm", "예", "확인" 등의 버튼이 나타나면 자동으로 클릭됩니다. 확장프로그램 아이콘을 클릭하여 기능을 켜고 끌 수 있습니다.
+
+
+
+
+
+
+
+
+
+
+
