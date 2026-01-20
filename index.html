@@ -58,6 +58,8 @@
         :root {
             --health-color: #00e5ff;
             --health-shadow: #0091ea;
+            --kawaii-color: #FFCDD2;
+            --kawaii-shadow: #FF8A80;
             --retro-color: #ff2a6d;
             --retro-shadow: #c51162;
             --text-color: #ffffff;
@@ -87,7 +89,7 @@
 
         .split {
             height: 100%;
-            width: 50%;
+            width: 33.333%;
             position: relative;
             overflow: hidden;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -118,6 +120,10 @@
 
         .split.left::before {
             background-image: url('./assets/anime_health_lab.png');
+        }
+
+        .split.center::before {
+            background-image: url('./assets/kawaii_diet_lab.png');
         }
 
         .split.right::before {
@@ -198,6 +204,11 @@
             text-shadow: 3px 3px 0px var(--health-shadow);
         }
 
+        .split.center h1 {
+            color: var(--kawaii-color);
+            text-shadow: 3px 3px 0px var(--kawaii-shadow);
+        }
+
         .split.right h1 {
             color: var(--retro-color);
             text-shadow: 3px 3px 0px var(--retro-shadow);
@@ -237,6 +248,15 @@
             transform: translate(-2px, -2px);
         }
 
+        .split.center .btn {
+            background: linear-gradient(45deg, var(--kawaii-shadow), var(--kawaii-color));
+        }
+
+        .split.center .btn:hover {
+            box-shadow: 0 0 15px var(--kawaii-color);
+            transform: translate(-2px, -2px);
+        }
+
         .split.right .btn {
             background: linear-gradient(45deg, var(--retro-shadow), var(--retro-color));
         }
@@ -248,11 +268,11 @@
 
         /* --- Split Behavior --- */
         .split:hover {
-            width: 70%;
+            width: 50%;
         }
 
         .container:hover .split:not(:hover) {
-            width: 30%;
+            width: 25%;
             filter: grayscale(0.8);
         }
 
@@ -370,6 +390,16 @@
             </div>
         </a>
 
+        <!-- MediDiet Section -->
+        <a href="https://romio215-coder.github.io/medidiet/" class="split center">
+            <div class="speed-lines"></div>
+            <div class="content">
+                <h1 data-i18n="medidiet_title">메디다이어트</h1>
+                <p data-i18n="medidiet_desc">시니어를 위한 맞춤 식단 보좌관</p>
+                <div class="btn" data-i18n="medidiet_btn">식단 관리 시작</div>
+            </div>
+        </a>
+
         <!-- Retro Section -->
         <a href="./retro-1980/index.html" class="split right">
             <div class="speed-lines"></div>
@@ -388,6 +418,9 @@
                 'health_title': '건강 연구소',
                 'health_desc': '당신의 활력을 위한 미래 솔루션',
                 'health_btn': '입장하기',
+                'medidiet_title': '메디다이어트',
+                'medidiet_desc': '시니어를 위한 맞춤 식단 보좌관',
+                'medidiet_btn': '식단 관리 시작',
                 'retro_title': '응답하라 1980',
                 'retro_desc': '그 시절, 우리의 따뜻한 추억',
                 'retro_btn': '시간여행 떠나기'
@@ -396,14 +429,20 @@
                 'health_title': 'HEALTH LAB',
                 'health_desc': 'Modern Solutions for Your Vitality',
                 'health_btn': 'START MISSION',
+                'medidiet_title': 'MEDIDIET',
+                'medidiet_desc': 'Smart Nutrition for Seniors',
+                'medidiet_btn': 'GO HEALTHY',
                 'retro_title': 'RETRO 1980',
                 'retro_desc': 'Memory Lane',
                 'retro_btn': 'TIME TRAVEL'
             },
             'jp': {
                 'health_title': '未来研究所',
-                'health_desc': '未来の健康',
+                'health_desc': '未来의 건강',
                 'health_btn': 'ミッション開始',
+                'medidiet_title': 'メディダイエット',
+                'medidiet_desc': 'シニア向け栄養管理',
+                'medidiet_btn': '管理開始',
                 'retro_title': 'レトロ 1980',
                 'retro_desc': '懐かしい思い出',
                 'retro_btn': 'タイムトラベル'
