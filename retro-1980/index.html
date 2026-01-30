@@ -326,8 +326,8 @@
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="text-center md:text-left">
                 <!-- Dynamic Title/Subtitle -->
-                <h1 class="text-2xl md:text-4xl font-bold tracking-wider mb-1 md:mb-2" id="main-title">로딩 중...</h1>
-                <p class="text-sm md:text-base opacity-90" id="main-subtitle">...</p>
+                <h1 class="text-2xl md:text-4xl font-bold tracking-wider mb-1 md:mb-2" id="main-title">응답하라 1980</h1>
+                <p class="text-sm md:text-base opacity-90" id="main-subtitle">그 시절, 우리의 따뜻한 추억</p>
             </div>
             <div class="mt-4 md:mt-0 flex flex-col items-center md:items-end">
                 <div class="flex space-x-2 mb-3">
@@ -370,108 +370,95 @@
         const SUPABASE_KEY = 'sb_publishable_F40YWB1fkqCWZcLlWzHyNA_rbaPfLaG';
         const sbClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-        // Init Dynamic Content
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDynamicContent();
-        });
+        // Initialize static/fallback menu items immediately
+        function initMenu() {
+            const navUl = document.getElementById('dynamic-nav');
+            if (!navUl) return;
+            navUl.innerHTML = '';
+
+            const extraMenu80s = [
+                { id: 'playground', label: '🤾 골목놀이' },
+                { id: 'school', label: '🎒 국민학교' },
+                { id: 'store', label: '🍭 문방구' },
+                { id: 'timeline', label: '📺 역사/뉴스' },
+                { id: 'prompts', label: '🖼️ 추억갤러리' },
+                { id: 'media', label: '📺 미디어' },
+                { id: 'eating', label: '🍴 졸업식 외식' },
+                { id: 'reunion', label: '😢 이산가족' },
+                { id: 'culture-noir', label: '🕶️ 홍콩느와르' },
+                { id: 'culture-sound', label: '📻 음악/롤러' },
+                { id: 'culture-visual', label: '📚 만화/극장' },
+                { id: 'fashion', label: '👖 패션' },
+                { id: 'arcade', label: '🕹️ 오락실' },
+                { id: 'street', label: '🚐 거리풍경' }
+            ];
+
+            const extraMenu90s = [
+                { id: 'basketball', label: '🏀 농구대잔치' },
+                { id: 'trends', label: '🔥 유행과 수집' },
+                { id: 'sitcom', label: '📺 시트콤' },
+                { id: 'society', label: '📰 사회/이슈' },
+                { id: 'hobbies', label: '👾 다마고치/매직아이' },
+                { id: 'indie', label: '🎸 인디밴드' }
+            ];
+
+            extraMenu80s.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'flex-shrink-0 menu-80s-only';
+                li.innerHTML = `<button onclick="navTo('${item.id}')" id="btn-${item.id}" class="nav-btn px-4 py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
+                navUl.appendChild(li);
+            });
+
+            extraMenu90s.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'flex-shrink-0 menu-90s-only';
+                li.style.display = 'none';
+                li.innerHTML = `<button onclick="navTo('${item.id}')" id="btn-${item.id}" class="nav-btn px-4 py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
+                navUl.appendChild(li);
+            });
+
+            // Set initial active state
+            document.querySelector('.nav-btn')?.classList.add('tab-active');
+        }
 
         async function loadDynamicContent() {
-            if (!sbClient) return; // Fallback if script fails
+            if (!sbClient) return;
+            try {
+                const { data: assets } = await sbClient.from('site_assets').select('*');
+                if (assets) {
+                    const title = assets.find(r => r.key === 'main_title');
+                    const sub = assets.find(r => r.key === 'main_subtitle');
+                    if (title) document.getElementById('main-title').innerText = title.value;
+                    if (sub) document.getElementById('main-subtitle').innerText = sub.value;
 
-            // 1. Load Texts
-            const { data: assets } = await sbClient.from('site_assets').select('*');
-            if (assets) {
-                const title = assets.find(r => r.key === 'main_title');
-                const sub = assets.find(r => r.key === 'main_subtitle');
-                if (title) document.getElementById('main-title').innerText = title.value;
-                if (sub) document.getElementById('main-subtitle').innerText = sub.value;
+                    assets.forEach(asset => {
+                        if (asset.key.startsWith('img_')) {
+                            const img = document.querySelector(`img[data-asset-key="${asset.key}"]`);
+                            if (img) img.src = asset.value;
+                        }
+                    });
+                }
 
-                // 2. Load Images
-                assets.forEach(asset => {
-                    if (asset.key.startsWith('img_')) {
-                        const img = document.querySelector(`img[data-asset-key="${asset.key}"]`);
-                        if (img) img.src = asset.value;
-                    }
-                });
-            }
-
-            // 3. Load Menu (kept same)
-            const { data: menu } = await sbClient.from('menu_items').select('*').order('order_index');
-            const navUl = document.getElementById('dynamic-nav');
-
-            if (menu && menu.length > 0) {
-                navUl.innerHTML = '';
-                menu.forEach(item => {
-                    const li = document.createElement('li');
-                    li.className = 'flex-shrink-0';
-                    li.innerHTML = `
-                        <button onclick="navTo('${item.action_id}')" id="btn-${item.action_id}"
-                            class="nav-btn px-3 py-2 md:px-4 md:py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors focus:outline-none rounded">
-                            ${item.label}
-                        </button>
-                    `;
-                    navUl.appendChild(li);
-                });
-
-                // [NEW] Append 80s extra menu items
-                // Only if looking at 80s menu? 
-                // Since this logic runs on load, we add them. 
-                // They might be visible for 90s if not handled, but 90s has no target for these, so clicking does nothing/hides all.
-                // We accept this for now as per "Add 80s content" priority.
-                const extraMenu80s = [
-                    { id: 'media', label: '📺 미디어' },
-                    { id: 'eating', label: '🍴 졸업식 외식' },
-                    { id: 'reunion', label: '😢 이산가족' },
-                    { id: 'culture-noir', label: '🕶️ 홍콩느와르' },
-                    { id: 'culture-sound', label: '📻 음악/롤러' },
-                    { id: 'culture-visual', label: '📚 만화/극장' },
-                    { id: 'fashion', label: '👖 패션' },
-                    { id: 'arcade', label: '🕹️ 오락실' },
-                    { id: 'street', label: '🚐 거리풍경' }
-                ];
-
-                extraMenu80s.forEach(item => {
-                    const li = document.createElement('li');
-                    li.className = 'flex-shrink-0 menu-80s-only';
-                    li.innerHTML = `
-                        <button onclick="navTo('${item.id}')" id="btn-${item.id}"
-                            class="nav-btn px-6 py-4 hover:bg-[#d6ceb2] transition-colors focus:outline-none">
-                            ${item.label}
-                        </button>
-                     `;
-                    navUl.appendChild(li);
-                });
-
-                // [NEW] Append 90s extra menu items
-                const extraMenu90s = [
-                    { id: 'basketball', label: '🏀 농구대잔치' },
-                    { id: 'trends', label: '🔥 유행과 수집' },
-                    { id: 'sitcom', label: '📺 시트콤' },
-                    { id: 'society', label: '📰 사회/이슈' },
-                    { id: 'hobbies', label: '👾 다마고치/매직아이' },
-                    { id: 'indie', label: '🎸 인디밴드' }
-                ];
-
-                extraMenu90s.forEach(item => {
-                    const li = document.createElement('li');
-                    li.className = 'flex-shrink-0 menu-90s-only';
-                    li.style.display = 'none'; // Initially hidden
-                    li.innerHTML = `
-                        <button onclick="navTo('${item.id}')" id="btn-${item.id}"
-                            class="nav-btn px-6 py-4 hover:bg-[#d6ceb2] transition-colors focus:outline-none">
-                            ${item.label}
-                        </button>
-                     `;
-                    navUl.appendChild(li);
-                });
-
-                // Set initial active state manually or check hash
-                document.querySelector('.nav-btn')?.classList.add('tab-active');
-            } else {
-                // Fallback content if DB is empty or connection error
-                console.log("No menu data found, using fallback or retaining existing logic if possible");
+                const { data: menu } = await sbClient.from('menu_items').select('*').order('order_index');
+                if (menu && menu.length > 0) {
+                    const navUl = document.getElementById('dynamic-nav');
+                    menu.reverse().forEach(item => {
+                        if (!document.getElementById('btn-' + item.action_id)) {
+                            const li = document.createElement('li');
+                            li.className = 'flex-shrink-0';
+                            li.innerHTML = `<button onclick="navTo('${item.action_id}')" id="btn-${item.action_id}" class="nav-btn px-3 py-2 md:px-4 md:py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
+                            navUl.insertBefore(li, navUl.firstChild);
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Supabase load error:", err);
             }
         }
+
+        // Run initialization
+        initMenu();
+        document.addEventListener('DOMContentLoaded', loadDynamicContent);
     </script>
 
     <!-- Content Container -->
@@ -3979,26 +3966,30 @@
             if (document.getElementById('era-90s').classList.contains('era-active')) currentEra = '90s';
             if (document.getElementById('era-00s') && document.getElementById('era-00s').classList.contains('era-active')) currentEra = '00s';
 
-            if (currentEra === '00s') return; // The 00s era uses its own navigation system
+            if (currentEra === '00s') return;
 
             const suffix = currentEra === '90s' ? '-90s' : '';
             const targetId = sectionId + suffix;
 
-            // Hide all sections for both eras
+            // Hide all sections
             document.querySelectorAll('.section-content, .section-content-90s').forEach(section => {
                 section.classList.add('hidden');
             });
 
             // Show target section
-            if (document.getElementById(targetId)) {
-                document.getElementById(targetId).classList.remove('hidden');
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.classList.remove('hidden');
             }
 
             // Update nav styling
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('tab-active');
             });
-            document.getElementById('btn-' + sectionId).classList.add('tab-active');
+            const btn = document.getElementById('btn-' + sectionId);
+            if (btn) {
+                btn.classList.add('tab-active');
+            }
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
