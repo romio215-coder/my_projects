@@ -363,6 +363,7 @@
         class="fixed bottom-4 right-4 bg-red-600 text-white font-bold p-3 rounded shadow-lg z-50 hover:bg-red-500 transition">⚙️
         Admin</a>
 
+    <script src="guestbook.js"></script>
     <!-- Supabase Logic -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
@@ -582,101 +583,7 @@
                     </div>
                 </div>
 
-                <!-- Firebase SDK -->
-                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-                <script>
-                    // --- Firebase Configuration ---
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyDSkNCvrW_6z5A68Fe4ojSHNM6DUMqrnrk",
-                        authDomain: "my-projects-b1173.firebaseapp.com",
-                        projectId: "my-projects-b1173",
-                        storageBucket: "my-projects-b1173.firebasestorage.app",
-                        messagingSenderId: "217698801638",
-                        appId: "1:217698801638:web:fe11f52799012b2a98e827",
-                        measurementId: "G-SP9RFMQCVJ"
-                    };
-
-                    // Initialize Firebase
-                    const app = firebase.initializeApp(firebaseConfig);
-                    const db = firebase.firestore(app);
-
-                    // 80s Guestbook Logic (Firestore)
-                    function renderComments80s(doc) {
-                        const list = document.getElementById('comment-list-80s');
-                        const data = doc.data();
-                        const html = `
-                            <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3 animate-fadeIn">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                    <span class="text-xs text-gray-400">${data.date}</span>
-                                </div>
-                                <p class="text-gray-700 text-sm">${data.text}</p>
-                            </div>
-                        `;
-                        // Prepend (latest first) is handled by query order, but for onSnapshot usually we clear and redraw or append.
-                        // For simplicity in real-time, we will clear and redraw entire list on snapshot update OR prepend single new one.
-                        // Let's use clean full redraw for simplicity and correctness with ordering.
-                    }
-
-                    // Real-time listener
-                    db.collection("guestbook80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                        const list = document.getElementById('comment-list-80s');
-                        list.innerHTML = ''; // Request clear
-                        snapshot.forEach((doc) => {
-                            renderComments80s(doc); // Re-use render function logic basically inside
-                            const data = doc.data();
-                            list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                        });
-                    }, (error) => {
-                        console.error("Error getting documents: ", error);
-                        // If config is wrong, show a friendly message
-                        const list = document.getElementById('comment-list-80s');
-                        list.innerHTML = '<div class="text-center text-red-500 p-4">🔥 파이어베이스 설정이 필요합니다.<br>코드를 확인해주세요!</div>';
-                    });
-
-                    function addComment80s() {
-                        const nameInput = document.getElementById('guest-name-80s');
-                        const msgInput = document.getElementById('guest-msg-80s');
-
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) {
-                            alert('이름과 내용을 모두 입력해주세요!');
-                            return;
-                        }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        // Add to Firestore
-                        db.collection("guestbook80s").add({
-                            name: name,
-                            text: text,
-                            date: dateStr,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        })
-                            .then(() => {
-                                // Success - clear inputs (List updates automatically via onSnapshot)
-                                nameInput.value = '';
-                                msgInput.value = '';
-                            })
-                            .catch((error) => {
-                                console.error("Error adding document: ", error);
-                                alert("글 저장에 실패했습니다. 설정을 확인해주세요.");
-                            });
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook80s", "list": "comment-list-80s", "handler": "addComment80s", "name": "guest-name-80s", "message": "guest-msg-80s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3 animate-fadeIn", "name": "font-bold text-[#15803d] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 2: School Life -->
@@ -853,80 +760,7 @@
                     </div>
                 </div>
 
-                <script>
-                    // Only add if not already defined (though this script block is unique per section in this file structure, 
-                    // careful not to redefine "db" or "app" if they are global. The previous script block defined them globally.)
-                    // Actually, the previous script block was inside #playground section. 
-                    // Let's assume the previous script runs and defines 'db'.
-                    // To be safe, we'll check if db is defined, or just reuse the code assuming single page load.
-                    // However, script tags in HTML body execute as parsed. 
-
-                    // School Guestbook Logic (Firestore)
-
-                    // We need to wait for Firebase to be initialized if it was in the previous section.
-                    // Since it's all in index.html, the previous script tag runs first.
-                    // So 'db' should be available.
-
-                    // Real-time listener for School
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_school_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-school');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        }, (error) => {
-                            console.error("Error getting school documents: ", error);
-                            const list = document.getElementById('comment-list-school');
-                            list.innerHTML = '<div class="text-center text-red-500 p-4">초코파이 사주시나요? (DB연결 필요)</div>';
-                        });
-                    }
-
-                    function addCommentSchool() {
-                        const nameInput = document.getElementById('guest-name-school');
-                        const msgInput = document.getElementById('guest-msg-school');
-
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) {
-                            alert('이름과 내용을 모두 입력해주세요!');
-                            return;
-                        }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        // Add to Firestore
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_school_80s").add({
-                                name: name,
-                                text: text,
-                                date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            })
-                                .then(() => {
-                                    nameInput.value = '';
-                                    msgInput.value = '';
-                                })
-                                .catch((error) => {
-                                    console.error("Error adding document: ", error);
-                                    alert("글 저장에 실패했습니다.");
-                                });
-                        } else {
-                            alert("데이터베이스 연결이 안되어있습니다.");
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_school_80s", "list": "comment-list-school", "handler": "addCommentSchool", "name": "guest-name-school", "message": "guest-msg-school", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#15803d] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 3: Stationery Store (Snacks) -->
@@ -1042,42 +876,7 @@
                     </div>
                     <div id="comment-list-store" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_store_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-store');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStore() {
-                        const name = document.getElementById('guest-name-store').value.trim();
-                        const text = document.getElementById('guest-msg-store').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_store_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-store').value = '';
-                                document.getElementById('guest-msg-store').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_store_80s", "list": "comment-list-store", "handler": "addCommentStore", "name": "guest-name-store", "message": "guest-msg-store", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#b91c1c] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 4: Timeline (News) 80s -->
@@ -1131,42 +930,7 @@
                     </div>
                     <div id="comment-list-news" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_news_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-news');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#1d4ed8] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNews() {
-                        const name = document.getElementById('guest-name-news').value.trim();
-                        const text = document.getElementById('guest-msg-news').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_news_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-news').value = '';
-                                document.getElementById('guest-msg-news').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_news_80s", "list": "comment-list-news", "handler": "addCommentNews", "name": "guest-name-news", "message": "guest-msg-news", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#1d4ed8] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 5: AI Prompts -->
@@ -1462,61 +1226,7 @@
                     </div>
                 </div>
 
-                <script>
-                    // 80s Prompts Guestbook Logic
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_prompts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('guestbook-list-prompts');
-                            if (!list) return;
-                            list.innerHTML = '';
-
-                            if (snapshot.empty) {
-                                list.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">아직 남겨진 추억이 없습니다. 첫 번째 추억을 남겨보세요!</div>';
-                                return;
-                            }
-
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                const div = document.createElement('div');
-                                div.className = 'bg-white/80 p-3 rounded shadow-sm border-l-4 border-purple-400 flex justify-between items-start';
-                                // Simple XSS protection for name and text
-                                const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                                const safeText = data.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-                                div.innerHTML = `
-                                    <div>
-                                        <span class="font-bold text-purple-900 text-sm block mb-1">${safeName}</span>
-                                        <p class="text-gray-700 text-sm break-all font-['DungGeunMo']">${safeText}</p>
-                                    </div>
-                                    <span class="text-xs text-gray-400 whitespace-nowrap ml-2">${data.date}</span>
-                                `;
-                                list.appendChild(div);
-                            });
-                        });
-                    }
-
-                    function addCommentPrompts() {
-                        const nameInput = document.getElementById('guest-name-prompts');
-                        const msgInput = document.getElementById('guest-msg-prompts');
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) { alert('이름과 추억을 입력해주세요!'); return; }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_prompts").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                nameInput.value = '';
-                                msgInput.value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_prompts", "list": "guestbook-list-prompts", "handler": "addCommentPrompts", "name": "guest-name-prompts", "message": "guest-msg-prompts", "theme": {}});</script>
             </section>
 
             <!-- Section 6: Media (Color TV) -->
@@ -1557,42 +1267,7 @@
                     </div>
                     <div id="comment-list-media" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_media_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-media');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentMedia() {
-                        const name = document.getElementById('guest-name-media').value.trim();
-                        const text = document.getElementById('guest-msg-media').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_media_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-media').value = '';
-                                document.getElementById('guest-msg-media').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_media_80s", "list": "comment-list-media", "handler": "addCommentMedia", "name": "guest-name-media", "message": "guest-msg-media", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#b91c1c] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 7: Reunion (Family Search) -->
@@ -1633,42 +1308,7 @@
                     <div id="comment-list-reunion" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_reunion_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-reunion');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentReunion() {
-                        const name = document.getElementById('guest-name-reunion').value.trim();
-                        const text = document.getElementById('guest-msg-reunion').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_reunion_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-reunion').value = '';
-                                document.getElementById('guest-msg-reunion').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_reunion_80s", "list": "comment-list-reunion", "handler": "addCommentReunion", "name": "guest-name-reunion", "message": "guest-msg-reunion", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#15803d] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 8: Hong Kong Noir -->
@@ -1719,42 +1359,7 @@
                     </div>
                     <div id="comment-list-noir" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_noir_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-noir');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-gray-800 p-3 rounded shadow-sm border border-gray-700 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-yellow-500 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-300 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNoir() {
-                        const name = document.getElementById('guest-name-noir').value.trim();
-                        const text = document.getElementById('guest-msg-noir').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_noir_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-noir').value = '';
-                                document.getElementById('guest-msg-noir').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_noir_80s", "list": "comment-list-noir", "handler": "addCommentNoir", "name": "guest-name-noir", "message": "guest-msg-noir", "theme": {"card": "bg-gray-800 p-3 rounded shadow-sm border border-gray-700 mb-3", "name": "font-bold text-yellow-500 text-sm", "text": "text-gray-300 text-sm"}});</script>
             </section>
 
             <!-- Section 9: Sound (Radio & Roller) -->
@@ -1800,42 +1405,7 @@
                     </div>
                     <div id="comment-list-sound" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_sound_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-sound');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#8c7b6c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentSound() {
-                        const name = document.getElementById('guest-name-sound').value.trim();
-                        const text = document.getElementById('guest-msg-sound').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_sound_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-sound').value = '';
-                                document.getElementById('guest-msg-sound').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_sound_80s", "list": "comment-list-sound", "handler": "addCommentSound", "name": "guest-name-sound", "message": "guest-msg-sound", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#8c7b6c] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 10: Visual (Manhwa & Cinema) -->
@@ -1886,42 +1456,7 @@
                     <div id="comment-list-visual" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_visual_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-visual');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentVisual() {
-                        const name = document.getElementById('guest-name-visual').value.trim();
-                        const text = document.getElementById('guest-msg-visual').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_visual_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-visual').value = '';
-                                document.getElementById('guest-msg-visual').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_visual_80s", "list": "comment-list-visual", "handler": "addCommentVisual", "name": "guest-name-visual", "message": "guest-msg-visual", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#b91c1c] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 11: Fashion -->
@@ -1969,42 +1504,7 @@
                     <div id="comment-list-fashion" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_fashion_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-fashion');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentFashion() {
-                        const name = document.getElementById('guest-name-fashion').value.trim();
-                        const text = document.getElementById('guest-msg-fashion').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_fashion_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-fashion').value = '';
-                                document.getElementById('guest-msg-fashion').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_fashion_80s", "list": "comment-list-fashion", "handler": "addCommentFashion", "name": "guest-name-fashion", "message": "guest-msg-fashion", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-blue-100 mb-3", "name": "font-bold text-blue-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 12: Arcade -->
@@ -2052,42 +1552,7 @@
                     <div id="comment-list-arcade" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_arcade_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-arcade');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-black p-3 rounded shadow-sm border border-green-900 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-400 text-sm font-mono">${data.name}</span>
-                                            <span class="text-xs text-green-700 font-mono">${data.date}</span>
-                                        </div>
-                                        <p class="text-green-200 text-sm font-mono">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentArcade() {
-                        const name = document.getElementById('guest-name-arcade').value.trim();
-                        const text = document.getElementById('guest-msg-arcade').value.trim();
-                        if (!name || !text) { alert('이니셜과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_arcade_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-arcade').value = '';
-                                document.getElementById('guest-msg-arcade').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_arcade_80s", "list": "comment-list-arcade", "handler": "addCommentArcade", "name": "guest-name-arcade", "message": "guest-msg-arcade", "theme": {"card": "bg-black p-3 rounded shadow-sm border border-green-900 mb-3", "name": "font-bold text-green-400 text-sm font-mono", "text": "text-green-200 text-sm font-mono"}});</script>
             </section>
 
             <!-- Section 13: Street -->
@@ -2162,42 +1627,7 @@
                     <div id="comment-list-street" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_street_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-street');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStreet() {
-                        const name = document.getElementById('guest-name-street').value.trim();
-                        const text = document.getElementById('guest-msg-street').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_street_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-street').value = '';
-                                document.getElementById('guest-msg-street').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_street_80s", "list": "comment-list-street", "handler": "addCommentStreet", "name": "guest-name-street", "message": "guest-msg-street", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-[#b91c1c] text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 14: Eating Out (Tonkatsu) -->
@@ -2283,42 +1713,7 @@
                     <div id="comment-list-eating" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_eating_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-eating');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-orange-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentEating() {
-                        const name = document.getElementById('guest-name-eating').value.trim();
-                        const text = document.getElementById('guest-msg-eating').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_eating_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-eating').value = '';
-                                document.getElementById('guest-msg-eating').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_eating_80s", "list": "comment-list-eating", "handler": "addCommentEating", "name": "guest-name-eating", "message": "guest-msg-eating", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-100 mb-3", "name": "font-bold text-orange-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
         </div>
 
@@ -2388,42 +1783,7 @@
                     <div id="comment-list-alley-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_alley_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-alley-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentAlley90s() {
-                        const name = document.getElementById('guest-name-alley-90s').value.trim();
-                        const text = document.getElementById('guest-msg-alley-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_alley_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-alley-90s').value = '';
-                                document.getElementById('guest-msg-alley-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_alley_90s", "list": "comment-list-alley-90s", "handler": "addCommentAlley90s", "name": "guest-name-alley-90s", "message": "guest-msg-alley-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-blue-100 mb-3", "name": "font-bold text-blue-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 2: School Life (X-Gen) -->
@@ -2476,42 +1836,7 @@
                     <div id="comment-list-school-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_school_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-school-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-purple-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-purple-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentSchool90s() {
-                        const name = document.getElementById('guest-name-school-90s').value.trim();
-                        const text = document.getElementById('guest-msg-school-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_school_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-school-90s').value = '';
-                                document.getElementById('guest-msg-school-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_school_90s", "list": "comment-list-school-90s", "handler": "addCommentSchool90s", "name": "guest-name-school-90s", "message": "guest-msg-school-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-purple-100 mb-3", "name": "font-bold text-purple-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 3: Store (Tech/Items) -->
@@ -2578,42 +1903,7 @@
                     <div id="comment-list-store-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_store_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-store-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-gray-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStore90s() {
-                        const name = document.getElementById('guest-name-store-90s').value.trim();
-                        const text = document.getElementById('guest-msg-store-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_store_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-store-90s').value = '';
-                                document.getElementById('guest-msg-store-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_store_90s", "list": "comment-list-store-90s", "handler": "addCommentStore90s", "name": "guest-name-store-90s", "message": "guest-msg-store-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3", "name": "font-bold text-gray-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 4: Timeline 90s -->
@@ -2681,42 +1971,7 @@
                     <div id="comment-list-news-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_news_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-news-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNews90s() {
-                        const name = document.getElementById('guest-name-news-90s').value.trim();
-                        const text = document.getElementById('guest-msg-news-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_news_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-news-90s').value = '';
-                                document.getElementById('guest-msg-news-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_news_90s", "list": "comment-list-news-90s", "handler": "addCommentNews90s", "name": "guest-name-news-90s", "message": "guest-msg-news-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-blue-100 mb-3", "name": "font-bold text-blue-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 5: AI Gallery 90s -->
@@ -2967,42 +2222,7 @@
                     <div id="comment-list-prompts-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_prompts_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-prompts-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentPrompts90s() {
-                        const name = document.getElementById('guest-name-prompts-90s').value.trim();
-                        const text = document.getElementById('guest-msg-prompts-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_prompts_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-prompts-90s').value = '';
-                                document.getElementById('guest-msg-prompts-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_prompts_90s", "list": "comment-list-prompts-90s", "handler": "addCommentPrompts90s", "name": "guest-name-prompts-90s", "message": "guest-msg-prompts-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-blue-100 mb-3", "name": "font-bold text-blue-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 6: Basketball Fever (New) -->
@@ -3060,42 +2280,7 @@
                         class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_basketball_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-basketball-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentBasketball90s() {
-                        const name = document.getElementById('guest-name-basketball-90s').value.trim();
-                        const text = document.getElementById('guest-msg-basketball-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_basketball_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-basketball-90s').value = '';
-                                document.getElementById('guest-msg-basketball-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_basketball_90s", "list": "comment-list-basketball-90s", "handler": "addCommentBasketball90s", "name": "guest-name-basketball-90s", "message": "guest-msg-basketball-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-red-100 mb-3", "name": "font-bold text-red-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 7: Sitcom Era (New) -->
@@ -3141,42 +2326,7 @@
                     <div id="comment-list-sitcom-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_sitcom_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-sitcom-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-800 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentSitcom90s() {
-                        const name = document.getElementById('guest-name-sitcom-90s').value.trim();
-                        const text = document.getElementById('guest-msg-sitcom-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_sitcom_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-sitcom-90s').value = '';
-                                document.getElementById('guest-msg-sitcom-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_sitcom_90s", "list": "comment-list-sitcom-90s", "handler": "addCommentSitcom90s", "name": "guest-name-sitcom-90s", "message": "guest-msg-sitcom-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3", "name": "font-bold text-gray-800 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 8: Society & Fashion Issues (New) -->
@@ -3230,42 +2380,7 @@
                     <div id="comment-list-society-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_society_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-society-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-gray-200 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-500">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-800 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentSociety90s() {
-                        const name = document.getElementById('guest-name-society-90s').value.trim();
-                        const text = document.getElementById('guest-msg-society-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_society_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-society-90s').value = '';
-                                document.getElementById('guest-msg-society-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_society_90s", "list": "comment-list-society-90s", "handler": "addCommentSociety90s", "name": "guest-name-society-90s", "message": "guest-msg-society-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-gray-200 mb-3", "name": "font-bold text-gray-900 text-sm", "text": "text-gray-800 text-sm"}});</script>
             </section>
 
             <!-- Section 8b: Indie Band Detailed (New - for specific menu) -->
@@ -3311,42 +2426,7 @@
                     <div id="comment-list-indie-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_indie_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-indie-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-gray-900 p-3 rounded shadow-sm border border-green-900 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-500 text-sm">${data.name}</span>
-                                            <span class="text-xs text-green-800">${data.date}</span>
-                                        </div>
-                                        <p class="text-green-300 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentIndie90s() {
-                        const name = document.getElementById('guest-name-indie-90s').value.trim();
-                        const text = document.getElementById('guest-msg-indie-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_indie_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-indie-90s').value = '';
-                                document.getElementById('guest-msg-indie-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_indie_90s", "list": "comment-list-indie-90s", "handler": "addCommentIndie90s", "name": "guest-name-indie-90s", "message": "guest-msg-indie-90s", "theme": {"card": "bg-gray-900 p-3 rounded shadow-sm border border-green-900 mb-3", "name": "font-bold text-green-500 text-sm", "text": "text-green-300 text-sm"}});</script>
             </section>
 
             <!-- Section 9: Hobbies (Tamagotchi, Magic Eye) -->
@@ -3395,42 +2475,7 @@
                     <div id="comment-list-hobbies-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_hobbies_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-hobbies-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-teal-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-teal-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentHobbies90s() {
-                        const name = document.getElementById('guest-name-hobbies-90s').value.trim();
-                        const text = document.getElementById('guest-msg-hobbies-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_hobbies_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-hobbies-90s').value = '';
-                                document.getElementById('guest-msg-hobbies-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_hobbies_90s", "list": "comment-list-hobbies-90s", "handler": "addCommentHobbies90s", "name": "guest-name-hobbies-90s", "message": "guest-msg-hobbies-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-teal-100 mb-3", "name": "font-bold text-teal-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- Section 10: Trends (Sticker Photo & Bread) -->
@@ -3501,42 +2546,7 @@
                     <div id="comment-list-trends-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_trends_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-trends-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-pink-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-pink-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentTrends90s() {
-                        const name = document.getElementById('guest-name-trends-90s').value.trim();
-                        const text = document.getElementById('guest-msg-trends-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_trends_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-trends-90s').value = '';
-                                document.getElementById('guest-msg-trends-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_trends_90s", "list": "comment-list-trends-90s", "handler": "addCommentTrends90s", "name": "guest-name-trends-90s", "message": "guest-msg-trends-90s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-pink-100 mb-3", "name": "font-bold text-pink-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
         </div>
 
@@ -3615,42 +2625,7 @@
                     <div id="comment-list-games-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_games_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-games-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-gray-800 p-3 rounded shadow-sm border border-green-900 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-green-500 text-sm">${data.name}</span>
-                                        <span class="text-xs text-green-800">${data.date}</span>
-                                    </div>
-                                    <p class="text-green-300 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentGames00s() {
-                        const name = document.getElementById('guest-name-games-00s').value.trim();
-                        const text = document.getElementById('guest-msg-games-00s').value.trim();
-                        if (!name || !text) { alert('아이디와 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_games_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-games-00s').value = '';
-                                document.getElementById('guest-msg-games-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_games_00s", "list": "comment-list-games-00s", "handler": "addCommentGames00s", "name": "guest-name-games-00s", "message": "guest-msg-games-00s", "theme": {"card": "bg-gray-800 p-3 rounded shadow-sm border border-green-900 mb-3", "name": "font-bold text-green-500 text-sm", "text": "text-green-300 text-sm"}});</script>
             </section>
 
             <!-- 2000s Home -->
@@ -3734,42 +2709,7 @@
                     <div id="comment-list-music-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_music_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-music-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentMusic00s() {
-                        const name = document.getElementById('guest-name-music-00s').value.trim();
-                        const text = document.getElementById('guest-msg-music-00s').value.trim();
-                        if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_music_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-music-00s').value = '';
-                                document.getElementById('guest-msg-music-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_music_00s", "list": "comment-list-music-00s", "handler": "addCommentMusic00s", "name": "guest-name-music-00s", "message": "guest-msg-music-00s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-blue-100 mb-3", "name": "font-bold text-blue-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- 2000s Tech -->
@@ -3815,42 +2755,7 @@
                     <div id="comment-list-tech-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_tech_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-tech-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-orange-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-orange-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentTech00s() {
-                        const name = document.getElementById('guest-name-tech-00s').value.trim();
-                        const text = document.getElementById('guest-msg-tech-00s').value.trim();
-                        if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_tech_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-tech-00s').value = '';
-                                document.getElementById('guest-msg-tech-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
+                <script>RetroGuestbook.register({"board": "guestbook_tech_00s", "list": "comment-list-tech-00s", "handler": "addCommentTech00s", "name": "guest-name-tech-00s", "message": "guest-msg-tech-00s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-orange-100 mb-3", "name": "font-bold text-orange-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
 
             <!-- 2000s Society -->
@@ -3909,42 +2814,7 @@
                             class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                         </div>
                     </div>
-                    <script>
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_society_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                                const list = document.getElementById('comment-list-society-00s');
-                                list.innerHTML = '';
-                                snapshot.forEach((doc) => {
-                                    const data = doc.data();
-                                    list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
-                                </div>
-                            `;
-                                });
-                            });
-                        }
-                        function addCommentSociety00s() {
-                            const name = document.getElementById('guest-name-society-00s').value.trim();
-                            const text = document.getElementById('guest-msg-society-00s').value.trim();
-                            if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                            const now = new Date();
-                            const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                            if (typeof db !== 'undefined') {
-                                db.collection("guestbook_society_00s").add({
-                                    name: name, text: text, date: dateStr,
-                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                                }).then(() => {
-                                    document.getElementById('guest-name-society-00s').value = '';
-                                    document.getElementById('guest-msg-society-00s').value = '';
-                                }).catch((error) => { console.error(error); alert("저장 실패"); });
-                            }
-                        }
-                    </script>
+                    <script>RetroGuestbook.register({"board": "guestbook_society_00s", "list": "comment-list-society-00s", "handler": "addCommentSociety00s", "name": "guest-name-society-00s", "message": "guest-msg-society-00s", "theme": {"card": "bg-white p-3 rounded shadow-sm border border-red-100 mb-3", "name": "font-bold text-red-900 text-sm", "text": "text-gray-700 text-sm"}});</script>
             </section>
         </div>
     </main>
@@ -4553,6 +3423,14 @@
             }
         };
     </script>
+<script>
+    // Public widget key only. Never put TURNSTILE_SECRET_KEY here.
+    const GUESTBOOK_TURNSTILE_SITEKEY = '';
+    document.addEventListener('DOMContentLoaded', () => {
+        RetroGuestbook.start(sbClient, { sitekey: GUESTBOOK_TURNSTILE_SITEKEY });
+    });
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </body>
 
 ```
