@@ -317,6 +317,8 @@
     </style>
 
 
+    <link rel="stylesheet" href="navigation.css">
+    <script src="navigation.js"></script>
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -348,13 +350,11 @@
         </div>
     </header>
 
-    <!-- Main Navigation -->
-    <nav class="bg-[#e6dec3] sticky top-0 z-50 shadow-sm border-b border-[#d6ceb2]">
-        <div class="container mx-auto">
-            <ul id="dynamic-nav"
-                class="flex flex-nowrap overflow-x-auto md:flex-wrap justify-start md:justify-center gap-2 py-2 px-4 md:px-0">
-                <!-- Items will be loaded by JS -->
-            </ul>
+    <!-- Grouped navigation: categories first, selected category's sections second. -->
+    <nav class="retro-navigation sticky top-0 z-50 shadow-sm" aria-label="추억 주제">
+        <div class="navigation-inner">
+            <ul id="dynamic-nav"></ul>
+            <div id="section-nav" role="group" aria-label="세부 주제"></div>
         </div>
     </nav>
 
@@ -371,55 +371,7 @@
         const sbClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
         // Initialize static/fallback menu items immediately
-        function initMenu() {
-            const navUl = document.getElementById('dynamic-nav');
-            if (!navUl) return;
-            navUl.innerHTML = '';
-
-            const extraMenu80s = [
-                { id: 'playground', label: '🤾 골목놀이' },
-                { id: 'school', label: '🎒 국민학교' },
-                { id: 'store', label: '🍭 문방구' },
-                { id: 'timeline', label: '📺 역사/뉴스' },
-                { id: 'prompts', label: '🖼️ 추억갤러리' },
-                { id: 'media', label: '📺 미디어' },
-                { id: 'eating', label: '🍴 졸업식 외식' },
-                { id: 'reunion', label: '😢 이산가족' },
-                { id: 'culture-noir', label: '🕶️ 홍콩느와르' },
-                { id: 'culture-sound', label: '📻 음악/롤러' },
-                { id: 'culture-visual', label: '📚 만화/극장' },
-                { id: 'fashion', label: '👖 패션' },
-                { id: 'arcade', label: '🕹️ 오락실' },
-                { id: 'street', label: '🚐 거리풍경' }
-            ];
-
-            const extraMenu90s = [
-                { id: 'basketball', label: '🏀 농구대잔치' },
-                { id: 'trends', label: '🔥 유행과 수집' },
-                { id: 'sitcom', label: '📺 시트콤' },
-                { id: 'society', label: '📰 사회/이슈' },
-                { id: 'hobbies', label: '👾 다마고치/매직아이' },
-                { id: 'indie', label: '🎸 인디밴드' }
-            ];
-
-            extraMenu80s.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'flex-shrink-0 menu-80s-only';
-                li.innerHTML = `<button onclick="navTo('${item.id}')" id="btn-${item.id}" class="nav-btn px-4 py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
-                navUl.appendChild(li);
-            });
-
-            extraMenu90s.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'flex-shrink-0 menu-90s-only';
-                li.style.display = 'none';
-                li.innerHTML = `<button onclick="navTo('${item.id}')" id="btn-${item.id}" class="nav-btn px-4 py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
-                navUl.appendChild(li);
-            });
-
-            // Set initial active state
-            document.querySelector('.nav-btn')?.classList.add('tab-active');
-        }
+        function initMenu() { RetroNavigation.render('80s', 'playground'); }
 
         async function loadDynamicContent() {
             if (!sbClient) return;
@@ -440,17 +392,7 @@
                 }
 
                 const { data: menu } = await sbClient.from('menu_items').select('*').order('order_index');
-                if (menu && menu.length > 0) {
-                    const navUl = document.getElementById('dynamic-nav');
-                    menu.reverse().forEach(item => {
-                        if (!document.getElementById('btn-' + item.action_id)) {
-                            const li = document.createElement('li');
-                            li.className = 'flex-shrink-0';
-                            li.innerHTML = `<button onclick="navTo('${item.action_id}')" id="btn-${item.action_id}" class="nav-btn px-3 py-2 md:px-4 md:py-2 text-sm md:text-base hover:bg-[#d6ceb2] transition-colors rounded">${item.label}</button>`;
-                            navUl.insertBefore(li, navUl.firstChild);
-                        }
-                    });
-                }
+                if (menu) RetroNavigation.updateMenu(menu);
             } catch (err) {
                 console.error("Supabase load error:", err);
             }
@@ -3970,6 +3912,7 @@
 
             const suffix = currentEra === '90s' ? '-90s' : '';
             const targetId = sectionId + suffix;
+            if (!document.getElementById(targetId)) return;
 
             // Hide all sections
             document.querySelectorAll('.section-content, .section-content-90s').forEach(section => {
@@ -3990,6 +3933,8 @@
             if (btn) {
                 btn.classList.add('tab-active');
             }
+
+            RetroNavigation.render(currentEra, sectionId);
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
