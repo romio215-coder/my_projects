@@ -3,6 +3,9 @@ const translations = {
     en: {skip:'Skip to services',headline:'A healthier today. A familiar yesterday.',intro:'Wellness, nutrition, and nostalgia. Start with what speaks to you.',health_title:'Health Lab',health_desc:'Health stories and everyday habits for a more energetic life.',health_btn:'Explore wellness',medidiet_title:'MediDiet',medidiet_desc:'A nutrition companion for seniors. Make everyday meals a little healthier.',medidiet_btn:'Plan your meals',retro_title:'Retro 1980',retro_desc:'From neighborhood games to favorite songs. Rediscover the moments you remember.',retro_btn:'Take a trip back',footer:'Connecting who we are with where we’ve been'},
     jp: {skip:'サービスへ移動',headline:'健やかな今日、懐かしいあの日。',intro:'健康、食事、そして思い出。気になる場所から始めましょう。',health_title:'健康研究所',health_desc:'健やかな毎日のための健康情報と、暮らしの中の小さな習慣。',health_btn:'健康のヒントを見る',medidiet_title:'メディダイエット',medidiet_desc:'シニアのための食事サポート。毎日の食事を少しずつ健やかに。',medidiet_btn:'食事管理を始める',retro_title:'レトロ 1980',retro_desc:'路地裏の遊びから懐かしい音楽まで。あの日の思い出に再会する場所。',retro_btn:'思い出の旅へ',footer:'今日の私と、あの日の私たちをつなぐ場所'}
 };
+Object.assign(translations.ko, {studio_title:'당신의 사업에, 잘 만든 한 끗.',studio_desc:'홈페이지·상세페이지·회사소개서. 필요한 제작을 한곳에서.',studio_btn:'후추 스튜디오 보기'});
+Object.assign(translations.en, {studio_title:'A thoughtful finish for your business.',studio_desc:'Websites, product pages, and company presentations. All in one studio.',studio_btn:'Explore Huchu Studio'});
+Object.assign(translations.jp, {studio_title:'あなたの事業に、丁寧なひと工夫。',studio_desc:'ホームページ・商品紹介ページ・会社案内。必要な制作をひとつの場所で。',studio_btn:'Huchu Studioを見る'});
 function changeLanguage(language) {
     const lang = Object.hasOwn(translations, language) ? language : 'ko';
     document.documentElement.lang = lang === 'jp' ? 'ja' : lang;
