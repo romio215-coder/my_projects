@@ -6,6 +6,9 @@ const translations = {
 Object.assign(translations.ko, {studio_title:'당신의 사업에, 잘 만든 한 끗.',studio_desc:'홈페이지·상세페이지·회사소개서. 필요한 제작을 한곳에서.',studio_btn:'후추 스튜디오 보기'});
 Object.assign(translations.en, {studio_title:'A thoughtful finish for your business.',studio_desc:'Websites, product pages, and company presentations. All in one studio.',studio_btn:'Explore Huchu Studio'});
 Object.assign(translations.jp, {studio_title:'あなたの事業に、丁寧なひと工夫。',studio_desc:'ホームページ・商品紹介ページ・会社案内。必要な制作をひとつの場所で。',studio_btn:'Huchu Studioを見る'});
+Object.assign(translations.ko, {bible_title:'말씀빛 성경',bible_desc:'성경 66권을 읽고, 마음에 닿는 구절을 아름다운 말씀카드로 간직하세요.',bible_btn:'성경 읽고 말씀카드 만들기',intro:'건강부터 식단, 추억과 말씀까지. 지금 끌리는 곳에서 시작해보세요.'});
+Object.assign(translations.en, {bible_title:'WordLight Bible',bible_desc:'Read all 66 books of the Korean Bible and turn meaningful verses into beautiful scripture cards.',bible_btn:'Read and create verse cards',intro:'Wellness, nutrition, nostalgia, and scripture. Start with what speaks to you.'});
+Object.assign(translations.jp, {bible_title:'WordLight 聖書',bible_desc:'韓国語の聖書全66巻を読み、心に響く一節を美しい聖句カードに。',bible_btn:'聖書を読んでカードを作る',intro:'健康、食事、思い出、そして聖書。気になる場所から始めましょう。'});
 function changeLanguage(language) {
     const lang = Object.hasOwn(translations, language) ? language : 'ko';
     document.documentElement.lang = lang === 'jp' ? 'ja' : lang;
