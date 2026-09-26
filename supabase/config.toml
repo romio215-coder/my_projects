@@ -1,0 +1,4 @@
+[functions.guestbook-submit]
+# Public submissions are authorized by server-validated Turnstile, never by a
+# publishable key. Database writes remain service-role-only.
+verify_jwt = false
