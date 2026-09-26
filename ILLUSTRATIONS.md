@@ -51,3 +51,43 @@ Output: assets/summer-medidiet.webp and assets/summer-medidiet-small.webp
 Prompt: Use case: illustration-story. Website project illustration asset, portrait 1024x1536. Reference image is the approved Huchu book-layout mockup; use ONLY its bright summer hand-painted anime illustration style, NOT its UI, typography, book frame or layout. Create a standalone full-bleed illustration: A balanced colorful meal with salmon, rice, fresh greens, tomato and sliced avocado on a ceramic plate on a sunlit balcony table, glass of lemon water, potted green plants, blue sky with white clouds, calm healthy everyday mood. No text or people. Detailed hand-painted anime background, fine linework, lush vivid greens, saturated blue sky, luminous clean whites, crisp sunlight with cool blue shadows, serene summer slice-of-life. Refined scenic illustration, not photorealistic, not flat vector. No words, logos, captions, borders, watermarks, page frame or UI.
 
 
+
+# Approved mockup composition restoration (v2)
+
+Mode: built-in reference image editing / panel extraction and restoration. The approved mockup is the edit target, rather than a loose style reference. These restored derivatives preserve the pictured subjects and composition but are not pixel-identical crops.
+
+## bible v2
+
+Assets: assets/approved-bible-v2.webp and assets/approved-bible-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The large main book right-hand illustration, approximately x=825..1298 y=80..611 in the 1536x1024 reference. Preserve the glass wind chime at upper left, morning glory vine at left, white clouds against deep cobalt sky at upper half, city and mountain horizon in center, open Bible on round table in lower foreground, orange iced tea near lower center-right, blue checked chair at bottom right. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
+
+## health v2
+
+Assets: assets/approved-health-v2.webp and assets/approved-health-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The bottom first small book right-hand illustration, approximately x=155..309 y=640..924. Preserve the sunny riverside walking path, overhead trees, blue river to right, distant buildings, and flowers. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
+
+## cooking v2
+
+Assets: assets/approved-cooking-v2.webp and assets/approved-cooking-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The bottom second small book right-hand illustration, approximately x=450..609 y=640..924. Preserve the CLOSE-UP bowl of noodles with sunny side up egg in lower middle, iced tea glass at upper right, green leaves above, wooden table. Food fills most of frame; no distant city. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
+
+## recipe v2
+
+Assets: assets/approved-recipe-v2.webp and assets/approved-recipe-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The bottom third small book right-hand illustration, approximately x=754..914 y=640..924. Preserve the CLOSE-UP produce crates with tomatoes, peppers and greens in foreground, small black chalkboard upper center reading Good Food Good People, lush green surroundings. No city. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
+
+## retro v2
+
+Assets: assets/approved-retro-v2.webp and assets/approved-retro-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The bottom fourth small book right-hand illustration, approximately x=1045..1203 y=640..924. Preserve the CLOSE-UP vintage Korean cafe storefront with 청춘다방 sign, blue vintage car in lower right, roadside tree and power lines against blue sky. The storefront fills center and lower frame. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
+
+## medidiet v2
+
+Assets: assets/approved-medidiet-v2.webp and assets/approved-medidiet-v2-small.webp
+
+Prompt: Use case: background-extraction. Edit target: attached approved website mockup. Extract ONLY this illustration panel into a standalone full-bleed portrait image: The bottom fifth small book right-hand illustration, approximately x=1338..1500 y=640..924. Preserve the CLOSE-UP white bowl of salmon, broccoli, tomatoes on sunlit wooden table, lemon water at upper right, potted flowers at upper left. Exclude the white handwritten paper overlay at bottom; continue natural tabletop there. This is faithful extraction and resolution restoration, NOT a new interpretation. Preserve original composition, relative object sizes, camera angle, painting style, colors, lighting and every recognizable scene detail. Straighten the slight page perspective. Remove website headings, UI, margins, book borders and any text overlays except the cafe sign or chalkboard that belongs to the scene. Do not invent an alternate scene, do not expand the sky or change camera distance. Output portrait 768x1024 for main bible, 768x1408 for small cards, faithfully matching the selected panel.
