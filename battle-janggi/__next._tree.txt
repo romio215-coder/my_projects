@@ -1,0 +1,2 @@
+:HL["/battle-janggi/_next/static/chunks/30k44xzuiye88.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"3F_2ACuAKdE8s5gUpuwXz"}
