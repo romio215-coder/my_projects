@@ -9,9 +9,10 @@
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 # 관리자 페이지는 검색에 노출하지 않는다.
-/retro-1980/admin.html
+/retro-1980/admin/*
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store
+  X-Frame-Options: DENY
 
 /*
   X-Content-Type-Options: nosniff

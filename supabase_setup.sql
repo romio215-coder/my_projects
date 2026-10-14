@@ -1,16 +1,15 @@
--- Admins: only users listed here can change menus, assets and uploaded images.
--- After running this file, add yourself once (Supabase > Authentication > Users에서 내 user id 복사):
---   INSERT INTO admin_users (user_id) VALUES ('<내 user id>');
-CREATE TABLE IF NOT EXISTS admin_users (
-    user_id UUID PRIMARY KEY REFERENCES auth.users (id) ON DELETE CASCADE
-);
-ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
--- No policies on admin_users: it is not readable or writable from the browser.
+-- 쓰기는 관리 페이지(/retro-1980/admin/)의 서버 함수만 한다.
+-- 서버 함수는 Cloudflare 환경 변수의 SUPABASE_SERVICE_ROLE_KEY로 접속하고, 이 키는 아래 정책과 상관없이 쓸 수 있다.
+-- 브라우저에서는 읽기만 허용한다.
 
-CREATE OR REPLACE FUNCTION is_retro_admin() RETURNS BOOLEAN
-LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
-    SELECT EXISTS (SELECT 1 FROM admin_users WHERE user_id = auth.uid());
-$$;
+-- 예전 관리자 방식(로그인 계정 + admin_users)을 정리한다.
+DROP POLICY IF EXISTS "Admins can write" ON menu_items;
+DROP POLICY IF EXISTS "Admins can write" ON site_assets;
+DROP POLICY IF EXISTS "retro_assets admin insert" ON storage.objects;
+DROP POLICY IF EXISTS "retro_assets admin update" ON storage.objects;
+DROP POLICY IF EXISTS "retro_assets admin delete" ON storage.objects;
+DROP FUNCTION IF EXISTS is_retro_admin();
+DROP TABLE IF EXISTS admin_users;
 
 -- Create Menu Items Table
 CREATE TABLE IF NOT EXISTS menu_items (
@@ -26,9 +25,6 @@ ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Enable read access for all users" ON menu_items;
 CREATE POLICY "Enable read access for all users" ON menu_items FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Enable all access for all users" ON menu_items;
-DROP POLICY IF EXISTS "Admins can write" ON menu_items;
-CREATE POLICY "Admins can write" ON menu_items FOR ALL TO authenticated
-    USING (is_retro_admin()) WITH CHECK (is_retro_admin());
 
 -- Create Site Assets Table
 CREATE TABLE IF NOT EXISTS site_assets (
@@ -42,20 +38,6 @@ ALTER TABLE site_assets ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Enable read access for all users" ON site_assets;
 CREATE POLICY "Enable read access for all users" ON site_assets FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Enable all access for all users" ON site_assets;
-DROP POLICY IF EXISTS "Admins can write" ON site_assets;
-CREATE POLICY "Admins can write" ON site_assets FOR ALL TO authenticated
-    USING (is_retro_admin()) WITH CHECK (is_retro_admin());
-
--- Storage: anyone can view retro_assets images, only admins can upload or change them.
-DROP POLICY IF EXISTS "retro_assets admin insert" ON storage.objects;
-CREATE POLICY "retro_assets admin insert" ON storage.objects FOR INSERT TO authenticated
-    WITH CHECK (bucket_id = 'retro_assets' AND is_retro_admin());
-DROP POLICY IF EXISTS "retro_assets admin update" ON storage.objects;
-CREATE POLICY "retro_assets admin update" ON storage.objects FOR UPDATE TO authenticated
-    USING (bucket_id = 'retro_assets' AND is_retro_admin());
-DROP POLICY IF EXISTS "retro_assets admin delete" ON storage.objects;
-CREATE POLICY "retro_assets admin delete" ON storage.objects FOR DELETE TO authenticated
-    USING (bucket_id = 'retro_assets' AND is_retro_admin());
 
 -- Insert Default Data
 INSERT INTO menu_items (label, action_id, order_index) VALUES
