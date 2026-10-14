@@ -58,12 +58,6 @@
     </script>
 
     <link rel="icon" href="./favicon.png" type="image/png">
-    <script>
-        // 방명록 글은 누구나 쓸 수 있으므로 화면에 넣기 전에 반드시 HTML 이스케이프한다.
-        function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -506,125 +500,8 @@
                     </div>
                 </div>
 
-                <!-- 80s Guestbook Section -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#8c7b6c]">
-                        📢 골목길 방명록
-                    </h4>
 
-                    <!-- Comment Form -->
-                    <div class="bg-[#fdfbf7] p-4 rounded-lg border border-[#d6ceb2] mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-80s" placeholder="이름 (예: 철수)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addComment80s()"
-                                class="bg-[#15803d] text-white px-4 py-2 rounded font-bold hover:bg-[#166534] transition text-sm">남기기</button>
-                        </div>
-                        <textarea id="guest-msg-80s" placeholder="그 시절 추억을 남겨주세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
 
-                    <!-- Comment List -->
-                    <div id="comment-list-80s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                        <!-- Comments will be loaded here -->
-                    </div>
-                </div>
-
-                <!-- Firebase SDK -->
-                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-                <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-                <script>
-                    // --- Firebase Configuration ---
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyDSkNCvrW_6z5A68Fe4ojSHNM6DUMqrnrk",
-                        authDomain: "my-projects-b1173.firebaseapp.com",
-                        projectId: "my-projects-b1173",
-                        storageBucket: "my-projects-b1173.firebasestorage.app",
-                        messagingSenderId: "217698801638",
-                        appId: "1:217698801638:web:fe11f52799012b2a98e827",
-                        measurementId: "G-SP9RFMQCVJ"
-                    };
-
-                    // Initialize Firebase
-                    const app = firebase.initializeApp(firebaseConfig);
-                    const db = firebase.firestore(app);
-
-                    // 80s Guestbook Logic (Firestore)
-                    function renderComments80s(doc) {
-                        const list = document.getElementById('comment-list-80s');
-                        const data = doc.data();
-                        const html = `
-                            <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3 animate-fadeIn">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
-                                    <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                </div>
-                                <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                            </div>
-                        `;
-                        // Prepend (latest first) is handled by query order, but for onSnapshot usually we clear and redraw or append.
-                        // For simplicity in real-time, we will clear and redraw entire list on snapshot update OR prepend single new one.
-                        // Let's use clean full redraw for simplicity and correctness with ordering.
-                    }
-
-                    // Real-time listener
-                    db.collection("guestbook80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                        const list = document.getElementById('comment-list-80s');
-                        list.innerHTML = ''; // Request clear
-                        snapshot.forEach((doc) => {
-                            renderComments80s(doc); // Re-use render function logic basically inside
-                            const data = doc.data();
-                            list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                        });
-                    }, (error) => {
-                        console.error("Error getting documents: ", error);
-                        // If config is wrong, show a friendly message
-                        const list = document.getElementById('comment-list-80s');
-                        list.innerHTML = '<div class="text-center text-red-500 p-4">🔥 파이어베이스 설정이 필요합니다.<br>코드를 확인해주세요!</div>';
-                    });
-
-                    function addComment80s() {
-                        const nameInput = document.getElementById('guest-name-80s');
-                        const msgInput = document.getElementById('guest-msg-80s');
-
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) {
-                            alert('이름과 내용을 모두 입력해주세요!');
-                            return;
-                        }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        // Add to Firestore
-                        db.collection("guestbook80s").add({
-                            name: name,
-                            text: text,
-                            date: dateStr,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        })
-                            .then(() => {
-                                // Success - clear inputs (List updates automatically via onSnapshot)
-                                nameInput.value = '';
-                                msgInput.value = '';
-                            })
-                            .catch((error) => {
-                                console.error("Error adding document: ", error);
-                                alert("글 저장에 실패했습니다. 설정을 확인해주세요.");
-                            });
-                    }
-                </script>
             </section>
 
             <!-- Section 2: School Life -->
@@ -777,104 +654,7 @@
                     </div>
                 </div>
 
-                <!-- 80s School Guestbook Section -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#15803d]">
-                        🏫 3학년 2반 떠든 사람 (방명록)
-                    </h4>
 
-                    <!-- Comment Form -->
-                    <div class="bg-[#f0fdf4] p-4 rounded-lg border border-green-100 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-school" placeholder="이름 (예: 영희)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentSchool()"
-                                class="bg-[#15803d] text-white px-4 py-2 rounded font-bold hover:bg-[#166534] transition text-sm">적기</button>
-                        </div>
-                        <textarea id="guest-msg-school" placeholder="선생님 몰래 쪽지 남기기..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-
-                    <!-- Comment List -->
-                    <div id="comment-list-school" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                        <!-- Comments will be loaded here -->
-                    </div>
-                </div>
-
-                <script>
-                    // Only add if not already defined (though this script block is unique per section in this file structure, 
-                    // careful not to redefine "db" or "app" if they are global. The previous script block defined them globally.)
-                    // Actually, the previous script block was inside #playground section. 
-                    // Let's assume the previous script runs and defines 'db'.
-                    // To be safe, we'll check if db is defined, or just reuse the code assuming single page load.
-                    // However, script tags in HTML body execute as parsed. 
-
-                    // School Guestbook Logic (Firestore)
-
-                    // We need to wait for Firebase to be initialized if it was in the previous section.
-                    // Since it's all in index.html, the previous script tag runs first.
-                    // So 'db' should be available.
-
-                    // Real-time listener for School
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_school_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-school');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        }, (error) => {
-                            console.error("Error getting school documents: ", error);
-                            const list = document.getElementById('comment-list-school');
-                            list.innerHTML = '<div class="text-center text-red-500 p-4">초코파이 사주시나요? (DB연결 필요)</div>';
-                        });
-                    }
-
-                    function addCommentSchool() {
-                        const nameInput = document.getElementById('guest-name-school');
-                        const msgInput = document.getElementById('guest-msg-school');
-
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) {
-                            alert('이름과 내용을 모두 입력해주세요!');
-                            return;
-                        }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        // Add to Firestore
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_school_80s").add({
-                                name: name,
-                                text: text,
-                                date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            })
-                                .then(() => {
-                                    nameInput.value = '';
-                                    msgInput.value = '';
-                                })
-                                .catch((error) => {
-                                    console.error("Error adding document: ", error);
-                                    alert("글 저장에 실패했습니다.");
-                                });
-                        } else {
-                            alert("데이터베이스 연결이 안되어있습니다.");
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 3: Stationery Store (Snacks) -->
@@ -973,59 +753,6 @@
                     </div>
                 </div>
 
-                <!-- Store Guestbook Section -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#b91c1c]">
-                        🍭 학교 앞 문방구 낙서장 (방명록)
-                    </h4>
-                    <div class="bg-[#fff7ed] p-4 rounded-lg border border-orange-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-store" placeholder="이름 (예: 똘이장군)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentStore()"
-                                class="bg-[#b91c1c] text-white px-4 py-2 rounded font-bold hover:bg-[#991b1b] transition text-sm">적기</button>
-                        </div>
-                        <textarea id="guest-msg-store" placeholder="아폴로 먹고 싶다..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-store" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_store_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-store');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStore() {
-                        const name = document.getElementById('guest-name-store').value.trim();
-                        const text = document.getElementById('guest-msg-store').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_store_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-store').value = '';
-                                document.getElementById('guest-msg-store').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 4: Timeline (News) 80s -->
@@ -1062,59 +789,6 @@
                     </div>
                 </div>
 
-                <!-- Timeline Guestbook Section -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#1d4ed8]">
-                        📰 독자 투고 (방명록)
-                    </h4>
-                    <div class="bg-[#eff6ff] p-4 rounded-lg border border-blue-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-news" placeholder="이름 (예: 시민기자)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentNews()"
-                                class="bg-[#1d4ed8] text-white px-4 py-2 rounded font-bold hover:bg-[#1e40af] transition text-sm">투고하기</button>
-                        </div>
-                        <textarea id="guest-msg-news" placeholder="그 시절 뉴스에 대한 의견을 남겨주세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-news" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_news_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-news');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#1d4ed8] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNews() {
-                        const name = document.getElementById('guest-name-news').value.trim();
-                        const text = document.getElementById('guest-msg-news').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_news_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-news').value = '';
-                                document.getElementById('guest-msg-news').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 5: AI Prompts -->
@@ -1379,92 +1053,7 @@
                     </script>
                 </div>
 
-                <!-- 80s Gallery Guestbook -->
-                <div
-                    class="mt-12 bg-purple-50 rounded-xl p-6 border border-purple-200 shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <i class="fas fa-quote-right text-6xl text-purple-600"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-purple-800 mb-4 flex items-center">
-                        <i class="fas fa-pen-fancy mr-2"></i>추억의 한마디
-                    </h4>
-                    <div class="bg-white rounded-lg p-4 shadow-sm mb-6 border border-purple-100">
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" id="guest-name-prompts" placeholder="별명"
-                                class="border border-purple-200 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple-500 w-full md:w-1/4 font-['DungGeunMo']">
-                            <input type="text" id="guest-msg-prompts" placeholder="그 시절 추억을 남겨보세요..."
-                                class="border border-purple-200 rounded px-3 py-2 text-sm focus:outline-none focus:border-purple-500 w-full md:w-3/4 font-['DungGeunMo']"
-                                onkeypress="if(event.key === 'Enter') addCommentPrompts()">
-                            <button onclick="addCommentPrompts()"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded text-sm transition-colors font-bold shadow-md transform active:scale-95">
-                                남기기
-                            </button>
-                        </div>
-                    </div>
 
-                    <!-- Guestbook List -->
-                    <div id="guestbook-list-prompts" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                        <div class="text-center text-gray-400 text-sm py-4">
-                            <i class="fas fa-spinner fa-spin mr-2"></i>추억을 불러오는 중...
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    // 80s Prompts Guestbook Logic
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_prompts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('guestbook-list-prompts');
-                            if (!list) return;
-                            list.innerHTML = '';
-
-                            if (snapshot.empty) {
-                                list.innerHTML = '<div class="text-center text-gray-400 text-sm py-4">아직 남겨진 추억이 없습니다. 첫 번째 추억을 남겨보세요!</div>';
-                                return;
-                            }
-
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                const div = document.createElement('div');
-                                div.className = 'bg-white/80 p-3 rounded shadow-sm border-l-4 border-purple-400 flex justify-between items-start';
-                                // Simple XSS protection for name and text
-                                const safeName = data.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                                const safeText = data.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-                                div.innerHTML = `
-                                    <div>
-                                        <span class="font-bold text-purple-900 text-sm block mb-1">${safeName}</span>
-                                        <p class="text-gray-700 text-sm break-all font-['DungGeunMo']">${safeText}</p>
-                                    </div>
-                                    <span class="text-xs text-gray-400 whitespace-nowrap ml-2">${escapeHtml(data.date)}</span>
-                                `;
-                                list.appendChild(div);
-                            });
-                        });
-                    }
-
-                    function addCommentPrompts() {
-                        const nameInput = document.getElementById('guest-name-prompts');
-                        const msgInput = document.getElementById('guest-msg-prompts');
-                        const name = nameInput.value.trim();
-                        const text = msgInput.value.trim();
-
-                        if (!name || !text) { alert('이름과 추억을 입력해주세요!'); return; }
-
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_prompts").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                nameInput.value = '';
-                                msgInput.value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 6: Media (Color TV) -->
@@ -1490,57 +1079,6 @@
                     </div>
                 </div>
 
-                <!-- Media Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#b91c1c]">📺 시청자 참여 마당 (방명록)</h4>
-                    <div class="bg-[#fdfbf7] p-4 rounded-lg border border-[#d6ceb2] mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-media" placeholder="이름 (예: 애청자)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentMedia()"
-                                class="bg-[#b91c1c] text-white px-4 py-2 rounded font-bold hover:bg-[#991b1b] transition text-sm">참여하기</button>
-                        </div>
-                        <textarea id="guest-msg-media" placeholder="컬러 TV를 처음 본 소감을 남겨주세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-media" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_media_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-media');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentMedia() {
-                        const name = document.getElementById('guest-name-media').value.trim();
-                        const text = document.getElementById('guest-msg-media').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_media_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-media').value = '';
-                                document.getElementById('guest-msg-media').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 7: Reunion (Family Search) -->
@@ -1565,58 +1103,6 @@
                     </div>
                 </div>
 
-                <!-- Reunion Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#15803d]">😢 만남의 광장 (방명록)</h4>
-                    <div class="bg-[#f0fdf4] p-4 rounded-lg border border-green-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-reunion" placeholder="이름"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentReunion()"
-                                class="bg-[#15803d] text-white px-4 py-2 rounded font-bold hover:bg-[#166534] transition text-sm">사연남기기</button>
-                        </div>
-                        <textarea id="guest-msg-reunion" placeholder="이산가족 찾기 방송을 보며 느낀 점은..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-reunion" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_reunion_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-reunion');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentReunion() {
-                        const name = document.getElementById('guest-name-reunion').value.trim();
-                        const text = document.getElementById('guest-msg-reunion').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_reunion_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-reunion').value = '';
-                                document.getElementById('guest-msg-reunion').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 8: Hong Kong Noir -->
@@ -1651,58 +1137,6 @@
                     </div>
                 </div>
 
-                <!-- Noir Guestbook -->
-                <div class="mt-8 border-t-2 border-gray-700 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-yellow-500">🕶️ 비디오 대여점 (방명록)</h4>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-600 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-noir" placeholder="이름 (예: 주윤발)"
-                                class="border border-gray-600 p-2 rounded flex-1 text-sm bg-gray-800 text-white"
-                                maxlength="10">
-                            <button onclick="addCommentNoir()"
-                                class="bg-yellow-600 text-black px-4 py-2 rounded font-bold hover:bg-yellow-500 transition text-sm">기록</button>
-                        </div>
-                        <textarea id="guest-msg-noir" placeholder="가장 좋아했던 홍콩 영화는 무엇인가요?"
-                            class="w-full border border-gray-600 p-2 rounded text-sm bg-gray-800 text-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-noir" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_noir_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-noir');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-gray-800 p-3 rounded shadow-sm border border-gray-700 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-yellow-500 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-300 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNoir() {
-                        const name = document.getElementById('guest-name-noir').value.trim();
-                        const text = document.getElementById('guest-msg-noir').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_noir_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-noir').value = '';
-                                document.getElementById('guest-msg-noir').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 9: Sound (Radio & Roller) -->
@@ -1733,57 +1167,6 @@
                     </div>
                 </div>
 
-                <!-- Sound Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#8c7b6c]">📻 별밤 사연 신청 (방명록)</h4>
-                    <div class="bg-[#fff7ed] p-4 rounded-lg border border-orange-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-sound" placeholder="이름 (예: 별밤가족)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentSound()"
-                                class="bg-[#8c7b6c] text-white px-4 py-2 rounded font-bold hover:bg-[#726255] transition text-sm">신청하기</button>
-                        </div>
-                        <textarea id="guest-msg-sound" placeholder="듣고 싶은 노래와 사연을 적어주세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-sound" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar"></div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_sound_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-sound');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#8c7b6c] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentSound() {
-                        const name = document.getElementById('guest-name-sound').value.trim();
-                        const text = document.getElementById('guest-msg-sound').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_sound_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-sound').value = '';
-                                document.getElementById('guest-msg-sound').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 10: Visual (Manhwa & Cinema) -->
@@ -1818,58 +1201,6 @@
                     </div>
                 </div>
 
-                <!-- Visual Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#b91c1c]">🎨 만화방 낙서장 (방명록)</h4>
-                    <div class="bg-[#fdfbf7] p-4 rounded-lg border border-[#d6ceb2] mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-visual" placeholder="이름 (예: 까치)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentVisual()"
-                                class="bg-[#b91c1c] text-white px-4 py-2 rounded font-bold hover:bg-[#991b1b] transition text-sm">낙서하기</button>
-                        </div>
-                        <textarea id="guest-msg-visual" placeholder="최고의 만화책은 무엇이었나요?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-visual" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_visual_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-visual');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentVisual() {
-                        const name = document.getElementById('guest-name-visual').value.trim();
-                        const text = document.getElementById('guest-msg-visual').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_visual_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-visual').value = '';
-                                document.getElementById('guest-msg-visual').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 11: Fashion -->
@@ -1901,58 +1232,6 @@
                     </div>
                 </div>
 
-                <!-- Fashion Guestbook -->
-                <div class="mt-8 border-t-4 border-blue-200 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-blue-800">👖 패션 피플 게시판 (방명록)</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-fashion" placeholder="이름 (예: 멋쟁이)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentFashion()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition text-sm">뽐내기</button>
-                        </div>
-                        <textarea id="guest-msg-fashion" placeholder="나만의 80년대 패션 아이템은?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-fashion" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_fashion_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-fashion');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentFashion() {
-                        const name = document.getElementById('guest-name-fashion').value.trim();
-                        const text = document.getElementById('guest-msg-fashion').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_fashion_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-fashion').value = '';
-                                document.getElementById('guest-msg-fashion').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 12: Arcade -->
@@ -1983,59 +1262,6 @@
                     </div>
                 </div>
 
-                <!-- Arcade Guestbook -->
-                <div class="mt-8 border-t-4 border-green-700 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-green-400 animate-pulse">🕹️ 오락실 최고기록 (방명록)</h4>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-green-800 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-arcade" placeholder="이니셜 (예: KHH)"
-                                class="border border-green-600 p-2 rounded flex-1 text-sm bg-black text-green-400 font-mono"
-                                maxlength="3">
-                            <button onclick="addCommentArcade()"
-                                class="bg-green-700 text-black px-4 py-2 rounded font-bold hover:bg-green-600 transition text-sm font-mono">INSERT</button>
-                        </div>
-                        <textarea id="guest-msg-arcade" placeholder="어떤 게임을 가장 잘했나요?"
-                            class="w-full border border-green-600 p-2 rounded text-sm bg-black text-green-400 h-20 resize-none font-mono"></textarea>
-                    </div>
-                    <div id="comment-list-arcade" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_arcade_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-arcade');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-black p-3 rounded shadow-sm border border-green-900 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-400 text-sm font-mono">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-green-700 font-mono">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-green-200 text-sm font-mono">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentArcade() {
-                        const name = document.getElementById('guest-name-arcade').value.trim();
-                        const text = document.getElementById('guest-msg-arcade').value.trim();
-                        if (!name || !text) { alert('이니셜과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_arcade_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-arcade').value = '';
-                                document.getElementById('guest-msg-arcade').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 13: Street -->
@@ -2094,58 +1320,6 @@
                     </div>
                 </div>
 
-                <!-- Street Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-[#b91c1c]">🚐 동네 골목 대장 (방명록)</h4>
-                    <div class="bg-[#fdfbf7] p-4 rounded-lg border border-[#d6ceb2] mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-street" placeholder="이름 (예: 골목대장)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentStreet()"
-                                class="bg-[#b91c1c] text-white px-4 py-2 rounded font-bold hover:bg-[#991b1b] transition text-sm">놀기</button>
-                        </div>
-                        <textarea id="guest-msg-street" placeholder="우리 동네 골목놀이를 추억해보세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-street" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_street_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-street');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStreet() {
-                        const name = document.getElementById('guest-name-street').value.trim();
-                        const text = document.getElementById('guest-msg-street').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_street_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-street').value = '';
-                                document.getElementById('guest-msg-street').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 14: Eating Out (Tonkatsu) -->
@@ -2215,58 +1389,6 @@
                     </div>
                 </div>
 
-                <!-- Eating Guestbook -->
-                <div class="mt-8 border-t-4 border-[#e6dec3] pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-orange-800">🍴 경양식집 방명록</h4>
-                    <div class="bg-[#fff7ed] p-4 rounded-lg border border-orange-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-eating" placeholder="이름"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentEating()"
-                                class="bg-orange-700 text-white px-4 py-2 rounded font-bold hover:bg-orange-800 transition text-sm">남기기</button>
-                        </div>
-                        <textarea id="guest-msg-eating" placeholder="졸업식 날 먹었던 돈까스의 맛은..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-eating" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_eating_80s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-eating');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-orange-800 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentEating() {
-                        const name = document.getElementById('guest-name-eating').value.trim();
-                        const text = document.getElementById('guest-msg-eating').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_eating_80s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-eating').value = '';
-                                document.getElementById('guest-msg-eating').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
         </div>
 
@@ -2320,58 +1442,6 @@
                     </div>
                 </div>
 
-                <!-- Alley 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-blue-200 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-blue-800">🏃 골목길 (놀이) (방명록)</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-alley-90s" placeholder="이름 (예: 펌프왕)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentAlley90s()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition text-sm">기록</button>
-                        </div>
-                        <textarea id="guest-msg-alley-90s" placeholder="90년대 오락실의 추억을 남겨주세요..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-alley-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_alley_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-alley-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentAlley90s() {
-                        const name = document.getElementById('guest-name-alley-90s').value.trim();
-                        const text = document.getElementById('guest-msg-alley-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_alley_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-alley-90s').value = '';
-                                document.getElementById('guest-msg-alley-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 2: School Life (X-Gen) -->
@@ -2408,58 +1478,6 @@
                     </div>
                 </div>
 
-                <!-- School 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-purple-200 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-purple-800">🏫 교실 풍경 (방명록)</h4>
-                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-school-90s" placeholder="이름 (예: X세대)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentSchool90s()"
-                                class="bg-purple-600 text-white px-4 py-2 rounded font-bold hover:bg-purple-700 transition text-sm">남기기</button>
-                        </div>
-                        <textarea id="guest-msg-school-90s" placeholder="90년대 학창시절의 추억은..."
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-school-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_school_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-school-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-purple-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-purple-800 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentSchool90s() {
-                        const name = document.getElementById('guest-name-school-90s').value.trim();
-                        const text = document.getElementById('guest-msg-school-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_school_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-school-90s').value = '';
-                                document.getElementById('guest-msg-school-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 3: Store (Tech/Items) -->
@@ -2510,58 +1528,6 @@
                     </div>
                 </div>
 
-                <!-- Store 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-yellow-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-gray-800">🍭 학교 앞 문방구 (방명록)</h4>
-                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-400 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-store-90s" placeholder="이름 (예: 삐삐)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentStore90s()"
-                                class="bg-yellow-500 text-black px-4 py-2 rounded font-bold hover:bg-yellow-600 transition text-sm">전송</button>
-                        </div>
-                        <textarea id="guest-msg-store-90s" placeholder="가장 기억에 남는 90년대 물건은?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-store-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_store_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-store-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-gray-800 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentStore90s() {
-                        const name = document.getElementById('guest-name-store-90s').value.trim();
-                        const text = document.getElementById('guest-msg-store-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_store_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-store-90s').value = '';
-                                document.getElementById('guest-msg-store-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 4: Timeline 90s -->
@@ -2613,58 +1579,6 @@
                 </div>
 
 
-                <!-- News 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-blue-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-blue-900">📰 그 시절 뉴스 (방명록)</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-news-90s" placeholder="이름 (예: 시민기자)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentNews90s()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition text-sm">투고</button>
-                        </div>
-                        <textarea id="guest-msg-news-90s" placeholder="90년대의 잊지 못할 뉴스는?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-news-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_news_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-news-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentNews90s() {
-                        const name = document.getElementById('guest-name-news-90s').value.trim();
-                        const text = document.getElementById('guest-msg-news-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_news_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-news-90s').value = '';
-                                document.getElementById('guest-msg-news-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 5: AI Gallery 90s -->
@@ -2899,58 +1813,6 @@
                     </div>
                 </div>
 
-                <!-- Prompts 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-blue-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-blue-900">🖼️ 가상 복원실 (방명록)</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-prompts-90s" placeholder="이름 (예: 네티즌)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentPrompts90s()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition text-sm">기록</button>
-                        </div>
-                        <textarea id="guest-msg-prompts-90s" placeholder="복원하고 싶은 90년대의 풍경은?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-prompts-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_prompts_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-prompts-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentPrompts90s() {
-                        const name = document.getElementById('guest-name-prompts-90s').value.trim();
-                        const text = document.getElementById('guest-msg-prompts-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_prompts_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-prompts-90s').value = '';
-                                document.getElementById('guest-msg-prompts-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 6: Basketball Fever (New) -->
@@ -2991,59 +1853,6 @@
                     </div>
                 </div>
 
-                <!-- Basketball 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-red-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-red-900">🏀 농구대잔치 (방명록)</h4>
-                    <div class="bg-red-50 p-4 rounded-lg border border-red-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-basketball-90s" placeholder="이름 (예: 마지막승부)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentBasketball90s()"
-                                class="bg-red-600 text-white px-4 py-2 rounded font-bold hover:bg-red-700 transition text-sm">슛!</button>
-                        </div>
-                        <textarea id="guest-msg-basketball-90s" placeholder="응원하는 팀이나 선수는 누구인가요?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-basketball-90s"
-                        class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_basketball_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-basketball-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentBasketball90s() {
-                        const name = document.getElementById('guest-name-basketball-90s').value.trim();
-                        const text = document.getElementById('guest-msg-basketball-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_basketball_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-basketball-90s').value = '';
-                                document.getElementById('guest-msg-basketball-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 7: Sitcom Era (New) -->
@@ -3073,58 +1882,6 @@
                     </div>
                 </div>
 
-                <!-- Sitcom 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-yellow-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-gray-800">📺 시트콤 (방명록)</h4>
-                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-sitcom-90s" placeholder="이름 (예: 미달이)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentSitcom90s()"
-                                class="bg-yellow-500 text-white px-4 py-2 rounded font-bold hover:bg-yellow-600 transition text-sm">등록</button>
-                        </div>
-                        <textarea id="guest-msg-sitcom-90s" placeholder="가장 재미있게 본 시트콤 에피소드는?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-sitcom-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_sitcom_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-sitcom-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-800 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentSitcom90s() {
-                        const name = document.getElementById('guest-name-sitcom-90s').value.trim();
-                        const text = document.getElementById('guest-msg-sitcom-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_sitcom_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-sitcom-90s').value = '';
-                                document.getElementById('guest-msg-sitcom-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 8: Society & Fashion Issues (New) -->
@@ -3162,58 +1919,6 @@
                     </div>
                 </div>
 
-                <!-- Society 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-gray-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-gray-800">📰 사회/이슈 (방명록)</h4>
-                    <div class="bg-gray-100 p-4 rounded-lg border border-gray-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-society-90s" placeholder="이름 (예: 논평가)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentSociety90s()"
-                                class="bg-gray-700 text-white px-4 py-2 rounded font-bold hover:bg-gray-800 transition text-sm">작성</button>
-                        </div>
-                        <textarea id="guest-msg-society-90s" placeholder="그 시절 사회 이슈에 대한 생각은?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-society-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_society_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-society-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-gray-200 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-500">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-800 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentSociety90s() {
-                        const name = document.getElementById('guest-name-society-90s').value.trim();
-                        const text = document.getElementById('guest-msg-society-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_society_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-society-90s').value = '';
-                                document.getElementById('guest-msg-society-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 8b: Indie Band Detailed (New - for specific menu) -->
@@ -3242,59 +1947,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Indie 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-green-800 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-green-400">🎸 인디 밴드 (방명록)</h4>
-                    <div class="bg-black p-4 rounded-lg border border-green-800 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-indie-90s" placeholder="이름 (예: 펑크키드)"
-                                class="border p-2 rounded flex-1 text-sm bg-gray-800 text-green-400 placeholder-green-700 border-green-700"
-                                maxlength="10">
-                            <button onclick="addCommentIndie90s()"
-                                class="bg-green-700 text-black px-4 py-2 rounded font-bold hover:bg-green-600 transition text-sm">소리질러!</button>
-                        </div>
-                        <textarea id="guest-msg-indie-90s" placeholder="좋아하는 인디 밴드나 노래는?"
-                            class="w-full border p-2 rounded text-sm bg-gray-800 text-green-400 placeholder-green-700 border-green-700 h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-indie-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_indie_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-indie-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-gray-900 p-3 rounded shadow-sm border border-green-900 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-500 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-green-800">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-green-300 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentIndie90s() {
-                        const name = document.getElementById('guest-name-indie-90s').value.trim();
-                        const text = document.getElementById('guest-msg-indie-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_indie_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-indie-90s').value = '';
-                                document.getElementById('guest-msg-indie-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 9: Hobbies (Tamagotchi, Magic Eye) -->
@@ -3327,58 +1979,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Hobbies 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-teal-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-teal-800">🤖 취미 생활 (방명록)</h4>
-                    <div class="bg-teal-50 p-4 rounded-lg border border-teal-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-hobbies-90s" placeholder="이름 (예: 다마고치맘)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentHobbies90s()"
-                                class="bg-teal-600 text-white px-4 py-2 rounded font-bold hover:bg-teal-700 transition text-sm">저장</button>
-                        </div>
-                        <textarea id="guest-msg-hobbies-90s" placeholder="가장 아끼던 추억의 장난감은?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-hobbies-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_hobbies_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-hobbies-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                    <div class="bg-white p-3 rounded shadow-sm border border-teal-100 mb-3">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-teal-900 text-sm">${escapeHtml(data.name)}</span>
-                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                        </div>
-                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                    </div>
-                                `;
-                            });
-                        });
-                    }
-                    function addCommentHobbies90s() {
-                        const name = document.getElementById('guest-name-hobbies-90s').value.trim();
-                        const text = document.getElementById('guest-msg-hobbies-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_hobbies_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-hobbies-90s').value = '';
-                                document.getElementById('guest-msg-hobbies-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- Section 10: Trends (Sticker Photo & Bread) -->
@@ -3433,58 +2033,6 @@
                     </div>
                 </div>
 
-                <!-- Trends 90s Guestbook -->
-                <div class="mt-8 border-t-4 border-pink-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-pink-900">🔥 유행과 수집 (방명록)</h4>
-                    <div class="bg-pink-50 p-4 rounded-lg border border-pink-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-trends-90s" placeholder="이름 (예: 수집왕)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentTrends90s()"
-                                class="bg-pink-500 text-white px-4 py-2 rounded font-bold hover:bg-pink-600 transition text-sm">자랑하기</button>
-                        </div>
-                        <textarea id="guest-msg-trends-90s" placeholder="그 시절 무엇을 모으셨나요?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-trends-90s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_trends_90s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-trends-90s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-pink-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-pink-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentTrends90s() {
-                        const name = document.getElementById('guest-name-trends-90s').value.trim();
-                        const text = document.getElementById('guest-msg-trends-90s').value.trim();
-                        if (!name || !text) { alert('이름과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_trends_90s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-trends-90s').value = '';
-                                document.getElementById('guest-msg-trends-90s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
         </div>
 
@@ -3546,59 +2094,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Games 00s Guestbook -->
-                <div class="mt-8 border-t-4 border-green-500 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-green-400">🎮 게임 대기실 (방명록)</h4>
-                    <div class="bg-gray-900 p-4 rounded-lg border border-green-700 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-games-00s" placeholder="ID (예: 쌈장)"
-                                class="border p-2 rounded flex-1 text-sm bg-gray-800 text-green-400 placeholder-green-700 border-green-700"
-                                maxlength="10">
-                            <button onclick="addCommentGames00s()"
-                                class="bg-green-600 text-black px-4 py-2 rounded font-bold hover:bg-green-500 transition text-sm">GG</button>
-                        </div>
-                        <textarea id="guest-msg-games-00s" placeholder="한판 붙자! (배틀넷 아이디 공유 등)"
-                            class="w-full border p-2 rounded text-sm bg-gray-800 text-green-400 placeholder-green-700 border-green-700 h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-games-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_games_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-games-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-gray-800 p-3 rounded shadow-sm border border-green-900 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-green-500 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-green-800">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-green-300 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentGames00s() {
-                        const name = document.getElementById('guest-name-games-00s').value.trim();
-                        const text = document.getElementById('guest-msg-games-00s').value.trim();
-                        if (!name || !text) { alert('아이디와 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_games_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-games-00s').value = '';
-                                document.getElementById('guest-msg-games-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- 2000s Home -->
@@ -3666,58 +2161,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Music 00s Guestbook -->
-                <div class="mt-8 border-t-4 border-blue-500 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-gray-800">🎧 뮤직 박스 (방명록)</h4>
-                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-music-00s" placeholder="닉네임 (예: 소몰이)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentMusic00s()"
-                                class="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition text-sm">신청</button>
-                        </div>
-                        <textarea id="guest-msg-music-00s" placeholder="당신의 BGM은 무엇인가요?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-music-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_music_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-music-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentMusic00s() {
-                        const name = document.getElementById('guest-name-music-00s').value.trim();
-                        const text = document.getElementById('guest-msg-music-00s').value.trim();
-                        if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_music_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-music-00s').value = '';
-                                document.getElementById('guest-msg-music-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- 2000s Tech -->
@@ -3747,58 +2190,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tech 00s Guestbook -->
-                <div class="mt-8 border-t-4 border-orange-400 pt-6">
-                    <h4 class="text-xl font-bold mb-4 text-gray-800">📱 얼리어답터 (방명록)</h4>
-                    <div class="bg-orange-50 p-4 rounded-lg border border-orange-300 mb-6">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="guest-name-tech-00s" placeholder="닉네임 (예: 문저온나)"
-                                class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                            <button onclick="addCommentTech00s()"
-                                class="bg-orange-500 text-white px-4 py-2 rounded font-bold hover:bg-orange-600 transition text-sm">전송</button>
-                        </div>
-                        <textarea id="guest-msg-tech-00s" placeholder="처음 샀던 휴대폰/MP3는?"
-                            class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                    </div>
-                    <div id="comment-list-tech-00s" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                    </div>
-                </div>
-                <script>
-                    if (typeof db !== 'undefined') {
-                        db.collection("guestbook_tech_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                            const list = document.getElementById('comment-list-tech-00s');
-                            list.innerHTML = '';
-                            snapshot.forEach((doc) => {
-                                const data = doc.data();
-                                list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-orange-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-orange-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                            });
-                        });
-                    }
-                    function addCommentTech00s() {
-                        const name = document.getElementById('guest-name-tech-00s').value.trim();
-                        const text = document.getElementById('guest-msg-tech-00s').value.trim();
-                        if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                        const now = new Date();
-                        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_tech_00s").add({
-                                name: name, text: text, date: dateStr,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                document.getElementById('guest-name-tech-00s').value = '';
-                                document.getElementById('guest-msg-tech-00s').value = '';
-                            }).catch((error) => { console.error(error); alert("저장 실패"); });
-                        }
-                    }
-                </script>
             </section>
 
             <!-- 2000s Society -->
@@ -3840,59 +2231,6 @@
                                 onerror="this.src='https://via.placeholder.com/400x300?text=2000s+Fashion'">
                         </div>
                     </div>
-                    <!-- Society 00s Guestbook -->
-                    <div class="mt-8 border-t-4 border-red-600 pt-6">
-                        <h4 class="text-xl font-bold mb-4 text-gray-800">🇰🇷 붉은 악마 (방명록)</h4>
-                        <div class="bg-red-50 p-4 rounded-lg border border-red-300 mb-6">
-                            <div class="flex gap-2 mb-2">
-                                <input type="text" id="guest-name-society-00s" placeholder="닉네임 (예: 오!필승)"
-                                    class="border p-2 rounded flex-1 text-sm bg-white" maxlength="10">
-                                <button onclick="addCommentSociety00s()"
-                                    class="bg-red-600 text-white px-4 py-2 rounded font-bold hover:bg-red-700 transition text-sm">대~한민국</button>
-                            </div>
-                            <textarea id="guest-msg-society-00s" placeholder="2002년, 당신은 어디에 있었나요?"
-                                class="w-full border p-2 rounded text-sm bg-white h-20 resize-none"></textarea>
-                        </div>
-                        <div id="comment-list-society-00s"
-                            class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                        </div>
-                    </div>
-                    <script>
-                        if (typeof db !== 'undefined') {
-                            db.collection("guestbook_society_00s").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-                                const list = document.getElementById('comment-list-society-00s');
-                                list.innerHTML = '';
-                                snapshot.forEach((doc) => {
-                                    const data = doc.data();
-                                    list.innerHTML += `
-                                <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${escapeHtml(data.name)}</span>
-                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
-                                    </div>
-                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
-                                </div>
-                            `;
-                                });
-                            });
-                        }
-                        function addCommentSociety00s() {
-                            const name = document.getElementById('guest-name-society-00s').value.trim();
-                            const text = document.getElementById('guest-msg-society-00s').value.trim();
-                            if (!name || !text) { alert('닉네임과 내용을 입력해주세요!'); return; }
-                            const now = new Date();
-                            const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-                            if (typeof db !== 'undefined') {
-                                db.collection("guestbook_society_00s").add({
-                                    name: name, text: text, date: dateStr,
-                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                                }).then(() => {
-                                    document.getElementById('guest-name-society-00s').value = '';
-                                    document.getElementById('guest-msg-society-00s').value = '';
-                                }).catch((error) => { console.error(error); alert("저장 실패"); });
-                            }
-                        }
-                    </script>
             </section>
         </div>
     </main>
