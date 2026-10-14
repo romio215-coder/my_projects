@@ -31,7 +31,7 @@
     <meta property="og:title" content="응답하라 1980: 그 시절 우리가 좋아했던 소년소녀">
     <meta property="og:description" content="아카시아 향기 휘날리던 80년대 골목길로 시간 여행을 떠나보세요.">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="../assets/anime_retro_street.png">
+    <meta property="og:image" content="https://huchu.xyz/assets/anime_retro_street.webp">
 
     <!-- GEO: Historical Data Structure -->
     <script type="application/ld+json">
@@ -39,7 +39,7 @@
       "@context": "https://schema.org",
       "@type": "HistoricalArticle",
       "headline": "Life in 1980s South Korea",
-      "image": "https://huchu.xyz/assets/anime_retro_street.png",
+      "image": "https://huchu.xyz/assets/anime_retro_street.webp",
       "datePublished": "2024-01-01",
       "articleSection": "Korean History & Culture",
       "about": {
@@ -64,9 +64,8 @@
             return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Sunflower:wght@300;500;700&family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@400;700&display=swap');
 
@@ -325,6 +324,7 @@
 
     <link rel="stylesheet" href="navigation.css">
     <script src="navigation.js"></script>
+    <link rel="stylesheet" href="./tailwind.css">
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -443,7 +443,7 @@
                             <p class="mb-4 text-sm text-gray-700">
                                 동그란 유리구슬 하나에 울고 웃던 시절. 지역마다 룰(Rule)은 달랐지만 열정만큼은 국가대표급이었습니다.
                             </p>
-                            <img src="images/retro_alley_marbles.png" data-asset-key="img_marbles_main"
+                            <img src="images/retro_alley_marbles.webp" data-asset-key="img_marbles_main"
                                 class="w-full h-96 object-cover rounded-lg mb-4 shadow-inner" alt="Marble games">
 
                             <!-- Marble Game Types Tabs -->
@@ -481,7 +481,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="memory-card bg-[#fffbeb] p-4 rounded border border-yellow-200">
                             <div class="aspect-square overflow-hidden rounded mb-2">
-                                <img src="images/retro_ddakkji_game.png" data-asset-key="img_ddakkji" alt="딱지치기"
+                                <img loading="lazy" decoding="async" src="images/retro_ddakkji_game.webp" data-asset-key="img_ddakkji" alt="딱지치기"
                                     class="w-full h-full object-cover">
                             </div>
                             <h5 class="font-bold text-lg mb-1">딱지치기</h5>
@@ -489,7 +489,7 @@
                         </div>
                         <div class="memory-card bg-[#fffbeb] p-4 rounded border border-yellow-200">
                             <div class="aspect-square overflow-hidden rounded mb-2">
-                                <img src="images/retro_rubber_band_game.png" data-asset-key="img_rubber_band"
+                                <img loading="lazy" decoding="async" src="images/retro_rubber_band_game.webp" data-asset-key="img_rubber_band"
                                     alt="고무줄 놀이" class="w-full h-full object-cover">
                             </div>
                             <h5 class="font-bold text-lg mb-1">고무줄 놀이</h5>
@@ -497,7 +497,7 @@
                         </div>
                         <div class="memory-card bg-[#fffbeb] p-4 rounded border border-yellow-200">
                             <div class="aspect-square overflow-hidden rounded mb-2">
-                                <img src="images/retro_hopscotch.png" data-asset-key="img_hopscotch" alt="사방치기"
+                                <img loading="lazy" decoding="async" src="images/retro_hopscotch.webp" data-asset-key="img_hopscotch" alt="사방치기"
                                     class="w-full h-full object-cover">
                             </div>
                             <h5 class="font-bold text-lg mb-1">사방치기 (땅따먹기)</h5>
@@ -644,7 +644,7 @@
                                 </h4>
                                 <ul class="space-y-2">
                                     <li class="flex items-center p-2 bg-white rounded shadow-sm">
-                                        <img src="images/retro_school_lunchbox.png" data-asset-key="img_lunchbox"
+                                        <img loading="lazy" decoding="async" src="images/retro_school_lunchbox.webp" data-asset-key="img_lunchbox"
                                             class="w-16 h-16 object-cover rounded mr-3" alt="Lunchbox">
                                         <div>
                                             <span class="font-bold block">양철 도시락</span>
@@ -652,7 +652,7 @@
                                         </div>
                                     </li>
                                     <li class="flex items-center p-2 bg-white rounded shadow-sm">
-                                        <img src="images/retro_nametag_handkerchief.png" data-asset-key="img_nametag"
+                                        <img loading="lazy" decoding="async" src="images/retro_nametag_handkerchief.webp" data-asset-key="img_nametag"
                                             class="w-16 h-16 object-cover rounded mr-3" alt="Nametag">
                                         <div>
                                             <span class="font-bold block">명찰과 손수건</span>
@@ -660,7 +660,7 @@
                                         </div>
                                     </li>
                                     <li class="flex items-center p-2 bg-white rounded shadow-sm">
-                                        <img src="images/retro_stool_envelope.png" data-asset-key="img_stool"
+                                        <img loading="lazy" decoding="async" src="images/retro_stool_envelope.webp" data-asset-key="img_stool"
                                             class="w-16 h-16 object-cover rounded mr-3" alt="Stool test">
                                         <div>
                                             <span class="font-bold block">채변 봉투</span>
@@ -669,7 +669,7 @@
                                         </div>
                                     </li>
                                     <li class="flex items-center p-2 bg-white rounded shadow-sm">
-                                        <img src="images/retro_chalkboard_names.png" data-asset-key="img_chalkboard"
+                                        <img loading="lazy" decoding="async" src="images/retro_chalkboard_names.webp" data-asset-key="img_chalkboard"
                                             class="w-16 h-16 object-cover rounded mr-3" alt="Chalkboard">
                                         <div>
                                             <span class="font-bold block">떠든 사람 명단</span>
@@ -759,7 +759,7 @@
                                 </div>
                                 <div id="uniform-reveal"
                                     class="absolute inset-0 bg-black flex flex-col items-center justify-center hidden">
-                                    <img src="images/retro_school_uniform_reveal.png" data-asset-key="img_uniform"
+                                    <img loading="lazy" decoding="async" src="images/retro_school_uniform_reveal.webp" data-asset-key="img_uniform"
                                         class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Uniform">
                                     <div class="relative z-10 text-center p-4">
                                         <div class="text-white font-bold text-xl drop-shadow-md">까까머리와 교련복</div>
@@ -885,7 +885,7 @@
                             <h3 class="text-2xl font-bold text-[#b91c1c] mb-2">학교 앞 문방구 & 불량식품</h3>
                             <p class="text-gray-600">용돈 100원이면 세상을 다 가진 듯했던 보물창고.</p>
                         </div>
-                        <img src="images/retro_stationery_store_snacks.png" data-asset-key="img_snacks_main"
+                        <img loading="lazy" decoding="async" src="images/retro_stationery_store_snacks.webp" data-asset-key="img_snacks_main"
                             class="w-full md:w-48 h-32 object-cover rounded-lg shadow-md border-2 border-dashed border-[#b91c1c]"
                             alt="Stationery snacks">
                     </div>
@@ -893,28 +893,28 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <!-- Snack Items -->
                         <div class="text-center group cursor-pointer" onclick="alert('연탄불에 구워 먹으면 꿀맛!')">
-                            <img src="images/retro_80s_jjondeugi.png" loading="lazy" alt="Jjondeugi"
+                            <img src="images/retro_80s_jjondeugi.webp" loading="lazy" alt="Jjondeugi"
                                 class="w-full h-32 object-cover rounded-lg mb-2 shadow-md group-hover:scale-105 transition-transform border border-orange-200">
                             <h4 class="font-bold">쫀드기</h4>
                             <p class="text-xs text-gray-500">불에 구워야 제맛</p>
                         </div>
 
                         <div class="text-center group cursor-pointer" onclick="alert('이쑤시개로 별 모양을 완벽하게 따내면 하나 더!')">
-                            <img src="images/retro_80s_dalgona_1768293094090.png" loading="lazy" alt="Dalgona"
+                            <img src="images/retro_80s_dalgona_1768293094090.webp" loading="lazy" alt="Dalgona"
                                 class="w-full h-32 object-cover rounded-lg mb-2 shadow-md group-hover:scale-105 transition-transform border border-blue-200">
                             <h4 class="font-bold">뽑기 (달고나)</h4>
                             <p class="text-xs text-gray-500">침 묻혀가며 성공 기원</p>
                         </div>
 
                         <div class="text-center group cursor-pointer" onclick="alert('입안이 시원해지면서 단맛이 싹~')">
-                            <img src="images/retro_stationery_store_snacks.png" loading="lazy" alt="Apollo"
+                            <img src="images/retro_stationery_store_snacks.webp" loading="lazy" alt="Apollo"
                                 class="w-full h-32 object-cover rounded-lg mb-2 shadow-md group-hover:scale-105 transition-transform border border-red-200">
                             <h4 class="font-bold">아폴로</h4>
                             <p class="text-xs text-gray-500">쪽쪽 빨아먹는 재미</p>
                         </div>
 
                         <div class="text-center group cursor-pointer" onclick="alert('종이 인형 옷 입히기, 딱지, 콩알탄...')">
-                            <img src="images/retro_80s_ddakji_1768293130024.png" loading="lazy" alt="Toys"
+                            <img src="images/retro_80s_ddakji_1768293130024.webp" loading="lazy" alt="Toys"
                                 class="w-full h-32 object-cover rounded-lg mb-2 shadow-md group-hover:scale-105 transition-transform border border-gray-400">
                             <h4 class="font-bold">추억의 장난감</h4>
                             <p class="text-xs text-gray-500">종이인형, 콩알탄</p>
@@ -931,7 +931,7 @@
                             <!-- Medal Game -->
                             <div class="text-center group cursor-pointer"
                                 onclick="alert('가위! 바위! 보! ... 따라라라라~ (메달 와르르)')">
-                                <img src="images/retro_medal_game_new.png" loading="lazy" alt="Medal Game"
+                                <img src="images/retro_medal_game_new.webp" loading="lazy" alt="Medal Game"
                                     class="w-full h-24 object-cover rounded-lg mb-2 shadow-inner group-hover:scale-105 transition-transform border border-gray-300">
                                 <h4 class="font-bold text-sm">메달 게임기</h4>
                                 <p class="text-xs text-gray-500">짱깸뽀! 이기면 메달</p>
@@ -939,7 +939,7 @@
 
                             <!-- Paper Dolls -->
                             <div class="text-center group cursor-pointer" onclick="alert('어깨걸이 부분 안 찢어지게 조심조심 오려야 해!')">
-                                <img src="images/retro_paper_dolls_new.png" loading="lazy" alt="Paper Dolls"
+                                <img src="images/retro_paper_dolls_new.webp" loading="lazy" alt="Paper Dolls"
                                     class="w-full h-24 object-cover rounded-lg mb-2 shadow-inner group-hover:scale-105 transition-transform border border-pink-200">
                                 <h4 class="font-bold text-sm">종이인형</h4>
                                 <p class="text-xs text-gray-500">가위질의 달인</p>
@@ -947,7 +947,7 @@
 
                             <!-- Plastic Model -->
                             <div class="text-center group cursor-pointer" onclick="alert('본드 냄새 맡으며 조립하던 아카데미 과학상자!')">
-                                <img src="images/retro_plastic_model_new.png" loading="lazy" alt="Plastic Model"
+                                <img src="images/retro_plastic_model_new.webp" loading="lazy" alt="Plastic Model"
                                     class="w-full h-24 object-cover rounded-lg mb-2 shadow-inner group-hover:scale-105 transition-transform border border-blue-200">
                                 <h4 class="font-bold text-sm">조립식 로보트</h4>
                                 <p class="text-xs text-gray-500">아카데미 과학상자</p>
@@ -955,7 +955,7 @@
 
                             <!-- BB Gun -->
                             <div class="text-center group cursor-pointer" onclick="alert('보안경은 필수! (사실 안 씀)')">
-                                <img src="images/retro_bb_gun_new.png" loading="lazy" alt="BB Gun"
+                                <img src="images/retro_bb_gun_new.webp" loading="lazy" alt="BB Gun"
                                     class="w-full h-24 object-cover rounded-lg mb-2 shadow-inner group-hover:scale-105 transition-transform border border-gray-600">
                                 <h4 class="font-bold text-sm">비비탄 총</h4>
                                 <p class="text-xs text-gray-500">골목의 전쟁</p>
@@ -1131,7 +1131,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">1. 한겨울 교실의 풍경</h4>
                             </div>
-                            <img src="images/retro_classroom_winter.png" data-asset-key="img_gallery_winter"
+                            <img loading="lazy" decoding="async" src="images/retro_classroom_winter.webp" data-asset-key="img_gallery_winter"
                                 alt="Classroom lunch box" class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#조개탄난로 #양철도시락 #국민학교</div>
                         </div>
@@ -1141,7 +1141,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">2. 골목길 보물창고, 문방구</h4>
                             </div>
-                            <img src="images/stationery_store.png" data-asset-key="img_gallery_store"
+                            <img loading="lazy" decoding="async" src="images/stationery_store.webp" data-asset-key="img_gallery_store"
                                 alt="Stationery store" class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#문방구 #쫀드기 #동네친구</div>
                         </div>
@@ -1151,7 +1151,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">3. 1988 서울 올림픽</h4>
                             </div>
-                            <img src="images/olympic_88.png" data-asset-key="img_gallery_olympic"
+                            <img loading="lazy" decoding="async" src="images/olympic_88.webp" data-asset-key="img_gallery_olympic"
                                 alt="Seoul Olympics 1988" class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#호돌이 #잠실경기장 #코리아나</div>
                         </div>
@@ -1161,7 +1161,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">4. 골목대장 구슬치기</h4>
                             </div>
-                            <img src="images/retro_80s_marbles_1768293075522.png" alt="Marbles"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_marbles_1768293075522.webp" alt="Marbles"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#구슬치기 #골목길 #해질녙</div>
                         </div>
@@ -1171,7 +1171,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">5. 달고나의 추억</h4>
                             </div>
-                            <img src="images/retro_80s_dalgona_1768293094090.png" alt="Dalgona"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_dalgona_1768293094090.webp" alt="Dalgona"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#달고나 #쪽자 #별모양성공?</div>
                         </div>
@@ -1181,7 +1181,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">6. 고무줄 놀이</h4>
                             </div>
-                            <img src="images/retro_80s_rubberband_1768293111943.png" alt="Rubber band"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_rubberband_1768293111943.webp" alt="Rubber band"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#고무줄놀이 #전우의시체를 #넘고넘어</div>
                         </div>
@@ -1191,7 +1191,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">7. 딱지치기 한판</h4>
                             </div>
-                            <img src="images/retro_80s_ddakji_1768293130024.png" alt="Ddakji"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_ddakji_1768293130024.webp" alt="Ddakji"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#딱지치기 #신문지딱지 #절대안넘어감</div>
                         </div>
@@ -1201,7 +1201,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">8. 온 가족 TV 시청</h4>
                             </div>
-                            <img src="images/retro_80s_family_tv_1768293147327.png" alt="Family TV"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_family_tv_1768293147327.webp" alt="Family TV"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#주말의명화 #한지붕세가족 #브라운관</div>
                         </div>
@@ -1211,7 +1211,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">9. 까만 교복 등굣길</h4>
                             </div>
-                            <img src="images/retro_80s_school_walk_1768293178122.png" alt="School Walk"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_school_walk_1768293178122.webp" alt="School Walk"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#교복자율화전 #모자 #가방이무거워</div>
                         </div>
@@ -1221,7 +1221,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">10. 학교 앞 떡볶이</h4>
                             </div>
-                            <img src="images/retro_80s_tteokbokki_1768293199140.png" alt="Tteokbokki"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_tteokbokki_1768293199140.webp" alt="Tteokbokki"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#컵떡볶이 #포장마차 #하교길국룰</div>
                         </div>
@@ -1231,7 +1231,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">11. 겨울철 연탄 배달</h4>
                             </div>
-                            <img src="images/retro_80s_coal_delivery_1768293217868.png" alt="Coal Delivery"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_coal_delivery_1768293217868.webp" alt="Coal Delivery"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#연탄재 #지게꾼 #따뜻한겨울</div>
                         </div>
@@ -1241,7 +1241,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">12. 동네 목욕탕</h4>
                             </div>
-                            <img src="images/retro_80s_bathhouse_1768293238160.png" alt="Bathhouse"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_bathhouse_1768293238160.webp" alt="Bathhouse"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#목욕바구니 #바나나우유 #때밀이</div>
                         </div>
@@ -1251,7 +1251,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">13. 만화방 풍경</h4>
                             </div>
-                            <img src="images/retro_80s_comic_store_1768293258405.png" alt="Comic Store"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_comic_store_1768293258405.webp" alt="Comic Store"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#보물섬 #소년챔프 #라면맛집</div>
                         </div>
@@ -1261,7 +1261,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">14. 포니 택시</h4>
                             </div>
-                            <img src="images/retro_80s_pony_car_1768293288621.png" alt="Pony Car"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_pony_car_1768293288621.webp" alt="Pony Car"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#국산차자부심 #녹색택시 #마이카시대</div>
                         </div>
@@ -1271,7 +1271,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">15. 만원 버스 출근길</h4>
                             </div>
-                            <img src="images/retro_80s_bus_commute_1768293305222.png" alt="Bus Commute"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_bus_commute_1768293305222.webp" alt="Bus Commute"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#안내양 #토큰 #오라이</div>
                         </div>
@@ -1281,7 +1281,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">16. 엄마의 부엌</h4>
                             </div>
-                            <img src="images/retro_80s_mom_kitchen_1768293324572.png" alt="Mom Kitchen"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_mom_kitchen_1768293324572.webp" alt="Mom Kitchen"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#아궁이 #곤로 #엄마손맛</div>
                         </div>
@@ -1291,7 +1291,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">17. 방방 (트램펄린)</h4>
                             </div>
-                            <img src="images/retro_80s_trampoline_1768293341982.png" alt="Trampoline"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_trampoline_1768293341982.webp" alt="Trampoline"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#10분에백원 #공중부양 #덤블링</div>
                         </div>
@@ -1301,7 +1301,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">18. 비디오 대여점</h4>
                             </div>
-                            <img src="images/retro_80s_video_store_1768293357449.png" alt="Video Store"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_video_store_1768293357449.webp" alt="Video Store"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#호환마마 #비디오테이프 #연체료주의</div>
                         </div>
@@ -1311,7 +1311,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">19. 지능계발 오락실</h4>
                             </div>
-                            <img src="images/retro_80s_arcade_1768293395161.png" alt="Arcade"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_arcade_1768293395161.webp" alt="Arcade"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#갤러그 #보글보글 #엄마등짝스매싱</div>
                         </div>
@@ -1321,7 +1321,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">20. 아침 우유 배달</h4>
                             </div>
-                            <img src="images/retro_80s_milk_delivery_1768293412482.png" alt="Milk Delivery"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_milk_delivery_1768293412482.webp" alt="Milk Delivery"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#서울우유 #초록색주머니 #병우유</div>
                         </div>
@@ -1331,7 +1331,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">21. 동네 슈퍼마켓</h4>
                             </div>
-                            <img src="images/retro_80s_supermarket_1768293431086.png" alt="Supermarket"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_supermarket_1768293431086.webp" alt="Supermarket"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#평상 #아이스크림통 #동네사랑방</div>
                         </div>
@@ -1341,7 +1341,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">22. 가족 사진</h4>
                             </div>
-                            <img src="images/retro_80s_family_portrait_1768293449627.png" alt="Family Portrait"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_family_portrait_1768293449627.webp" alt="Family Portrait"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#사진관 #기념일 #어색한미소</div>
                         </div>
@@ -1351,7 +1351,7 @@
                             <div class="bg-purple-50 p-3 border-b border-gray-200">
                                 <h4 class="font-bold text-purple-900 text-sm">23. 이발소 삼색통</h4>
                             </div>
-                            <img src="images/retro_80s_barbershop_1768293468520.png" alt="Barbershop"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_barbershop_1768293468520.webp" alt="Barbershop"
                                 class="w-full h-48 object-cover">
                             <div class="p-3 text-xs text-gray-500">#이발소 #면도 #남자들의수다</div>
                         </div>
@@ -1473,7 +1473,7 @@
                     <h3 class="text-2xl font-bold text-[#b91c1c] mb-4">📺 1980년, 색(色)의 혁명</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div>
-                            <img src="images/retro_80s_color_tv_launch.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_color_tv_launch.webp"
                                 class="rounded shadow-lg mb-4 w-full h-64 object-cover" alt="Color TV Launch">
                             <p class="text-xs text-gray-500 text-center">1980년 12월 1일, 흑백의 세상이 천연색으로 바뀌던 순간</p>
                         </div>
@@ -1559,7 +1559,7 @@
                             </div>
                         </div>
                         <div class="order-1 md:order-2">
-                            <img src="images/retro_80s_family_reunion.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_family_reunion.webp"
                                 class="rounded shadow-lg mb-4 w-full h-64 object-cover" alt="Family Reunion">
                         </div>
                     </div>
@@ -1625,7 +1625,7 @@
                     <h3 class="text-2xl font-bold text-yellow-500 mb-6">🕶️ 영웅본색과 바바리코트</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div>
-                            <img src="images/retro_80s_hong_kong_noir.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_hong_kong_noir.webp"
                                 class="rounded shadow-lg w-full h-80 object-cover opacity-90 hover:opacity-100 transition"
                                 alt="Hong Kong Noir">
                         </div>
@@ -1711,7 +1711,7 @@
                     <!-- Radio -->
                     <div class="bg-[#fdfbf7] rounded-lg shadow p-6 border border-[#d6ceb2]">
                         <h3 class="text-xl font-bold text-[#8c7b6c] mb-4">📻 별이 빛나는 밤에</h3>
-                        <img src="images/retro_80s_radio_dj.png" class="rounded w-full h-48 object-cover mb-4"
+                        <img loading="lazy" decoding="async" src="images/retro_80s_radio_dj.webp" class="rounded w-full h-48 object-cover mb-4"
                             alt="Radio DJ">
                         <p class="text-sm text-gray-700 mb-2">
                             "밤의 교육부 장관" 이문세와 함께했던 심야의 위로. 엽서에 꾹꾹 눌러 쓴 사연들이 전파를 타고 전국으로 퍼져나갔습니다.
@@ -1724,7 +1724,7 @@
                     <div
                         class="bg-gradient-to-br from-purple-900 to-blue-900 text-white rounded-lg shadow p-6 border border-purple-500">
                         <h3 class="text-xl font-bold text-pink-400 mb-4">⛸️ 롤라장의 디스코</h3>
-                        <img src="images/retro_80s_roller_rink.png" class="rounded w-full h-48 object-cover mb-4"
+                        <img loading="lazy" decoding="async" src="images/retro_80s_roller_rink.webp" class="rounded w-full h-48 object-cover mb-4"
                             alt="Roller Rink">
                         <p class="text-sm text-purple-100 mb-2">
                             London Boys의 'Harlem Desire'가 흘러나오면 모두가 트랙을 돌며 떼창을 했습니다. DJ의 느끼한 멘트와 화려한 조명 아래서 우리는 모두
@@ -1793,7 +1793,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Cinema -->
                         <div>
-                            <img src="images/retro_80s_cinema_sign.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_cinema_sign.webp"
                                 class="rounded shadow mb-4 w-full h-56 object-cover" alt="Cinema Sign">
                             <h4 class="font-bold text-lg mb-2">손으로 그린 극장 간판</h4>
                             <p class="text-sm text-gray-600">
@@ -1877,7 +1877,7 @@
                 <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 border border-blue-300">
                     <div class="flex flex-col md:flex-row items-center gap-8">
                         <div class="w-full md:w-1/2">
-                            <img src="images/retro_80s_fashion_denim.png" class="rounded shadow-lg w-full h-auto"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_fashion_denim.webp" class="rounded shadow-lg w-full h-auto"
                                 alt="80s Fashion">
                         </div>
                         <div class="w-full md:w-1/2">
@@ -1962,7 +1962,7 @@
                     <h3 class="text-2xl font-bold mb-6 text-center animate-pulse">INSERT COIN [50 WON]</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div>
-                            <img src="images/retro_80s_arcade_cabinet.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_arcade_cabinet.webp"
                                 class="rounded border-2 border-green-600 shadow-lg w-full h-64 object-cover"
                                 alt="Arcade">
                         </div>
@@ -2044,7 +2044,7 @@
                     <h3 class="text-2xl font-bold text-[#b91c1c] mb-6">🚐 그 시절 골목의 기억</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow-md">
-                            <img src="images/retro_80s_disinfection_truck.png"
+                            <img loading="lazy" decoding="async" src="images/retro_80s_disinfection_truck.webp"
                                 class="w-full h-full object-cover transition transform group-hover:scale-105"
                                 alt="Disinfection Truck">
                             <div
@@ -2158,7 +2158,7 @@
                         <!-- 1. Tonkatsu -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('수프에 후추 톡톡! 밥으로 하시겠습니까 빵으로 하시겠습니까?')">
-                            <img src="images/retro_80s_pork_cutlet.png" loading="lazy"
+                            <img src="images/retro_80s_pork_cutlet.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200" alt="Tonkatsu">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">경양식 돈까스</h4>
                             <p class="text-xs text-gray-500 mt-1">칼질 좀 하는 날</p>
@@ -2167,7 +2167,7 @@
                         <!-- 2. Jajangmyeon -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('입가에 춘장 묻혀가며 먹어야 제맛! 서비스 군만두는 필수!')">
-                            <img src="images/retro_jajangmyeon.png" loading="lazy"
+                            <img src="images/retro_jajangmyeon.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200"
                                 alt="Jajangmyeon">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">짜장면</h4>
@@ -2177,7 +2177,7 @@
                         <!-- 3. Roast Chicken -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('누런 봉투 속 전기구이 통닭! 무 많이 주세요~')">
-                            <img src="images/retro_roast_chicken.png" loading="lazy"
+                            <img src="images/retro_roast_chicken.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200"
                                 alt="Roast Chicken">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">전기구이 통닭</h4>
@@ -2187,7 +2187,7 @@
                         <!-- 4. Galbi -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('지글지글 숯불 돼지갈비! 오늘은 고기 파티다!')">
-                            <img src="images/retro_galbi.png" loading="lazy"
+                            <img src="images/retro_galbi.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200" alt="Galbi">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">양념 돼지갈비</h4>
                             <p class="text-xs text-gray-500 mt-1">특별한 날의 사치</p>
@@ -2196,7 +2196,7 @@
                         <!-- 5. Tangsuyuk -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('부먹? 찍먹? 당신의 선택은? (80년대는 볶먹/부먹이 대세!)')">
-                            <img src="images/retro_tangsuyuk.png" loading="lazy"
+                            <img src="images/retro_tangsuyuk.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200"
                                 alt="Tangsuyuk">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">탕수육</h4>
@@ -2206,7 +2206,7 @@
                         <!-- 6. Pan Pizza -->
                         <div class="bg-white p-3 rounded-lg shadow-md border border-orange-100 cursor-pointer hover:shadow-xl transition transform hover:-translate-y-1 group"
                             onclick="alert('치즈가 쭉~ 늘어나는 팬피자! 샐러드바 이용은 국룰!')">
-                            <img src="images/retro_pan_pizza.png" loading="lazy"
+                            <img src="images/retro_pan_pizza.webp" loading="lazy"
                                 class="rounded w-full h-auto object-contain mb-3 border border-gray-200"
                                 alt="Pan Pizza">
                             <h4 class="font-bold text-orange-900 group-hover:text-orange-600 transition">팬 피자</h4>
@@ -2310,7 +2310,7 @@
                         </div>
                         <div
                             class="relative rounded-xl overflow-hidden shadow-2xl transform rotate-1 border-4 border-blue-200">
-                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600"
+                            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600"
                                 data-asset-key="img_90s_arcade" alt="Arcade Game" class="w-full h-auto">
                             <div
                                 class="absolute bottom-0 left-0 right-0 bg-blue-600 bg-opacity-75 p-2 text-white text-center text-sm font-bold">
@@ -2383,7 +2383,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="rounded-lg overflow-hidden border-4 border-purple-100 shadow-xl">
-                            <img src="90s_fashion.png" alt="X-Generation Fashion" class="w-full h-auto">
+                            <img loading="lazy" decoding="async" src="90s_fashion.webp" alt="X-Generation Fashion" class="w-full h-auto">
                             <div class="p-3 bg-purple-50 text-center text-sm font-bold text-purple-800 italic border-t">
                                 "교실 이데아" - 서태지와 아이들의 충격적 등장</div>
                         </div>
@@ -2475,7 +2475,7 @@
                         <h3 class="text-xl font-bold mb-4 text-white uppercase italic tracking-tighter">천리안 / 하이텔 / 나우누리
                         </h3>
                         <div class="bg-black p-4 rounded mb-4 border border-green-800">
-                            <img src="90s_pc_tongshin.png" alt="PC Communication" class="w-full h-48 object-contain">
+                            <img loading="lazy" decoding="async" src="90s_pc_tongshin.webp" alt="PC Communication" class="w-full h-48 object-contain">
                         </div>
                         <p class="text-sm leading-relaxed mb-4 text-green-300">
                             모뎀의 구슬픈 접속음과 함께 펼쳐지던 파란 화면의 세계.
@@ -2497,7 +2497,7 @@
                             <i class="fas fa-pager text-yellow-500 mr-2"></i> 숫자 정보 단말기: 삐삐
                         </h3>
                         <div class="flex flex-col md:flex-row gap-6 items-center">
-                            <img src="90s_beeper.png" alt="90s Beeper" class="w-48 h-auto shadow-2xl rounded-lg">
+                            <img loading="lazy" decoding="async" src="90s_beeper.webp" alt="90s Beeper" class="w-48 h-auto shadow-2xl rounded-lg">
                             <div class="flex-1 space-y-4">
                                 <div class="bg-gray-100 p-3 rounded italic text-gray-800 border-l-4 border-yellow-500">
                                     <p class="text-sm">"8282" - 빨리 연락해!</p>
@@ -2588,7 +2588,7 @@
                                 <div
                                     class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
                                 </div>
-                                <img id="archive-img" src="archive_1990.png" alt="Archive News"
+                                <img loading="lazy" decoding="async" id="archive-img" src="archive_1990.webp" alt="Archive News"
                                     class="relative w-full h-64 object-cover rounded-lg border-2 border-blue-400">
                             </div>
                             <div class="space-y-4">
@@ -2679,7 +2679,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <!-- Image 1: Street Fashion -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_street_fashion.png" alt="90s Street Fashion"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_street_fashion.webp" alt="90s Street Fashion"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-blue-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2690,7 +2690,7 @@
 
                         <!-- Image 2: School Life -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_school_life.png" alt="90s School Life"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_school_life.webp" alt="90s School Life"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-purple-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2701,7 +2701,7 @@
 
                         <!-- Image 3: Objects -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_objects.png" alt="90s Objects"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_objects.webp" alt="90s Objects"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2712,7 +2712,7 @@
 
                         <!-- Image 4: Video Rental -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_video_rental.png" alt="90s Video Store"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_video_rental.webp" alt="90s Video Store"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-pink-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2723,7 +2723,7 @@
 
                         <!-- Image 5: DDR/Arcade -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_ddr_arcade.png" alt="90s Arcade"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_ddr_arcade.webp" alt="90s Arcade"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-blue-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2734,7 +2734,7 @@
 
                         <!-- Image 6: K-Pop Fans -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_kpop_fans.png" alt="90s K-Pop Fans"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_kpop_fans.webp" alt="90s K-Pop Fans"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-purple-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2745,7 +2745,7 @@
 
                         <!-- Image 7: Cassette Rack -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_cassette_rack.png" alt="90s Cassette Rack"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_cassette_rack.webp" alt="90s Cassette Rack"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2756,7 +2756,7 @@
 
                         <!-- Image 8: Sticker Photo -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_sticker_photo_booth.png" alt="90s Purikura"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_sticker_photo_booth.webp" alt="90s Purikura"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-pink-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2767,7 +2767,7 @@
 
                         <!-- Image 9: PCS Phone -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_pcs_phone.png" alt="90s PCS Phone"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_pcs_phone.webp" alt="90s PCS Phone"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-blue-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2778,7 +2778,7 @@
 
                         <!-- Image 10: PC Room -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_pc_room_crt.png" alt="90s PC Room"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_pc_room_crt.webp" alt="90s PC Room"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-purple-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2789,7 +2789,7 @@
 
                         <!-- Image 11: Tamagotchi -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_tamagotchi_closeup.png" alt="90s Tamagotchi"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_tamagotchi_closeup.webp" alt="90s Tamagotchi"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2800,7 +2800,7 @@
 
                         <!-- Image 12: Dial-up Modem -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_dialup_modem.png" alt="90s Dialup Home"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_dialup_modem.webp" alt="90s Dialup Home"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-pink-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2811,7 +2811,7 @@
 
                         <!-- Image 13: Cup Tteokbokki -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_cup_tteokbokki.png" alt="90s Cup Tteokbokki"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_cup_tteokbokki.webp" alt="90s Cup Tteokbokki"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-blue-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2822,7 +2822,7 @@
 
                         <!-- Image 14: Fast Food -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_fastfood.png" alt="90s Fast Food"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_fastfood.webp" alt="90s Fast Food"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-purple-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2833,7 +2833,7 @@
 
                         <!-- Image 15: Lunchbox -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_lunchbox.png" alt="90s Lunchbox"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_lunchbox.webp" alt="90s Lunchbox"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2844,7 +2844,7 @@
 
                         <!-- Image 16: Street Food Vendor -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_street_food_vendor.png" alt="90s Street Vendor"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_street_food_vendor.webp" alt="90s Street Vendor"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-pink-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2855,7 +2855,7 @@
 
                         <!-- Image 17: Comic Rental -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_comic_rental.png" alt="90s Comic Rental"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_comic_rental.webp" alt="90s Comic Rental"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-blue-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2866,7 +2866,7 @@
 
                         <!-- Image 18: Subway Ticket -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_subway_ticket.png" alt="90s Subway Ticket"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_subway_ticket.webp" alt="90s Subway Ticket"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-purple-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2877,7 +2877,7 @@
 
                         <!-- Image 19: Playground -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_apartment_playground.png" alt="90s Playground"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_apartment_playground.webp" alt="90s Playground"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-green-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2888,7 +2888,7 @@
 
                         <!-- Image 20: Music Store -->
                         <div class="group relative overflow-hidden rounded-lg shadow-lg border-2 border-white">
-                            <img src="images/gallery_90s_music_store.png" alt="90s Music Store"
+                            <img loading="lazy" decoding="async" src="images/gallery_90s_music_store.webp" alt="90s Music Store"
                                 class="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-pink-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -2962,7 +2962,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="rounded-xl overflow-hidden shadow-2xl transform -rotate-1 border-4 border-gray-100">
-                            <img src="images/retro_90s_basketball_match_1767694245685.png"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_basketball_match_1767694245685.webp"
                                 alt="University Basketball Match" class="w-full h-auto">
                             <div class="p-2 bg-gray-900 text-white text-center font-bold text-sm">연세대 vs 고려대: 숙명의 라이벌
                             </div>
@@ -3067,7 +3067,7 @@
                             </div>
                         </div>
                         <div class="md:w-1/2">
-                            <img src="images/retro_90s_sitcom_scene_1767694261199.png" alt="90s Sitcom Scene"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_sitcom_scene_1767694261199.webp" alt="90s Sitcom Scene"
                                 class="w-full rounded-lg shadow-md border-2 border-white transform rotate-2">
                         </div>
                     </div>
@@ -3135,7 +3135,7 @@
                         <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">🚨 블레임 룩(Blame Look)
                             현상</h3>
                         <div class="flex gap-4 mb-4">
-                            <img src="images/retro_90s_blame_look_knit_1767694280512.png" alt="Colorful Knit"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_blame_look_knit_1767694280512.webp" alt="Colorful Knit"
                                 class="w-1/3 object-cover rounded shadow-lg border border-gray-500">
                             <div class="text-sm leading-relaxed">
                                 <span class="text-yellow-400 font-bold">신창원 신드롬</span><br>
@@ -3150,7 +3150,7 @@
                         <h3 class="text-xl font-bold text-green-400 mb-4 border-b border-green-900 pb-2">🎸 인디 밴드의 태동:
                             홍대 앞 지하</h3>
                         <div class="mb-4">
-                            <img src="images/retro_90s_indie_club_drug_1767694298161.png" alt="Club Drug"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_indie_club_drug_1767694298161.webp" alt="Club Drug"
                                 class="w-full h-40 object-cover rounded mb-2 opacity-80 hover:opacity-100 transition">
                             <p class="text-xs text-green-700">Live Club Drug (1996)</p>
                         </div>
@@ -3237,7 +3237,7 @@
                             </div>
                         </div>
                         <div class="md:w-1/2">
-                            <img src="images/retro_90s_indie_club_drug_1767694298161.png" alt="Indie Band Performance"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_indie_club_drug_1767694298161.webp" alt="Indie Band Performance"
                                 class="w-full rounded-lg shadow-lg border-2 border-gray-700">
                         </div>
                     </div>
@@ -3305,7 +3305,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                         <div>
-                            <img src="images/retro_90s_tamagotchi_magiceye_1767694316286.png" alt="90s Hobbies"
+                            <img loading="lazy" decoding="async" src="images/retro_90s_tamagotchi_magiceye_1767694316286.webp" alt="90s Hobbies"
                                 class="w-full rounded-lg shadow-md mb-4">
                         </div>
                         <div class="space-y-6">
@@ -3392,7 +3392,7 @@
                         <!-- Sticker Photo -->
                         <div class="bg-white p-4 rounded-xl shadow-md border-b-4 border-pink-400">
                             <div class="relative mb-4 group cursor-pointer">
-                                <img src="images/retro_90s_sticker_photo_machine.png" alt="Sticker Photo Booth"
+                                <img loading="lazy" decoding="async" src="images/retro_90s_sticker_photo_machine.webp" alt="Sticker Photo Booth"
                                     class="w-full h-48 object-cover rounded-lg">
                                 <div
                                     class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
@@ -3413,7 +3413,7 @@
                         <!-- Pokemon Bread -->
                         <div class="bg-white p-4 rounded-xl shadow-md border-b-4 border-yellow-400">
                             <div class="relative mb-4 group cursor-pointer">
-                                <img src="images/retro_90s_pokemon_bread.png" alt="Pokemon Bread"
+                                <img loading="lazy" decoding="async" src="images/retro_90s_pokemon_bread.webp" alt="Pokemon Bread"
                                     class="w-full h-48 object-cover rounded-lg">
                                 <div
                                     class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
@@ -3540,7 +3540,7 @@
                             </div>
                         </div>
                         <div>
-                            <img src="images/retro_00s_kart_game.png" alt="Kart Racing Game"
+                            <img loading="lazy" decoding="async" src="images/retro_00s_kart_game.webp" alt="Kart Racing Game"
                                 class="w-full rounded-lg shadow-lg border-2 border-gray-600 hover:border-green-400 transition cursor-pointer">
                             <p class="text-center text-xs text-gray-500 mt-2">PC방 컵라면 내기 한판?</p>
                         </div>
@@ -3730,7 +3730,7 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-center bg-gray-100 rounded-xl p-4">
-                        <img src="images/cyworld_minihompy_mockup.png" class="max-w-full shadow-lg rounded"
+                        <img loading="lazy" decoding="async" src="images/cyworld_minihompy_mockup.webp" class="max-w-full shadow-lg rounded"
                             alt="Cyworld Mockup"
                             onerror="this.src='https://via.placeholder.com/400x300?text=Cyworld+Mockup'">
                     </div>
@@ -3738,10 +3738,10 @@
                 <div class="mt-8">
                     <h3 class="text-xl font-bold text-gray-900 mb-6">Tech Gallery</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <img src="images/retro_mp3_player_2000s.png" class="rounded shadow-md w-full h-48 object-cover"
+                        <img loading="lazy" decoding="async" src="images/retro_mp3_player_2000s.webp" class="rounded shadow-md w-full h-48 object-cover"
                             onerror="this.src='https://via.placeholder.com/300x200?text=MP3+Player'">
                         <div class="bg-white p-4 rounded shadow-md flex items-center justify-center flex-col">
-                            <img src="images/retro_00s_slider_phone.png" alt="Slider Phone"
+                            <img loading="lazy" decoding="async" src="images/retro_00s_slider_phone.webp" alt="Slider Phone"
                                 class="w-24 h-40 object-contain mb-2">
                             <p class="text-center text-gray-600 text-sm">슬라이드폰의 '딸깍' 소리<br>(스카이 & 애니콜)</p>
                         </div>
@@ -3811,7 +3811,7 @@
                             <canvas id="societyChart00s"></canvas>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <img src="images/worldcup_2002_red_devils.png"
+                            <img loading="lazy" decoding="async" src="images/worldcup_2002_red_devils.webp"
                                 class="rounded-lg shadow-xl w-full h-auto mb-4"
                                 onerror="this.src='https://via.placeholder.com/400x300?text=World+Cup+2002'">
                             <p class="text-sm text-gray-600">시청 앞 광장을 가득 메운 붉은 악마들</p>
@@ -3835,7 +3835,7 @@
                         </div>
                         <div>
                             <h3 class="text-2xl font-bold text-gray-900 mb-6">그 시절 패션 (Shaggy Cut)</h3>
-                            <img src="images/korean_fashion_2000s_shaggy_cut.png"
+                            <img loading="lazy" decoding="async" src="images/korean_fashion_2000s_shaggy_cut.webp"
                                 class="mx-auto rounded-lg shadow-lg w-full md:w-2/3"
                                 onerror="this.src='https://via.placeholder.com/400x300?text=2000s+Fashion'">
                         </div>
@@ -4126,52 +4126,52 @@
             1990: {
                 title: "3당 합당과 범죄와의 전쟁",
                 desc: "민주정의당, 통일민주당, 신민주공화당의 합당으로 거대 여당이 탄생하고, 사회 안정을 위한 '범죄와의 전쟁'이 선포되었습니다.",
-                image: "archive_1990.png"
+                image: "archive_1990.webp"
             },
             1991: {
                 title: "지방의회 부활 & 남북한 UN 동시 가입",
                 desc: "30년 만에 지방 자치가 부활했으며, 남한과 북한이 동시에 UN에 정식 회원국으로 가입하여 국제 사회의 인정을 받았습니다.",
-                image: "archive_1991.png"
+                image: "archive_1991.webp"
             },
             1992: {
                 title: "서태지와 아이들 등장 & 바르셀로나 올림픽",
                 desc: "'난 알아요'와 함께 한국 대중음악의 혁명이 시작되었습니다. 황영조 선수는 바르셀로나 올림픽 마라톤에서 금메달을 획득했습니다.",
-                image: "archive_1992.png"
+                image: "archive_1992.webp"
             },
             1993: {
                 title: "금융실명제 실시 & 대전 엑스포",
                 desc: "경제의 투명성을 높이기 위한 금융실명제가 전격 실시되었고, 과학 기술의 축제 대전 엑스포가 성황리에 열렸습니다.",
-                image: "archive_1993.png"
+                image: "archive_1993.webp"
             },
             1994: {
                 title: "성수대교 붕괴 & 김일성 사망",
                 desc: "성수대교 붕괴라는 비극적인 사건이 발생했으며, 북한 김일성 주석의 사망으로 한반도 정세가 급변했습니다.",
-                image: "archive_1994.png"
+                image: "archive_1994.webp"
             },
             1995: {
                 title: "삼풍백화점 붕괴 & 쓰레기 종량제 실시",
                 desc: "삼풍백화점 붕괴 참사로 전국이 슬픔에 잠겼으며, 환경 보호를 위한 쓰레기 종량제가 전국적으로 실시되었습니다.",
-                image: "archive_1995.png"
+                image: "archive_1995.webp"
             },
             1996: {
                 title: "PC통신 열풍 & 한총련 사태",
                 desc: "천리안, 하이텔 등 PC통신이 대중화되며 온라인 문화가 싹텄고, 연세대 한총련 사태로 사회적 파장이 컸습니다.",
-                image: "archive_1996.png"
+                image: "archive_1996.webp"
             },
             1997: {
                 title: "IMF 외환위기 & 금 모으기 운동",
                 desc: "국가 부도 위기로 IMF 구제금융을 받게 되었으나, 온 국민이 금 모으기 운동에 참여하며 위기 극복의 의지를 보였습니다.",
-                image: "archive_1997.png"
+                image: "archive_1997.webp"
             },
             1998: {
                 title: "박세리·박찬호 활약 & 금강산 관광 시작",
                 desc: "IMF의 시름을 덜어준 국민 영웅 박세리와 박찬호의 활약이 돋보였으며, 역사적인 금강산 관광의 길이 열렸습니다.",
-                image: "archive_1998.png"
+                image: "archive_1998.webp"
             },
             1999: {
                 title: "밀레니엄 버그(Y2K) 소동",
                 desc: "새로운 세기를 앞두고 컴퓨터 오류인 Y2K에 대한 불안감이 컸으나, 무사히 2000년대를 맞이할 준비를 마쳤습니다.",
-                image: "archive_1999.png"
+                image: "archive_1999.webp"
             }
         };
 
@@ -4185,7 +4185,7 @@
             display.innerHTML = `
                     <div class="archive-card bg-blue-950 p-6 rounded-xl border border-blue-800 flex flex-col md:flex-row gap-6 items-center animate-fadeIn">
                         <div class="w-full md:w-1/2">
-                            <img src="${data.image}" alt="Archive News" class="w-full h-64 object-cover rounded-lg border-2 border-blue-400 shadow-lg">
+                            <img loading="lazy" decoding="async" src="${data.image}" alt="Archive News" class="w-full h-64 object-cover rounded-lg border-2 border-blue-400 shadow-lg">
                         </div>
                         <div class="w-full md:w-1/2 space-y-4">
                             <h4 class="text-2xl font-bold text-white border-b-2 border-yellow-400 pb-2">${year}: ${data.title}</h4>
@@ -4242,17 +4242,17 @@
         // --- Marble Tab Logic ---
         const marbleData = {
             'triangle': `
-                    <img src="retro_marble_triangle.png" class="w-full aspect-square object-cover rounded mb-2">
+                    <img loading="lazy" decoding="async" src="retro_marble_triangle.webp" class="w-full aspect-square object-cover rounded mb-2">
                         <h5 class="font-bold text-blue-800 mb-2">📐 삼각형 치기</h5>
                         <p class="text-sm leading-6">바닥에 삼각형을 그리고 각자의 구슬을 그 안에 넣습니다. 일정한 거리에서 구슬을 던져 삼각형 밖으로 구슬을 쳐내면 자신의 것이 됩니다. 가장 정석적이고 긴장감 넘치는 방식!</p>
                         `,
             'odd-even': `
-                        <img src="retro_marble_odd_even.png" class="w-full aspect-square object-cover rounded mb-2">
+                        <img loading="lazy" decoding="async" src="retro_marble_odd_even.webp" class="w-full aspect-square object-cover rounded mb-2">
                             <h5 class="font-bold text-blue-800 mb-2">🎱 홀짝 게임</h5>
                             <p class="text-sm leading-6">한 명의 친구가 손안에 구슬을 숨기고 "홀! 짝!"을 외치게 합니다. 맞추면 건 구슬만큼 따고, 틀리면 뺏기는 가장 단순하면서도 중독성 강한 심리전 게임입니다.</p>
                             `,
             'hole': `
-                            <img src="retro_marble_hole.png" class="w-full aspect-square object-cover rounded mb-2">
+                            <img loading="lazy" decoding="async" src="retro_marble_hole.webp" class="w-full aspect-square object-cover rounded mb-2">
                                 <h5 class="font-bold text-blue-800 mb-2">⛳ 구멍 넣기 (봄)</h5>
                                 <p class="text-sm leading-6">바닥에 작은 구멍을 여러 개 파고, 정해진 순서대로 구슬을 구멍에 먼저 넣는 사람이 이기는 방식입니다. 마치 골프와 비슷한 정교한 컨트롤이 필요합니다.</p>
             `
@@ -4356,52 +4356,52 @@
             1980: {
                 title: "컬러 TV 방송 시작",
                 desc: "12월 1일, KBS와 MBC가 컬러 TV 방송을 시작하며 흑백 TV 시대가 막을 내렸습니다. 화려한 색의 시대가 열렸습니다.",
-                image: "images/retro_80s_color_tv_launch.png"
+                image: "images/retro_80s_color_tv_launch.webp"
             },
             1981: {
                 title: "국풍81 & 교복자율화 논의",
                 desc: "여의도에서 열린 대규모 문화 축제 국풍81. 그리고 두발 및 교복 자율화에 대한 논의가 시작되었습니다.",
-                image: "images/retro_80s_cinema_sign.png"
+                image: "images/retro_80s_cinema_sign.webp"
             },
             1982: {
                 title: "프로야구 출범 & 통금 해제",
                 desc: "OB 베어스의 우승으로 막을 내린 프로야구 원년. 37년 만에 야간 통행금지가 해제되어 밤거리가 자유로워졌습니다.",
-                image: "images/retro_baseball_1982.png"
+                image: "images/retro_baseball_1982.webp"
             },
             1983: {
                 title: "이산가족을 찾습니다",
                 desc: "KBS 특별 생방송 '이산가족을 찾습니다'가 방영되어 전 국민을 눈물바다로 만들었습니다. 분단의 아픔을 다시금 실감했습니다.",
-                image: "images/retro_80s_family_reunion.png"
+                image: "images/retro_80s_family_reunion.webp"
             },
             1984: {
                 title: "롤러장 열풍",
                 desc: "청춘들의 해방구 롤러장. 보니 엠의 노래에 맞춰 뒤로 타기(백스텝)를 연마하던 시절입니다.",
-                image: "images/retro_80s_roller_rink.png"
+                image: "images/retro_80s_roller_rink.webp"
             },
             1985: {
                 title: "경양식집 외식 문화",
                 desc: "특별한 날엔 가족끼리 경양식집에서 돈까스(포크 커틀릿)를 썰었습니다. 스프에는 꼭 후추를 뿌려야 제맛.",
-                image: "images/retro_80s_pork_cutlet.png"
+                image: "images/retro_80s_pork_cutlet.webp"
             },
             1986: {
                 title: "영웅본색 & 홍콩 느와르",
                 desc: "주윤발의 코드와 성냥개비. 남자들의 가슴에 불을 지른 홍콩 느와르 영화의 전성기였습니다.",
-                image: "images/retro_80s_hong_kong_noir.png"
+                image: "images/retro_80s_hong_kong_noir.webp"
             },
             1987: {
                 title: "별이 빛나는 밤에 & 민주화",
                 desc: "라디오 DJ 이문세의 '별밤'을 들으며 엽서를 쓰던 밤. 그리고 거리에서 울려 퍼진 '호헌 철폐, 독재 타도'.",
-                image: "images/retro_80s_radio_dj.png"
+                image: "images/retro_80s_radio_dj.webp"
             },
             1988: {
                 title: "제24회 서울 올림픽",
                 desc: "\"손에 손잡고~\" 전 세계인의 축제 서울 올림픽. 굴렁쇠 소년과 호돌이는 대한민국의 자랑이었습니다.",
-                image: "images/olympic_88.png"
+                image: "images/olympic_88.webp"
             },
             1989: {
                 title: "마이카 시대의 도래",
                 desc: "국민 소득 향상으로 '내 차(My Car)'를 갖는 집이 늘어났습니다. 엑셀, 르망, 프라이드가 도로를 누비기 시작했습니다.",
-                image: "images/retro_80s_pony_car_1768293288621.png"
+                image: "images/retro_80s_pony_car_1768293288621.webp"
             }
         };
 
@@ -4416,7 +4416,7 @@
 
             display.innerHTML = `
                 <div class="md:col-span-1 animate-fadeIn">
-                    <img src="${data.image}" alt="${year} News" class="w-full h-64 object-cover rounded-lg border-2 border-blue-400 shadow-lg">
+                    <img loading="lazy" decoding="async" src="${data.image}" alt="${year} News" class="w-full h-64 object-cover rounded-lg border-2 border-blue-400 shadow-lg">
                 </div>
                 <div class="md:col-span-1 space-y-4 animate-fadeIn">
                     <h4 class="text-2xl font-bold text-white border-b-2 border-yellow-300 pb-2">${year}: ${data.title}</h4>
@@ -4463,7 +4463,7 @@
                            <span class="${indicatorClass} w-full h-full rounded-full opacity-80"></span>
                         </div>
                         <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-xl shadow-md border ${borderClass} hover:shadow-xl transition-shadow mr-auto md:group-odd:mr-0 md:group-odd:ml-auto ml-10 md:ml-0">
-                             <img src="${data.image}" alt="${year} News" class="w-full h-40 object-cover rounded-lg mb-3 shadow-sm border border-gray-100">
+                             <img loading="lazy" decoding="async" src="${data.image}" alt="${year} News" class="w-full h-40 object-cover rounded-lg mb-3 shadow-sm border border-gray-100">
                              <span class="text-sm font-bold ${textClass} block mb-1">${year}년</span>
                              <h4 class="text-lg font-bold mb-2 text-gray-800">${data.title}</h4>
                              <p class="text-gray-600 text-sm leading-relaxed">${data.desc}</p>
