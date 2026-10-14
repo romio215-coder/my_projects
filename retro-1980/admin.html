@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retro 1980 - 관리자 페이지</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase JS Client -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <meta name="robots" content="noindex, nofollow">
     <!-- Supabase JS Client -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <!-- Microsoft Clarity -->
@@ -62,8 +61,10 @@
     <div id="login-overlay">
         <div class="retro-card p-8 rounded max-w-sm w-full text-center bg-gray-700">
             <h1 class="text-2xl font-bold mb-4 font-Sunflower text-yellow-400">🕵️ 관리자 인증</h1>
-            <p class="mb-4 text-sm text-gray-300">암호를 대라!</p>
-            <input type="password" id="admin-pass" placeholder="비밀번호 입력"
+            <p class="mb-4 text-sm text-gray-300">관리자 계정으로 로그인하세요.</p>
+            <input type="email" id="admin-email" placeholder="이메일" autocomplete="username"
+                class="w-full p-2 mb-2 bg-gray-800 border border-gray-600 rounded text-white text-center">
+            <input type="password" id="admin-pass" placeholder="비밀번호" autocomplete="current-password"
                 class="w-full p-2 mb-4 bg-gray-800 border border-gray-600 rounded text-white text-center">
             <button onclick="checkAuth()"
                 class="btn-retro w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded border-2 border-blue-800">
@@ -161,17 +162,28 @@
         // Initialize Supabase
         const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- Auth Logic (Simple) ---
-        function checkAuth() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === 'retro1980') {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('admin-content').classList.remove('hidden');
-                loadData();
-            } else {
-                alert('비밀번호가 틀렸습니다! (힌트: retro1980)');
-            }
+        const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+        // --- Auth Logic ---
+        // 로그인은 Supabase Auth로 하고, 실제 쓰기 권한은 DB 정책(admin_users)이 검사한다.
+        function showAdmin() {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('admin-content').classList.remove('hidden');
+            loadData();
         }
+
+        async function checkAuth() {
+            const email = document.getElementById('admin-email').value.trim();
+            const password = document.getElementById('admin-pass').value;
+            const { error } = await sbClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                alert('로그인에 실패했습니다.');
+                return;
+            }
+            showAdmin();
+        }
+
+        sbClient.auth.getSession().then(({ data }) => { if (data.session) showAdmin(); });
 
         // --- Load Data ---
         async function loadData() {
@@ -202,10 +214,10 @@
                 div.className = 'flex justify-between items-center bg-gray-800 p-2 rounded border border-gray-600';
                 div.innerHTML = `
                     <div>
-                        <span class="font-bold text-sm text-gray-200">${item.label}</span>
-                        <span class="text-xs text-gray-400 block">${item.action_id}</span>
+                        <span class="font-bold text-sm text-gray-200">${esc(item.label)}</span>
+                        <span class="text-xs text-gray-400 block">${esc(item.action_id)}</span>
                     </div>
-                    <button onclick="deleteMenuItem(${item.id})" class="text-red-400 hover:text-red-300 text-xs font-bold px-2">삭제</button>
+                    <button onclick="deleteMenuItem(${Number(item.id)})" class="text-red-400 hover:text-red-300 text-xs font-bold px-2">삭제</button>
                 `;
                 listEl.appendChild(div);
             });
@@ -234,17 +246,17 @@
                     div.className = 'bg-gray-800 p-3 rounded border border-gray-600 flex gap-4 items-start';
                     div.innerHTML = `
                         <div class="w-20 h-20 bg-gray-900 rounded overflow-hidden flex-shrink-0 border border-gray-700">
-                             <img src="${img.value}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
+                             <img src="${esc(img.value)}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
                         </div>
                         <div class="flex-grow min-w-0">
-                            <h4 class="font-bold text-sm text-blue-300 truncate">${img.description || img.key}</h4>
-                            <p class="text-xs text-gray-500 mb-2 truncate">${img.key}</p>
+                            <h4 class="font-bold text-sm text-blue-300 truncate">${esc(img.description || img.key)}</h4>
+                            <p class="text-xs text-gray-500 mb-2 truncate">${esc(img.key)}</p>
                             <div class="flex gap-2">
-                                <button onclick="triggerUpload('${img.key}')" 
+                                <button onclick="triggerUpload('${esc(img.key)}')" 
                                     class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1 rounded">
                                     이미지 변경
                                 </button>
-                                <a href="${img.value}" target="_blank" class="text-gray-500 text-xs flex items-center hover:text-white">보기 ↗</a>
+                                <a href="${esc(img.value)}" target="_blank" class="text-gray-500 text-xs flex items-center hover:text-white">보기 ↗</a>
                             </div>
                         </div>
                     `;

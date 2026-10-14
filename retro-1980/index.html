@@ -58,6 +58,12 @@
     </script>
 
     <link rel="icon" href="./favicon.png" type="image/png">
+    <script>
+        // 방명록 글은 누구나 쓸 수 있으므로 화면에 넣기 전에 반드시 HTML 이스케이프한다.
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -551,10 +557,10 @@
                         const html = `
                             <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3 animate-fadeIn">
                                 <div class="flex justify-between items-center mb-1">
-                                    <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                    <span class="text-xs text-gray-400">${data.date}</span>
+                                    <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
+                                    <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                 </div>
-                                <p class="text-gray-700 text-sm">${data.text}</p>
+                                <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                             </div>
                         `;
                         // Prepend (latest first) is handled by query order, but for onSnapshot usually we clear and redraw or append.
@@ -572,10 +578,10 @@
                             list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                         });
@@ -819,10 +825,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -994,10 +1000,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1083,10 +1089,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#1d4ed8] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#1d4ed8] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1430,7 +1436,7 @@
                                         <span class="font-bold text-purple-900 text-sm block mb-1">${safeName}</span>
                                         <p class="text-gray-700 text-sm break-all font-['DungGeunMo']">${safeText}</p>
                                     </div>
-                                    <span class="text-xs text-gray-400 whitespace-nowrap ml-2">${data.date}</span>
+                                    <span class="text-xs text-gray-400 whitespace-nowrap ml-2">${escapeHtml(data.date)}</span>
                                 `;
                                 list.appendChild(div);
                             });
@@ -1509,10 +1515,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1585,10 +1591,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#15803d] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#15803d] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1671,10 +1677,10 @@
                                 list.innerHTML += `
                                     <div class="bg-gray-800 p-3 rounded shadow-sm border border-gray-700 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-yellow-500 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-yellow-500 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-300 text-sm">${data.text}</p>
+                                        <p class="text-gray-300 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1752,10 +1758,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#8c7b6c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#8c7b6c] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1838,10 +1844,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -1921,10 +1927,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-blue-800 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2004,10 +2010,10 @@
                                 list.innerHTML += `
                                     <div class="bg-black p-3 rounded shadow-sm border border-green-900 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-400 text-sm font-mono">${data.name}</span>
-                                            <span class="text-xs text-green-700 font-mono">${data.date}</span>
+                                            <span class="font-bold text-green-400 text-sm font-mono">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-green-700 font-mono">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-green-200 text-sm font-mono">${data.text}</p>
+                                        <p class="text-green-200 text-sm font-mono">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2114,10 +2120,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-[#b91c1c] text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-[#b91c1c] text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2235,10 +2241,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-gray-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-orange-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-orange-800 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2340,10 +2346,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-blue-800 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2428,10 +2434,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-purple-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-purple-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-purple-800 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2530,10 +2536,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-gray-800 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-gray-800 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2633,10 +2639,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -2919,10 +2925,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -3012,10 +3018,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-red-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3093,10 +3099,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-yellow-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-800 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-gray-800 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3182,10 +3188,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-gray-200 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-500">${data.date}</span>
+                                        <span class="font-bold text-gray-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-500">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-800 text-sm">${data.text}</p>
+                                    <p class="text-gray-800 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3263,10 +3269,10 @@
                                 list.innerHTML += `
                                     <div class="bg-gray-900 p-3 rounded shadow-sm border border-green-900 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-green-500 text-sm">${data.name}</span>
-                                            <span class="text-xs text-green-800">${data.date}</span>
+                                            <span class="font-bold text-green-500 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-green-800">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-green-300 text-sm">${data.text}</p>
+                                        <p class="text-green-300 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -3347,10 +3353,10 @@
                                 list.innerHTML += `
                                     <div class="bg-white p-3 rounded shadow-sm border border-teal-100 mb-3">
                                         <div class="flex justify-between items-center mb-1">
-                                            <span class="font-bold text-teal-900 text-sm">${data.name}</span>
-                                            <span class="text-xs text-gray-400">${data.date}</span>
+                                            <span class="font-bold text-teal-900 text-sm">${escapeHtml(data.name)}</span>
+                                            <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                         </div>
-                                        <p class="text-gray-700 text-sm">${data.text}</p>
+                                        <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                     </div>
                                 `;
                             });
@@ -3453,10 +3459,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-pink-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-pink-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-pink-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3567,10 +3573,10 @@
                                 list.innerHTML += `
                                 <div class="bg-gray-800 p-3 rounded shadow-sm border border-green-900 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-green-500 text-sm">${data.name}</span>
-                                        <span class="text-xs text-green-800">${data.date}</span>
+                                        <span class="font-bold text-green-500 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-green-800">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-green-300 text-sm">${data.text}</p>
+                                    <p class="text-green-300 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3686,10 +3692,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-blue-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-blue-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-blue-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3767,10 +3773,10 @@
                                 list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-orange-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-orange-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-orange-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                             });
@@ -3861,10 +3867,10 @@
                                     list.innerHTML += `
                                 <div class="bg-white p-3 rounded shadow-sm border border-red-100 mb-3">
                                     <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-red-900 text-sm">${data.name}</span>
-                                        <span class="text-xs text-gray-400">${data.date}</span>
+                                        <span class="font-bold text-red-900 text-sm">${escapeHtml(data.name)}</span>
+                                        <span class="text-xs text-gray-400">${escapeHtml(data.date)}</span>
                                     </div>
-                                    <p class="text-gray-700 text-sm">${data.text}</p>
+                                    <p class="text-gray-700 text-sm">${escapeHtml(data.text)}</p>
                                 </div>
                             `;
                                 });
