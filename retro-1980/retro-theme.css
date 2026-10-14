@@ -696,3 +696,147 @@ body.theme-90s #retro-main section > div.rounded-xl:not([class*='bg-']),
 body.theme-90s #retro-main section > div.rounded-2xl:not([class*='bg-']) {
     background-color: #f2f2f2;
 }
+
+/* ---------- 방명록 ---------- */
+/* 블록: 제목(h4) + 글쓰기 상자 + 글 목록. 마크업마다 클래스가 달라 입력칸 id로 찾는다. */
+
+#retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--red);
+}
+
+#retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+#retro-main [id^='guest-name-'],
+#retro-main [id^='guest-msg-'] {
+    font-family: var(--sub);
+    font-size: 1rem;
+    color: var(--ink);
+    background: #fff repeating-linear-gradient(to bottom, transparent 0 27px, rgba(42, 127, 122, .18) 27px 28px);
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+}
+
+#retro-main [id^='guest-name-']:focus,
+#retro-main [id^='guest-msg-']:focus {
+    outline: 3px solid var(--mustard);
+    outline-offset: 1px;
+}
+
+#retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: var(--display);
+    font-weight: 400;
+    color: #fff;
+    background: var(--red);
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+#retro-main div:has(> input[id^='guest-name-']) > button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* 글 목록은 쪽지처럼 */
+#retro-main [id^='comment-list-'] > div,
+#retro-main [id^='guestbook-list-'] > div {
+    background: #fffdf3;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    box-shadow: 3px 3px 0 rgba(43, 33, 24, .35);
+}
+
+/* 90s: 윈도우 입력창 */
+body.theme-90s #retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: var(--pixel);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+}
+
+body.theme-90s #retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: #c0c0c0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #dfdfdf, inset -4px -4px #808080, inset 4px 4px #fff, 6px 6px 0 rgba(0, 0, 0, .35);
+}
+
+body.theme-90s #retro-main [id^='guest-name-'],
+body.theme-90s #retro-main [id^='guest-msg-'] {
+    font-family: var(--pixel);
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset 2px 2px #808080, inset -2px -2px #fff, inset 4px 4px #0a0a0a, inset -4px -4px #dfdfdf;
+}
+
+body.theme-90s #retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: var(--pixel);
+    font-weight: 700;
+    color: #000;
+    background: #c0c0c0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff, inset -4px -4px #808080, inset 4px 4px #dfdfdf;
+}
+
+body.theme-90s #retro-main [id^='comment-list-'] > div,
+body.theme-90s #retro-main [id^='guestbook-list-'] > div {
+    font-family: var(--pixel);
+    background: #000;
+    color: #00ff66;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.theme-90s #retro-main [id^='comment-list-'] > div *,
+body.theme-90s #retro-main [id^='guestbook-list-'] > div * {
+    color: inherit;
+}
+
+/* 00s: 미니홈피 방명록 */
+body.theme-00s #retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: 'Jua', var(--sub);
+    color: #ff7a00;
+}
+
+body.theme-00s #retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: #fff;
+    border: 1px solid #9fc9e6;
+    border-radius: 10px;
+    box-shadow: 0 0 0 4px #eaf6ff, 0 0 0 5px #b9dcf2;
+}
+
+body.theme-00s #retro-main [id^='guest-name-'],
+body.theme-00s #retro-main [id^='guest-msg-'] {
+    font-family: var(--pixel);
+    background: #f7fbff;
+    border: 1px dashed #9fc9e6;
+    border-radius: 6px;
+}
+
+body.theme-00s #retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: 'Jua', var(--sub);
+    color: #fff;
+    border: 1px solid #e86300;
+    border-radius: 999px;
+    background: linear-gradient(to bottom, #ffd29a 0%, #ff9a2e 50%, #ff7a00 51%, #ffb25c 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+body.theme-00s #retro-main [id^='comment-list-'] > div,
+body.theme-00s #retro-main [id^='guestbook-list-'] > div {
+    background: #fff;
+    border: 1px solid #b9dcf2;
+    border-radius: 8px;
+    box-shadow: none;
+}
