@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>응답하라 1980 관리실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #0c1a10;
+    --panel: #10241a;
+    --ink: #9dff9d;
+    --dim: #5fae6c;
+    --amber: #ffcc33;
+    --red: #ff5d5d;
+    --line: #2f6b3d;
+    --paper: #f3e9d2;
+    --paper-ink: #2b2118;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 'Nanum Gothic Coding', ui-monospace, monospace;
+    text-shadow: 0 0 6px rgba(157, 255, 157, .35);
+}
+/* 브라운관 주사선 */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .18) 0 1px, transparent 1px 3px);
+    z-index: 50;
+}
+a { color: var(--amber); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+.title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(14px, 3.6vw, 22px);
+    color: var(--amber);
+    letter-spacing: 1px;
+    margin: 0 0 6px;
+    text-shadow: 3px 3px 0 #6b3d00;
+}
+.sub { color: var(--dim); margin: 0 0 20px; }
+.box {
+    background: var(--panel);
+    border: 3px double var(--line);
+    padding: 18px;
+    margin-bottom: 18px;
+}
+.box h2 {
+    margin: -18px -18px 14px;
+    padding: 6px 12px;
+    background: var(--line);
+    color: var(--bg);
+    text-shadow: none;
+    font-size: 15px;
+}
+label { display: block; margin: 10px 0 4px; color: var(--dim); }
+input[type=text], input[type=password], input[type=number], textarea, select {
+    width: 100%;
+    padding: 8px 10px;
+    background: #061009;
+    color: var(--ink);
+    border: 2px solid var(--line);
+    font: inherit;
+    outline: none;
+}
+input:focus, textarea:focus { border-color: var(--amber); }
+textarea { min-height: 70px; resize: vertical; }
+.btn {
+    display: inline-block;
+    padding: 7px 14px;
+    background: var(--ink);
+    color: var(--bg);
+    border: 0;
+    box-shadow: 3px 3px 0 var(--line);
+    font: 700 14px 'Nanum Gothic Coding', monospace;
+    cursor: pointer;
+    text-shadow: none;
+}
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--line); }
+.btn:disabled { opacity: .5; cursor: wait; }
+.btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); box-shadow: none; }
+.btn.warn { background: var(--red); color: #1a0000; box-shadow: 3px 3px 0 #6b1d1d; }
+.btn.small { padding: 4px 9px; font-size: 13px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row > .grow { flex: 1 1 180px; }
+.muted { color: var(--dim); font-size: 14px; }
+.blink { animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 로그인 */
+#login { max-width: 420px; margin: 8vh auto 0; }
+#login .prompt::before { content: 'C:\\RETRO> '; color: var(--amber); }
+
+/* 상단 탭 */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.tab {
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid var(--line);
+    font: 700 14px 'Nanum Gothic Coding', monospace;
+    cursor: pointer;
+}
+.tab[aria-selected=true] { background: var(--amber); color: #2b1a00; border-color: var(--amber); text-shadow: none; }
+.topbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+
+/* 목록 */
+table { width: 100%; border-collapse: collapse; }
+th, td { border-bottom: 1px dashed var(--line); padding: 8px 6px; text-align: left; vertical-align: middle; }
+th { color: var(--dim); font-weight: 400; font-size: 14px; }
+td input[type=text], td input[type=number] { padding: 4px 6px; }
+.off { opacity: .45; }
+td.actions { white-space: nowrap; }
+@media (max-width: 640px) {
+    thead { display: none; }
+    tbody tr { display: grid; grid-template-columns: 64px 1fr; gap: 6px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    tbody td { border: 0; padding: 0; }
+    tbody td:nth-child(n+3) { grid-column: 1 / -1; }
+}
+
+/* 이미지 카드 */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.card { border: 2px solid var(--line); background: #061009; padding: 10px; }
+.card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #000; display: block; image-rendering: auto; filter: sepia(.15); }
+.card .k { font-size: 12px; color: var(--dim); word-break: break-all; }
+.card .d { margin: 4px 0 8px; }
+
+/* 방명록: 누런 종이 쪽지 */
+.book { margin-bottom: 10px; border: 2px solid var(--line); }
+.book summary {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    list-style: none;
+}
+.book summary::-webkit-details-marker { display: none; }
+.book summary::before { content: '▶'; margin-right: 8px; color: var(--amber); }
+.book[open] summary::before { content: '▼'; }
+.book .count { color: var(--amber); white-space: nowrap; }
+.posts { padding: 6px 12px 12px; }
+.note {
+    background: var(--paper);
+    color: var(--paper-ink);
+    text-shadow: none;
+    padding: 10px 12px;
+    margin: 8px 0;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, .4);
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.note .who { font-weight: 700; }
+.note .when { font-size: 12px; opacity: .7; }
+.note .text { white-space: pre-wrap; word-break: break-word; margin-top: 2px; }
+
+/* 알림 */
+#toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    background: var(--amber);
+    color: #2b1a00;
+    text-shadow: none;
+    padding: 10px 16px;
+    font-weight: 700;
+    border: 3px solid #2b1a00;
+    z-index: 60;
+    max-width: calc(100% - 32px);
+    display: none;
+}
+#toast.err { background: var(--red); color: #1a0000; }
+.setup { border-color: var(--amber); color: var(--amber); }
+.setup code { color: var(--ink); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <p class="title">RETRO 1980 관리실</p>
+    <p class="sub">응답하라 1980 · 메뉴, 문구, 사진, 방명록을 고칩니다. <a href="../">← 사이트로</a></p>
+
+    <div id="setup" class="box setup" hidden></div>
+
+    <!-- 로그인 -->
+    <form id="login" class="box" hidden autocomplete="on">
+        <h2>로그인</h2>
+        <p class="prompt">관리자 확인<span class="blink">_</span></p>
+        <label for="loginId">아이디</label>
+        <input id="loginId" type="text" autocomplete="username" required>
+        <label for="loginPw">비밀번호</label>
+        <input id="loginPw" type="password" autocomplete="current-password" required>
+        <p class="row" style="margin-top:16px"><button class="btn" type="submit">들어가기</button></p>
+    </form>
+
+    <!-- 관리 화면 -->
+    <main id="app" hidden>
+        <div class="topbar">
+            <div class="tabs" role="tablist">
+                <button class="tab" role="tab" data-tab="text" aria-selected="true">📝 사이트 문구</button>
+                <button class="tab" role="tab" data-tab="menu" aria-selected="false">📋 메뉴</button>
+                <button class="tab" role="tab" data-tab="images" aria-selected="false">🖼️ 사진</button>
+                <button class="tab" role="tab" data-tab="guestbook" aria-selected="false">✉️ 방명록</button>
+            </div>
+            <button id="logout" class="btn ghost small" type="button">로그아웃</button>
+        </div>
+
+        <section data-panel="text">
+            <div class="box">
+                <h2>첫 화면 문구</h2>
+                <label for="mainTitle">큰 제목</label>
+                <input id="mainTitle" type="text" maxlength="60">
+                <label for="mainSubtitle">부제목</label>
+                <textarea id="mainSubtitle" maxlength="200"></textarea>
+                <p class="row" style="margin-top:14px"><button id="saveText" class="btn" type="button">저장하기</button></p>
+            </div>
+        </section>
+
+        <section data-panel="menu" hidden>
+            <div class="box">
+                <h2>메뉴 목록</h2>
+                <p class="muted">순서 숫자가 작을수록 앞에 나옵니다. 숨기면 사이트에서 보이지 않습니다.</p>
+                <table>
+                    <thead><tr><th style="width:70px">순서</th><th>이름</th><th>Action ID</th><th></th></tr></thead>
+                    <tbody id="menuRows"></tbody>
+                </table>
+            </div>
+            <form id="menuAdd" class="box">
+                <h2>메뉴 추가</h2>
+                <div class="row">
+                    <div class="grow"><label for="newLabel">이름</label><input id="newLabel" type="text" maxlength="40" placeholder="예: 🎮 오락실" required></div>
+                    <div class="grow"><label for="newAction">Action ID (영문)</label><input id="newAction" type="text" maxlength="40" placeholder="예: arcade" pattern="[A-Za-z0-9_-]+" required></div>
+                    <div style="width:90px"><label for="newOrder">순서</label><input id="newOrder" type="number" value="99"></div>
+                </div>
+                <p class="row" style="margin-top:14px"><button class="btn" type="submit">추가하기</button></p>
+            </form>
+        </section>
+
+        <section data-panel="images" hidden>
+            <div class="box">
+                <h2>사진 바꾸기</h2>
+                <p class="muted">사진을 고르면 바로 올라가고 사이트에 반영됩니다. WebP, JPG, PNG, GIF · 5MB 이하.</p>
+                <div id="imageGrid" class="grid"></div>
+            </div>
+        </section>
+
+        <section data-panel="guestbook" hidden>
+            <div class="box">
+                <h2>방명록 글</h2>
+                <div class="row" style="justify-content:space-between">
+                    <p id="gbSummary" class="muted" style="margin:0">불러오는 중…</p>
+                    <button id="gbReload" class="btn ghost small" type="button">새로고침</button>
+                </div>
+                <div id="gbList" style="margin-top:12px"></div>
+            </div>
+        </section>
+    </main>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+    const API = '/api/retro-admin/';
+    const $ = sel => document.querySelector(sel);
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    let content = { menu: [], assets: [] };
+    let guestbookLoaded = false;
+
+    async function api(path, { method = 'GET', body, type } = {}) {
+        const headers = { 'X-Retro-Admin': '1' };
+        if (body !== undefined && !type) headers['Content-Type'] = 'application/json';
+        if (type) headers['Content-Type'] = type;
+        const res = await fetch(API + path, {
+            method,
+            headers,
+            credentials: 'same-origin',
+            body: body === undefined ? undefined : type ? body : JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 401 && path !== 'login') showLogin();
+        if (!res.ok) throw new Error(data.error || `오류 (${res.status})`);
+        return data;
+    }
+
+    let toastTimer;
+    function toast(message, isError = false) {
+        const el = $('#toast');
+        el.textContent = message;
+        el.className = isError ? 'err' : '';
+        el.style.display = 'block';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { el.style.display = 'none'; }, isError ? 5000 : 2200);
+    }
+
+    async function busy(button, work) {
+        button.disabled = true;
+        try {
+            await work();
+        } catch (err) {
+            toast(err.message, true);
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    function showLogin() {
+        $('#app').hidden = true;
+        $('#login').hidden = false;
+        $('#loginId').focus();
+    }
+
+    function showSetup(configured) {
+        const missing = [];
+        if (!configured.login) missing.push('<code>ADMIN_ID</code>, <code>ADMIN_PASSWORD</code> (로그인 아이디·비밀번호)');
+        if (!configured.supabase) missing.push('<code>SUPABASE_SERVICE_ROLE_KEY</code> (메뉴·문구·사진 저장)');
+        if (!missing.length) return;
+        const box = $('#setup');
+        box.innerHTML = `<h2>설정이 필요해요</h2><p>Cloudflare Pages &gt; 이 프로젝트 &gt; Settings &gt; Variables and Secrets 에 아래 값을 넣고 다시 배포해 주세요.</p><ul>${missing.map(m => `<li>${m}</li>`).join('')}</ul>`;
+        box.hidden = false;
+    }
+
+    // ---------- 탭 ----------
+    document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+        document.querySelectorAll('[data-panel]').forEach(p => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+        if (tab.dataset.tab === 'guestbook' && !guestbookLoaded) loadGuestbooks();
+    }));
+
+    // ---------- 문구·메뉴·사진 ----------
+    const asset = key => content.assets.find(a => a.key === key);
+
+    function imageSrc(value) {
+        if (/^https?:\/\//.test(value)) return value;
+        return '../' + String(value).replace(/^\.?\//, '');
+    }
+
+    function renderText() {
+        $('#mainTitle').value = asset('main_title')?.value || '';
+        $('#mainSubtitle').value = asset('main_subtitle')?.value || '';
+    }
+
+    function renderMenu() {
+        $('#menuRows').innerHTML = content.menu.map(item => `
+            <tr data-id="${esc(item.id)}" class="${item.is_active === false ? 'off' : ''}">
+                <td><input type="number" data-field="order_index" value="${esc(item.order_index)}"></td>
+                <td><input type="text" data-field="label" maxlength="40" value="${esc(item.label)}"></td>
+                <td class="muted">${esc(item.action_id)}</td>
+                <td class="actions">
+                    <button class="btn small" data-act="save" type="button">저장</button>
+                    <button class="btn ghost small" data-act="toggle" type="button">${item.is_active === false ? '보이기' : '숨기기'}</button>
+                    <button class="btn warn small" data-act="delete" type="button">삭제</button>
+                </td>
+            </tr>`).join('') || '<tr><td colspan="4" class="muted">메뉴가 없습니다.</td></tr>';
+    }
+
+    function renderImages() {
+        const images = content.assets.filter(a => a.key.startsWith('img_'));
+        $('#imageGrid').innerHTML = images.map(a => `
+            <div class="card" data-key="${esc(a.key)}">
+                <img src="${esc(imageSrc(a.value))}" alt="${esc(a.description || a.key)}" loading="lazy">
+                <div class="d">${esc(a.description || a.key)}</div>
+                <div class="k">${esc(a.key)}</div>
+                <label class="btn small" style="margin-top:8px">사진 바꾸기<input type="file" accept="image/webp,image/png,image/jpeg,image/gif" hidden></label>
+            </div>`).join('') || '<p class="muted">바꿀 수 있는 사진 항목이 없습니다.</p>';
+    }
+
+    async function loadContent() {
+        try {
+            content = await api('content');
+            renderText();
+            renderMenu();
+            renderImages();
+        } catch (err) {
+            toast(err.message, true);
+        }
+    }
+
+    $('#saveText').addEventListener('click', e => busy(e.target, async () => {
+        const title = $('#mainTitle').value.trim();
+        const subtitle = $('#mainSubtitle').value.trim();
+        if (!title || !subtitle) throw new Error('제목과 부제목을 모두 적어 주세요.');
+        await api('asset/main_title', { method: 'PUT', body: { value: title } });
+        await api('asset/main_subtitle', { method: 'PUT', body: { value: subtitle } });
+        toast('문구를 저장했습니다.');
+        await loadContent();
+    }));
+
+    $('#menuRows').addEventListener('click', e => {
+        const button = e.target.closest('button[data-act]');
+        if (!button) return;
+        const row = button.closest('tr');
+        const id = row.dataset.id;
+        const item = content.menu.find(m => String(m.id) === id);
+        busy(button, async () => {
+            if (button.dataset.act === 'save') {
+                await api(`menu/${id}`, { method: 'PATCH', body: {
+                    label: row.querySelector('[data-field=label]').value,
+                    order_index: row.querySelector('[data-field=order_index]').value,
+                } });
+                toast('메뉴를 저장했습니다.');
+            } else if (button.dataset.act === 'toggle') {
+                await api(`menu/${id}`, { method: 'PATCH', body: { is_active: item.is_active === false } });
+                toast(item.is_active === false ? '메뉴를 다시 보이게 했습니다.' : '메뉴를 숨겼습니다.');
+            } else {
+                if (!confirm(`'${item.label}' 메뉴를 지울까요?`)) return;
+                await api(`menu/${id}`, { method: 'DELETE' });
+                toast('메뉴를 지웠습니다.');
+            }
+            await loadContent();
+        });
+    });
+
+    $('#menuAdd').addEventListener('submit', e => {
+        e.preventDefault();
+        busy(e.submitter || e.target.querySelector('button'), async () => {
+            await api('menu', { method: 'POST', body: {
+                label: $('#newLabel').value,
+                action_id: $('#newAction').value,
+                order_index: $('#newOrder').value,
+            } });
+            e.target.reset();
+            toast('메뉴를 추가했습니다.');
+            await loadContent();
+        });
+    });
+
+    $('#imageGrid').addEventListener('change', e => {
+        const input = e.target;
+        const file = input.files?.[0];
+        if (!file) return;
+        const card = input.closest('.card');
+        const label = input.closest('label');
+        label.style.opacity = '.5';
+        busy(input, async () => {
+            if (file.size > 5 * 1024 * 1024) throw new Error('사진은 5MB 이하만 올릴 수 있습니다.');
+            await api(`asset/${card.dataset.key}/image`, { method: 'POST', body: file, type: file.type });
+            toast('사진을 바꿨습니다.');
+            await loadContent();
+        }).finally(() => { label.style.opacity = ''; input.value = ''; });
+    });
+
+    // ---------- 방명록 ----------
+    function formatTime(value) {
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    async function loadGuestbooks() {
+        guestbookLoaded = true;
+        $('#gbSummary').textContent = '불러오는 중…';
+        $('#gbList').innerHTML = '';
+        try {
+            const { books } = await api('guestbooks');
+            const total = books.reduce((n, b) => n + b.posts.length, 0);
+            const failed = books.filter(b => b.error);
+            $('#gbSummary').textContent = `방명록 ${books.length}곳 · 글 ${total}개` + (failed.length ? ` · ${failed.length}곳 읽기 실패` : '');
+            $('#gbList').innerHTML = books.map(book => `
+                <details class="book" data-col="${esc(book.id)}" ${book.posts.length ? '' : ''}>
+                    <summary><span>${esc(book.label)}</span><span class="count">${book.error ? '읽기 실패' : `${book.posts.length}개`}</span></summary>
+                    <div class="posts">
+                        ${book.error ? `<p class="muted">${esc(book.error)}</p>` : ''}
+                        ${book.posts.length ? `<p class="row"><button class="btn warn small" data-act="clear" type="button">이 방명록 글 모두 지우기</button></p>` : '<p class="muted">글이 없습니다.</p>'}
+                        ${book.posts.map(p => `
+                            <div class="note" data-doc="${esc(p.id)}">
+                                <div>
+                                    <span class="who">${esc(p.name || '익명')}</span>
+                                    <span class="when">${esc(p.date || formatTime(p.time))}</span>
+                                    <div class="text">${esc(p.text)}</div>
+                                </div>
+                                <button class="btn warn small" data-act="delete" type="button">삭제</button>
+                            </div>`).join('')}
+                    </div>
+                </details>`).join('');
+        } catch (err) {
+            $('#gbSummary').textContent = '방명록을 불러오지 못했습니다.';
+            toast(err.message, true);
+        }
+    }
+
+    $('#gbReload').addEventListener('click', loadGuestbooks);
+
+    $('#gbList').addEventListener('click', e => {
+        const button = e.target.closest('button[data-act]');
+        if (!button) return;
+        const book = button.closest('.book');
+        const col = book.dataset.col;
+        busy(button, async () => {
+            if (button.dataset.act === 'delete') {
+                if (!confirm('이 글을 지울까요?')) return;
+                await api(`guestbooks/${col}/${button.closest('.note').dataset.doc}`, { method: 'DELETE' });
+                toast('글을 지웠습니다.');
+            } else {
+                const name = book.querySelector('summary span').textContent;
+                if (!confirm(`'${name}' 방명록의 글을 모두 지울까요? 되돌릴 수 없습니다.`)) return;
+                const { deleted } = await api(`guestbooks/${col}`, { method: 'DELETE' });
+                toast(`글 ${deleted}개를 지웠습니다.`);
+            }
+            const open = [...document.querySelectorAll('.book[open]')].map(b => b.dataset.col);
+            await loadGuestbooks();
+            open.forEach(id => document.querySelector(`.book[data-col="${id}"]`)?.setAttribute('open', ''));
+        });
+    });
+
+    // ---------- 로그인 ----------
+    $('#login').addEventListener('submit', e => {
+        e.preventDefault();
+        busy(e.target.querySelector('button'), async () => {
+            await api('login', { method: 'POST', body: { id: $('#loginId').value, password: $('#loginPw').value } });
+            $('#loginPw').value = '';
+            $('#toast').style.display = 'none';
+            enterApp();
+        });
+    });
+
+    $('#logout').addEventListener('click', async () => {
+        await api('logout', { method: 'POST' }).catch(() => {});
+        guestbookLoaded = false;
+        showLogin();
+    });
+
+    function enterApp() {
+        $('#login').hidden = true;
+        $('#app').hidden = false;
+        loadContent();
+        if (document.querySelector('.tab[data-tab=guestbook]').getAttribute('aria-selected') === 'true') loadGuestbooks();
+    }
+
+    (async () => {
+        try {
+            const status = await api('status');
+            showSetup(status.configured);
+            if (!status.configured.login) return;
+            status.loggedIn ? enterApp() : showLogin();
+        } catch (err) {
+            $('#setup').innerHTML = `<h2>연결 오류</h2><p>관리 서버에 연결하지 못했습니다. (${esc(err.message)})</p>`;
+            $('#setup').hidden = false;
+        }
+    })();
+})();
+</script>
+</body>
+</html>

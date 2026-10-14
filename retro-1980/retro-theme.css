@@ -1,0 +1,842 @@
+/*
+ * 응답하라 레트로 테마
+ * 80s: 극장 간판과 국민학교 공책 / 90s: PC통신과 윈도우 95 / 00s: 싸이월드 미니홈피
+ * tailwind.css 다음에 불러와서 페이지 기본 스타일을 덮어쓴다. 시대 구분은 body의 theme-90s, theme-00s 클래스.
+ */
+
+@font-face {
+    font-family: 'Galmuri11';
+    src: url('./fonts/Galmuri11-Bold.woff2') format('woff2');
+    font-weight: 400 900;
+    font-display: swap;
+}
+
+:root {
+    --ink: #2b2118;
+    --paper: #f4e7cc;
+    --card: #fffaf0;
+    --red: #c8372d;
+    --mustard: #e9b44c;
+    --orange: #e07a2e;
+    --teal: #2a7f7a;
+    --navy: #1f2a44;
+    --display: 'Black Han Sans', 'Do Hyeon', 'Gowun Dodum', sans-serif;
+    --sub: 'Do Hyeon', 'Gowun Dodum', sans-serif;
+    --pixel: 'Galmuri11', 'DungGeunMo', monospace;
+}
+
+/* ---------- 공통 바탕: 종이 질감 + 브라운관 주사선 ---------- */
+
+body {
+    background-color: var(--paper);
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        radial-gradient(circle at 50% 0, #fff6e0 0, transparent 60%);
+    color: var(--ink);
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .035) 0 1px, transparent 1px 3px);
+    mix-blend-mode: multiply;
+}
+
+::selection {
+    background: var(--mustard);
+    color: var(--ink);
+}
+
+/* ---------- 80s 헤더: 극장 간판 + 무지개 띠 ---------- */
+
+#retro-header {
+    position: relative;
+    background: var(--navy);
+    color: #fdf3dc;
+    border-bottom: 0;
+    box-shadow: none;
+    padding-bottom: 46px;
+    overflow: hidden;
+}
+
+#retro-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 26px;
+    height: 20px;
+    background: linear-gradient(to bottom,
+            var(--mustard) 0 25%, var(--orange) 25% 50%, var(--red) 50% 75%, var(--teal) 75% 100%);
+}
+
+/* 전광판 자막 */
+#retro-header::after {
+    content: '★ 오늘의 방송 ★  국민학교 운동회  ·  88 서울 올림픽  ·  컬러 TV 시대 개막  ·  구슬치기 대회  ·  양철 도시락  ·  별이 빛나는 밤에  ★ 오늘의 방송 ★  국민학교 운동회  ·  88 서울 올림픽  ·  컬러 TV 시대 개막  ·  구슬치기 대회  ·  양철 도시락  ·  별이 빛나는 밤에';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 26px;
+    line-height: 26px;
+    white-space: pre;
+    font-family: var(--pixel);
+    font-size: 13px;
+    color: var(--mustard);
+    background: #11182b;
+    padding-left: 100%;
+    animation: retro-ticker 38s linear infinite;
+}
+
+@keyframes retro-ticker {
+    to { transform: translateX(-100%); }
+}
+
+#retro-header #main-title {
+    font-family: var(--display);
+    font-weight: 400;
+    letter-spacing: .04em;
+    color: #fdf3dc;
+    text-shadow: 3px 3px 0 var(--red), 6px 6px 0 #0d1324;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+}
+
+#retro-header #main-subtitle {
+    font-family: var(--sub);
+    font-size: 1.05rem;
+    color: var(--mustard);
+    opacity: 1;
+    margin-top: .35rem;
+}
+
+/* 채널 버튼 */
+#retro-header button[id^='era-btn'] {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: .03em;
+    background: #fdf3dc;
+    color: var(--ink);
+    border: 3px solid #0d1324;
+    border-radius: 6px;
+    box-shadow: 0 4px 0 #0d1324;
+    transform: translateY(0);
+    transition: transform .08s, box-shadow .08s;
+}
+
+#retro-header button[id^='era-btn']:hover {
+    background: #fff;
+}
+
+#retro-header button[id^='era-btn'].era-btn-active {
+    background: var(--red);
+    color: #fff;
+    box-shadow: 0 1px 0 #0d1324;
+    transform: translateY(3px);
+}
+
+/* 해시태그 = 문방구 스티커 */
+#retro-header #tag-container span {
+    border: 2px solid #0d1324;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 #0d1324;
+    font-family: var(--sub);
+    font-weight: 400;
+    font-size: .95rem;
+    transform: rotate(-3deg);
+}
+
+#retro-header #tag-container span:nth-child(2) { transform: rotate(2deg); }
+#retro-header #tag-container span:nth-child(3) { transform: rotate(-1deg); }
+
+/* ---------- 80s 메뉴: 공책 라벨 띠 ---------- */
+
+.retro-navigation {
+    background: var(--mustard);
+    border-bottom: 3px solid var(--ink);
+    box-shadow: 0 4px 0 rgba(43, 33, 24, .18);
+}
+
+.retro-navigation #dynamic-nav button {
+    font-family: var(--sub);
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--ink);
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.retro-navigation #dynamic-nav button:hover {
+    background: #f5cd73;
+    border-color: var(--ink);
+}
+
+.retro-navigation #dynamic-nav button[aria-pressed=true] {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.retro-navigation #section-nav {
+    border-top: 2px dashed rgba(43, 33, 24, .45);
+}
+
+.retro-navigation #section-nav button {
+    font-family: var(--sub);
+    font-size: 15px;
+    color: var(--ink);
+    border-radius: 3px;
+}
+
+.retro-navigation #section-nav button:hover {
+    background: rgba(255, 250, 240, .6);
+}
+
+.retro-navigation #section-nav button[aria-pressed=true] {
+    background: var(--card);
+    color: var(--red);
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* ---------- 80s 본문: 종이 카드 + 잉크 테두리 ---------- */
+
+#retro-main .retro-title,
+#retro-main #intro-80s h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    color: var(--red);
+    text-shadow: 2px 2px 0 rgba(43, 33, 24, .15);
+}
+
+#retro-main #intro-80s {
+    border-bottom: 3px double var(--ink);
+}
+
+#retro-main section > div.rounded-lg,
+#retro-main section > div.rounded-xl,
+#retro-main section > div.rounded-2xl {
+    border: 3px solid var(--ink);
+    border-radius: 6px;
+    box-shadow: 7px 7px 0 var(--ink);
+}
+
+#retro-main section > div.bg-white {
+    background-color: var(--card);
+    background-image: linear-gradient(to bottom, transparent 0 calc(100% - 1px), rgba(42, 127, 122, .06) 0);
+    background-size: 100% 32px;
+}
+
+#retro-main section h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    letter-spacing: .01em;
+}
+
+#retro-main section h4,
+#retro-main section h5 {
+    font-family: var(--sub);
+    font-weight: 400;
+}
+
+/* 사진은 바랜 인화지처럼, 마우스를 올리면 색이 돌아온다 */
+#retro-main img {
+    filter: sepia(.28) saturate(.85) contrast(1.05);
+    transition: filter .4s ease;
+}
+
+#retro-main img:hover {
+    filter: none;
+}
+
+#retro-main .rounded-lg img,
+#retro-main img.rounded-lg {
+    border-radius: 3px;
+}
+
+#retro-main button {
+    font-family: var(--sub);
+    font-weight: 400;
+}
+
+/* ---------- 80s 꼬리말 ---------- */
+
+#retro-footer {
+    position: relative;
+    background: var(--navy);
+    color: #fdf3dc;
+    border-top: 0;
+    padding-top: 3rem;
+    font-family: var(--sub);
+    font-size: 1.05rem;
+}
+
+#retro-footer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14px;
+    background: linear-gradient(to bottom,
+            var(--teal) 0 25%, var(--red) 25% 50%, var(--orange) 50% 75%, var(--mustard) 75% 100%);
+}
+
+/* 관리자 버튼은 눈에 덜 띄게 */
+a[href='admin.html'] {
+    background: var(--ink) !important;
+    color: var(--mustard) !important;
+    font-family: var(--pixel);
+    font-weight: 400 !important;
+    font-size: 12px;
+    padding: 6px 10px !important;
+    border: 2px solid var(--mustard);
+    border-radius: 3px !important;
+    opacity: .75;
+}
+
+a[href='admin.html']:hover {
+    opacity: 1;
+}
+
+/* =====================================================
+ * 90s: PC통신 + 윈도우 95
+ * ===================================================== */
+
+body.theme-90s {
+    background-color: #008080;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, .09) 1px, transparent 1px);
+    background-size: 4px 4px;
+    color: #111;
+}
+
+body.theme-90s #retro-header {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    padding-bottom: 34px;
+    border-bottom: 2px solid #000;
+}
+
+body.theme-90s #retro-header::before {
+    display: none;
+}
+
+body.theme-90s #retro-header::after {
+    content: '☎ 01410 접속 중 ... CONNECT 14400  ·  삐삐 8282 = 빨리빨리  ·  1004 = 천사  ·  486 = 사랑해  ·  하이텔 · 천리안 · 나우누리  ·  go 플라자 ☎ 01410 접속 중 ... CONNECT 14400  ·  삐삐 8282 = 빨리빨리  ·  1004 = 천사  ·  486 = 사랑해  ·  하이텔 · 천리안 · 나우누리  ·  go 플라자';
+    background: #000;
+    color: #00ff66;
+    height: 26px;
+    line-height: 26px;
+}
+
+body.theme-90s #retro-header #main-title {
+    font-family: var(--pixel);
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-shadow: 3px 3px 0 #000;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+}
+
+body.theme-90s #retro-header #main-subtitle {
+    font-family: var(--pixel);
+    font-size: .95rem;
+    color: #ffffaa;
+}
+
+/* 윈도우 95 버튼 */
+body.theme-90s #retro-header button[id^='era-btn'],
+body.theme-90s .retro-navigation #dynamic-nav button,
+body.theme-90s .retro-navigation #section-nav button {
+    font-family: var(--pixel);
+    font-weight: 700;
+    color: #000;
+    background: #c0c0c0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff, inset -4px -4px #808080, inset 4px 4px #dfdfdf;
+    transform: none;
+    text-shadow: none;
+}
+
+body.theme-90s #retro-header button[id^='era-btn'].era-btn-active,
+body.theme-90s .retro-navigation #dynamic-nav button[aria-pressed=true],
+body.theme-90s .retro-navigation #section-nav button[aria-pressed=true] {
+    background: #b5b5b5;
+    color: #000080;
+    box-shadow: inset 2px 2px #0a0a0a, inset -2px -2px #fff, inset 4px 4px #808080, inset -4px -4px #dfdfdf;
+}
+
+body.theme-90s #retro-header #tag-container span {
+    font-family: var(--pixel);
+    border-radius: 0;
+    border-color: #000;
+    box-shadow: 2px 2px 0 #000;
+    transform: none;
+}
+
+body.theme-90s .retro-navigation {
+    background: #c0c0c0;
+    border-bottom: 2px solid #000;
+    box-shadow: inset 0 2px #fff;
+}
+
+body.theme-90s .retro-navigation #section-nav {
+    border-top: 1px solid #808080;
+    box-shadow: 0 -1px #fff;
+}
+
+body.theme-90s .retro-navigation #dynamic-nav button {
+    font-size: 15px;
+}
+
+body.theme-90s .retro-navigation #section-nav button {
+    font-size: 13px;
+}
+
+/* 카드 = 창 */
+body.theme-90s #retro-main section > div.rounded-lg,
+body.theme-90s #retro-main section > div.rounded-xl,
+body.theme-90s #retro-main section > div.rounded-2xl {
+    position: relative;
+    padding-top: 3.25rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #dfdfdf, inset -4px -4px #808080, inset 4px 4px #fff, 6px 6px 0 rgba(0, 0, 0, .35);
+}
+
+body.theme-90s #retro-main section > div.bg-white {
+    background-color: #f2f2f2;
+    background-image: none;
+}
+
+body.theme-90s #retro-main section > div.rounded-lg::before,
+body.theme-90s #retro-main section > div.rounded-xl::before,
+body.theme-90s #retro-main section > div.rounded-2xl::before {
+    content: 'C:\\추억\\1990\\MEMORY.EXE';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: 24px;
+    padding: 0 64px 0 8px;
+    line-height: 24px;
+    font-family: var(--pixel);
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.theme-90s #retro-main section > div.rounded-lg::after,
+body.theme-90s #retro-main section > div.rounded-xl::after,
+body.theme-90s #retro-main section > div.rounded-2xl::after {
+    content: '_ □ ×';
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    font-family: var(--pixel);
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: #fff;
+}
+
+body.theme-90s #retro-main section h2,
+body.theme-90s #retro-main section h3 {
+    font-family: var(--pixel);
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+body.theme-90s #retro-main section h4,
+body.theme-90s #retro-main section h5,
+body.theme-90s #retro-main button {
+    font-family: var(--pixel);
+}
+
+body.theme-90s #retro-main img {
+    filter: saturate(1.1) contrast(1.05);
+    image-rendering: auto;
+    border-radius: 0;
+}
+
+body.theme-90s #retro-main #intro-90s h2 {
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+}
+
+body.theme-90s #retro-main #intro-90s p {
+    color: #ffffaa;
+}
+
+/* 작업 표시줄 */
+body.theme-90s #retro-footer {
+    background: #c0c0c0;
+    color: #000;
+    border-top: 2px solid #fff;
+    font-family: var(--pixel);
+    font-size: .9rem;
+    padding-top: 2.75rem;
+}
+
+body.theme-90s #retro-footer::before {
+    content: '시작';
+    top: 8px;
+    left: 8px;
+    right: auto;
+    height: 24px;
+    padding: 0 14px 0 30px;
+    line-height: 24px;
+    font-weight: 700;
+    background: #c0c0c0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect x='1' y='1' width='6' height='6' fill='%23f25022'/%3E%3Crect x='9' y='1' width='6' height='6' fill='%237fba00'/%3E%3Crect x='1' y='9' width='6' height='6' fill='%2300a4ef'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%23ffb900'/%3E%3C/svg%3E") 8px center no-repeat;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff, inset -4px -4px #808080, inset 4px 4px #dfdfdf;
+}
+
+body.theme-90s a[href='admin.html'] {
+    background: #c0c0c0 !important;
+    color: #000 !important;
+    border: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff;
+}
+
+/* =====================================================
+ * 00s: 싸이월드 미니홈피 + Y2K
+ * ===================================================== */
+
+body.theme-00s {
+    background-color: #dff1fb;
+    background-image: radial-gradient(#ffffff 2px, transparent 2.5px);
+    background-size: 18px 18px;
+    color: #333;
+}
+
+body.theme-00s #retro-header {
+    background: linear-gradient(to bottom, #ffffff 0%, #e8f6ff 55%, #c9e8fb 100%);
+    color: #333;
+    border-bottom: 1px solid #9fc9e6;
+    padding-bottom: 34px;
+}
+
+body.theme-00s #retro-header::before {
+    display: none;
+}
+
+body.theme-00s #retro-header::after {
+    content: '♪ BGM  프리스타일 - Y  ♪  TODAY 2002  |  TOTAL 1004  ·  도토리 10개 충전 완료  ·  일촌 신청이 도착했습니다  ·  오늘의 기분: 설렘 ♥  ♪ BGM  프리스타일 - Y  ♪  TODAY 2002  |  TOTAL 1004  ·  도토리 10개 충전 완료  ·  일촌 신청이 도착했습니다  ·  오늘의 기분: 설렘 ♥';
+    background: #ff7a00;
+    color: #fff;
+    height: 26px;
+    line-height: 26px;
+}
+
+body.theme-00s #retro-header #main-title {
+    font-family: 'Jua', var(--sub);
+    font-weight: 400;
+    letter-spacing: .02em;
+    color: #ff7a00;
+    background: linear-gradient(90deg, #ff7a00, #ff3d7f 55%, #7a5cff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(2px 2px 0 #fff) drop-shadow(0 2px 0 rgba(0, 90, 160, .25));
+}
+
+body.theme-00s #retro-header #main-subtitle {
+    font-family: var(--pixel);
+    font-size: .9rem;
+    color: #3b6f99;
+}
+
+/* 젤리 버튼 */
+body.theme-00s #retro-header button[id^='era-btn'] {
+    font-family: 'Jua', var(--sub);
+    color: #fff;
+    border: 1px solid #3a8fd0;
+    border-radius: 999px;
+    background: linear-gradient(to bottom, #9fdcff 0%, #4aa9ec 50%, #2f8fd8 51%, #6cc4ff 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 2px 4px rgba(0, 60, 120, .3);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    transform: none;
+}
+
+body.theme-00s #retro-header button[id^='era-btn'].era-btn-active {
+    border-color: #e86300;
+    background: linear-gradient(to bottom, #ffd29a 0%, #ff9a2e 50%, #ff7a00 51%, #ffb25c 100%);
+}
+
+body.theme-00s #retro-header #tag-container span {
+    font-family: 'Jua', var(--sub);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 2px 3px rgba(0, 0, 0, .15);
+    transform: none;
+}
+
+/* 미니홈피 메뉴 탭 */
+body.theme-00s #nav-00s {
+    background: #fff;
+    border: 1px solid #9fc9e6;
+    border-radius: 10px;
+    box-shadow: 0 0 0 4px #eaf6ff, 0 0 0 5px #b9dcf2;
+    gap: 6px;
+}
+
+body.theme-00s #nav-00s .nav-btn-00s {
+    font-family: 'Jua', var(--sub);
+    font-weight: 400;
+    border: 1px solid #b9dcf2;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, #fff, #eef8ff);
+}
+
+body.theme-00s #nav-00s .nav-btn-00s[class~='border-[#ff6b00]'] {
+    color: #fff;
+    border-color: #e86300;
+    background: linear-gradient(to bottom, #ffb25c, #ff7a00);
+}
+
+body.theme-00s #retro-main section > div.rounded-lg,
+body.theme-00s #retro-main section > div.rounded-xl,
+body.theme-00s #retro-main section > div.rounded-2xl {
+    border: 1px solid #9fc9e6;
+    border-radius: 12px;
+    box-shadow: 0 0 0 4px #eaf6ff, 0 0 0 5px #b9dcf2, 0 8px 18px rgba(0, 80, 140, .12);
+}
+
+body.theme-00s #retro-main section > div.bg-white {
+    background-color: #fff;
+    background-image: none;
+}
+
+body.theme-00s #retro-main section h2,
+body.theme-00s #retro-main section h3 {
+    font-family: 'Jua', var(--sub);
+    font-weight: 400;
+}
+
+body.theme-00s #retro-main section h4,
+body.theme-00s #retro-main section h5,
+body.theme-00s #retro-main button {
+    font-family: 'Jua', var(--sub);
+}
+
+body.theme-00s #retro-main img {
+    filter: saturate(1.15) brightness(1.03);
+}
+
+body.theme-00s #retro-footer {
+    background: #fff;
+    color: #3b6f99;
+    border-top: 1px dashed #9fc9e6;
+    font-family: var(--pixel);
+    font-size: .9rem;
+}
+
+body.theme-00s #retro-footer::before {
+    height: 6px;
+    background: linear-gradient(90deg, #ff7a00, #ff3d7f, #7a5cff, #2fb4ff);
+}
+
+body.theme-00s::after {
+    background: none;
+}
+
+/* ---------- 휴대폰 화면 ---------- */
+
+@media (max-width: 640px) {
+    #retro-header button[id^='era-btn'] {
+        font-size: .95rem;
+        padding: .4rem .8rem;
+    }
+
+    #retro-main section > div.rounded-lg,
+    #retro-main section > div.rounded-xl,
+    #retro-main section > div.rounded-2xl {
+        box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .retro-navigation #dynamic-nav button {
+        font-size: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #retro-header::after {
+        animation: none;
+        padding-left: 1rem;
+    }
+
+    #retro-main img {
+        transition: none;
+    }
+}
+
+/* 00s 홈의 주제 카드는 섹션 안쪽 그리드에 있다 */
+body.theme-00s #era-00s .grid > div.bg-white {
+    border: 1px solid #9fc9e6;
+    border-radius: 12px;
+    box-shadow: 0 0 0 4px #eaf6ff, 0 0 0 5px #b9dcf2;
+    transition: transform .15s;
+}
+
+body.theme-00s #era-00s .grid > div.bg-white:hover {
+    transform: translateY(-3px);
+}
+
+/* 배경색이 없는 카드도 창 안쪽은 회색 바탕으로 */
+body.theme-90s #retro-main section > div.rounded-lg:not([class*='bg-']),
+body.theme-90s #retro-main section > div.rounded-xl:not([class*='bg-']),
+body.theme-90s #retro-main section > div.rounded-2xl:not([class*='bg-']) {
+    background-color: #f2f2f2;
+}
+
+/* ---------- 방명록 ---------- */
+/* 블록: 제목(h4) + 글쓰기 상자 + 글 목록. 마크업마다 클래스가 달라 입력칸 id로 찾는다. */
+
+#retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--red);
+}
+
+#retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: 6px;
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+#retro-main [id^='guest-name-'],
+#retro-main [id^='guest-msg-'] {
+    font-family: var(--sub);
+    font-size: 1rem;
+    color: var(--ink);
+    background: #fff repeating-linear-gradient(to bottom, transparent 0 27px, rgba(42, 127, 122, .18) 27px 28px);
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+}
+
+#retro-main [id^='guest-name-']:focus,
+#retro-main [id^='guest-msg-']:focus {
+    outline: 3px solid var(--mustard);
+    outline-offset: 1px;
+}
+
+#retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: var(--display);
+    font-weight: 400;
+    color: #fff;
+    background: var(--red);
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+#retro-main div:has(> input[id^='guest-name-']) > button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* 글 목록은 쪽지처럼 */
+#retro-main [id^='comment-list-'] > div,
+#retro-main [id^='guestbook-list-'] > div {
+    background: #fffdf3;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    box-shadow: 3px 3px 0 rgba(43, 33, 24, .35);
+}
+
+/* 90s: 윈도우 입력창 */
+body.theme-90s #retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: var(--pixel);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+}
+
+body.theme-90s #retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: #c0c0c0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #dfdfdf, inset -4px -4px #808080, inset 4px 4px #fff, 6px 6px 0 rgba(0, 0, 0, .35);
+}
+
+body.theme-90s #retro-main [id^='guest-name-'],
+body.theme-90s #retro-main [id^='guest-msg-'] {
+    font-family: var(--pixel);
+    background: #fff;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset 2px 2px #808080, inset -2px -2px #fff, inset 4px 4px #0a0a0a, inset -4px -4px #dfdfdf;
+}
+
+body.theme-90s #retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: var(--pixel);
+    font-weight: 700;
+    color: #000;
+    background: #c0c0c0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff, inset -4px -4px #808080, inset 4px 4px #dfdfdf;
+}
+
+body.theme-90s #retro-main [id^='comment-list-'] > div,
+body.theme-90s #retro-main [id^='guestbook-list-'] > div {
+    font-family: var(--pixel);
+    background: #000;
+    color: #00ff66;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.theme-90s #retro-main [id^='comment-list-'] > div *,
+body.theme-90s #retro-main [id^='guestbook-list-'] > div * {
+    color: inherit;
+}
+
+/* 00s: 미니홈피 방명록 */
+body.theme-00s #retro-main div:has(> div input[id^='guest-name-']) > h4 {
+    font-family: 'Jua', var(--sub);
+    color: #ff7a00;
+}
+
+body.theme-00s #retro-main div:has(> div > input[id^='guest-name-']):not(:has(h4)) {
+    background: #fff;
+    border: 1px solid #9fc9e6;
+    border-radius: 10px;
+    box-shadow: 0 0 0 4px #eaf6ff, 0 0 0 5px #b9dcf2;
+}
+
+body.theme-00s #retro-main [id^='guest-name-'],
+body.theme-00s #retro-main [id^='guest-msg-'] {
+    font-family: var(--pixel);
+    background: #f7fbff;
+    border: 1px dashed #9fc9e6;
+    border-radius: 6px;
+}
+
+body.theme-00s #retro-main div:has(> input[id^='guest-name-']) > button {
+    font-family: 'Jua', var(--sub);
+    color: #fff;
+    border: 1px solid #e86300;
+    border-radius: 999px;
+    background: linear-gradient(to bottom, #ffd29a 0%, #ff9a2e 50%, #ff7a00 51%, #ffb25c 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+body.theme-00s #retro-main [id^='comment-list-'] > div,
+body.theme-00s #retro-main [id^='guestbook-list-'] > div {
+    background: #fff;
+    border: 1px solid #b9dcf2;
+    border-radius: 8px;
+    box-shadow: none;
+}

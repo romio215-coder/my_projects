@@ -1,0 +1,19 @@
+# 파일명에 해시가 붙은 포털 파일과 Next 빌드 파일은 내용이 바뀌면 이름도 바뀌므로 오래 캐시한다.
+/assets/portal.*
+  Cache-Control: public, max-age=31536000, immutable
+/battle-janggi/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 이미지는 하루 동안 캐시하고, 이후에는 백그라운드에서 새로 확인한다.
+/*.webp
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# 관리자 페이지는 검색에 노출하지 않는다.
+/retro-1980/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  X-Frame-Options: DENY
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
