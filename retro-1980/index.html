@@ -177,16 +177,7 @@
             font-family: 'Noto Serif KR', serif;
         }
 
-        .theme-90s header {
-            background-color: #1e40af !important;
-            /* Deeper blue for 90s */
-            border-bottom-color: #1e3a8a !important;
-        }
 
-        .theme-90s footer {
-            background-color: #1e40af !important;
-            border-top-color: #1e3a8a !important;
-        }
 
         .theme-90s .nav-btn.tab-active {
             border-bottom-color: #3b82f6;
@@ -265,11 +256,6 @@
             color: #ff6b00;
         }
 
-        .theme-00s header {
-            background-color: #ffffff !important;
-            border-bottom-color: #e5e7eb !important;
-            color: #333 !important;
-        }
 
         .theme-00s header h1,
         .theme-00s header p {
@@ -319,12 +305,17 @@
     <link rel="stylesheet" href="navigation.css">
     <script src="navigation.js"></script>
     <link rel="stylesheet" href="./tailwind.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap">
+    <link rel="preload" href="./fonts/Galmuri11-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="./retro-theme.css">
 </head>
 
 <body class="min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-[#8c7b6c] text-[#f5f0e1] p-4 md:p-6 shadow-md border-b-4 border-[#5d5147]">
+    <header id="retro-header" class="bg-[#8c7b6c] text-[#f5f0e1] p-4 md:p-6 shadow-md border-b-4 border-[#5d5147]">
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="text-center md:text-left">
                 <!-- Dynamic Title/Subtitle -->
@@ -404,7 +395,7 @@
     </script>
 
     <!-- Content Container -->
-    <main class="flex-grow container mx-auto max-w-7xl p-4 md:p-8 space-y-8">
+    <main id="retro-main" class="flex-grow container mx-auto max-w-7xl p-4 md:p-8 space-y-8">
 
         <!-- 1980s ERA CONTAINER -->
         <div id="era-80s" class="era-container era-active">
@@ -2236,7 +2227,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#8c7b6c] text-[#f5f0e1] p-8 text-center border-t-4 border-[#5d5147]">
+    <footer id="retro-footer" class="bg-[#8c7b6c] text-[#f5f0e1] p-8 text-center border-t-4 border-[#5d5147]">
         <p class="mb-2">© 1980 Memories Archive Project</p>
         <p class="text-sm opacity-70">"당신의 가장 행복했던 순간은 언제인가요?"</p>
     </footer>
@@ -2818,7 +2809,8 @@
 
         // Initial setup
         window.onload = () => {
-            initCharts();
+            // 차트 스크립트를 못 불러와도 나머지 화면은 그려지도록
+            try { initCharts(); } catch (err) { console.error('Chart init failed:', err); }
             renderNewsTimeline(); // Generate 90s news timeline
             renderNewsTimeline80s(); // Generate 80s news timeline (New)
             switchMarble('triangle', null);
@@ -2844,4 +2836,3 @@
     </script>
 </body>
 
-```
